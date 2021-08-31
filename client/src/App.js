@@ -1,6 +1,12 @@
-function App() {
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+
+import Layout from "./components/Layout";
+
+const App = () => {
     return (
-        <div className='bg-gray-400'>Hello there</div>
+        <Router>
+            <Layout />
+        </Router>
     );
 }
 
