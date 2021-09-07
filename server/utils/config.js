@@ -7,9 +7,9 @@ const DB_PW = process.env.DB_PW
 const DB_NAME = process.env.DB_NAME
 
 module.exports = {
-    PORT,
-    DB_HOST,
-    DB_USER,
-    DB_PW,
-    DB_NAME,
+	PORT,
+	DB_HOST,
+	DB_USER,
+	DB_PW,
+	DB_NAME,
 }

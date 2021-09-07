@@ -7,7 +7,7 @@
 		"start": "node index.js",
 		"dev": "nodemon index.js",
 		"build:ui": "rm -rf build && cd ../client/ && npm run build --prod && cp -r build ../server/",
-		"lint": "eslint ."
+		"lint": "eslint . --fix"
 	},
 	"author": "",
 	"license": "ISC",
