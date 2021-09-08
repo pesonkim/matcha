@@ -8,11 +8,15 @@
 		"@testing-library/react": "^11.2.7",
 		"@testing-library/user-event": "^12.8.3",
 		"autoprefixer": "^9.8.6",
+		"axios": "^0.21.4",
 		"postcss": "^7.0.36",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
+		"react-redux": "^7.2.5",
 		"react-router-dom": "^5.2.1",
 		"react-scripts": "4.0.3",
+		"redux": "^4.1.1",
+		"redux-thunk": "^2.3.0",
 		"tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.9",
 		"web-vitals": "^1.1.2"
 	},
@@ -41,5 +45,8 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
+	},
+	"devDependencies": {
+		"redux-devtools-extension": "^2.13.9"
 	}
 }
