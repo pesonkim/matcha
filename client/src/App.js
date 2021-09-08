@@ -4,6 +4,11 @@ import { testReducer } from './reducers/exampleReducer'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 
+import Wrapper from './components/ui/Wrapper'
+import LoginPage from './components/pages/Login'
+import SignupPage from './components/pages/Signup'
+import ResetPage from './components/pages/Reset'
+
 const App = () => {
 	const dispatch = useDispatch()
 
@@ -14,9 +19,10 @@ const App = () => {
 	return (
 		<Layout>
 			<Switch>
-				<Route path='/' exact render={() => (<div>home</div>)} />
-				<Route path='/login' render={() => (<div>login</div>)} />
-				<Route path='/signup' render={() => (<div>signup</div>)} />
+				<Route path='/' exact render={() => (<Wrapper>home</Wrapper>)} />
+				<Route path='/login' component={LoginPage} />
+				<Route path='/signup' component={SignupPage} />
+				<Route path='/reset' component={ResetPage} />
 			</Switch>
 		</Layout>
 	)
