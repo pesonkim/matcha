@@ -6,13 +6,19 @@ const InputField = (props) => {
 		borderRadius: '.25rem',
 		width: '100%',
 		padding: '.75rem',
-		marginBottom: '1rem'
+	}
+
+	let error = ''
+	if (props.errors) {
+		error = (props.errors.includes('required')) ? '' : props.errors
 	}
 
 	return (
 		<>
-			<label>{props.name}</label>
-			<input type={props.type} style={style} />
+			<label>{props.name.charAt(0).toUpperCase() + props.name.slice(1)}</label>
+			{props.errors && <label className='text-red-500'> *</label>}
+			<input name={props.name} type={props.type} style={style} onBlur={props.onBlur}/>
+			<div className='text-red-500 mb-4'>{error}</div>
 		</>
 	)
 }

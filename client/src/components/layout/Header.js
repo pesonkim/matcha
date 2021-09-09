@@ -8,7 +8,9 @@ const Header = () => (
 				<Link to='/'>
 					<p className="text-2xl">matcha </p>
 				</Link>
-				<HeartIcon className=' h-6 w-6'/>
+				<Link to='/browse'>
+					<HeartIcon className=' h-6 w-6'/>
+				</Link>
 			</section>
 			<section className="flex items-center">
 				<Link to='/signup'>

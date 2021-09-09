@@ -8,6 +8,7 @@ import Wrapper from './components/ui/Wrapper'
 import LoginPage from './components/pages/Login'
 import SignupPage from './components/pages/Signup'
 import ResetPage from './components/pages/Reset'
+import BrowsePage from './components/pages/Browse'
 
 const App = () => {
 	const dispatch = useDispatch()
@@ -23,6 +24,7 @@ const App = () => {
 				<Route path='/login' component={LoginPage} />
 				<Route path='/signup' component={SignupPage} />
 				<Route path='/reset' component={ResetPage} />
+				<Route path='/browse' component={BrowsePage} />
 			</Switch>
 		</Layout>
 	)
