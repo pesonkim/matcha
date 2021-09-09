@@ -1,7 +1,7 @@
 const validate = (values) => {
 	const errors = {}
 
-	console.log(values)
+	//console.log(values)
 
 	//first name
 	if (!values.firstname) {
@@ -41,7 +41,7 @@ const validate = (values) => {
 	//new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})").test
 	//check = date.toLocaleDateString('en-eu').split('/')
 
-	console.log(errors)
+	//console.log(errors)
 	return errors
 }
 

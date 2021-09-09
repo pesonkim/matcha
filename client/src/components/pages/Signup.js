@@ -6,6 +6,7 @@ import InputField from '../ui/forms/InputField'
 import PasswordField from '../ui/forms/PasswordField'
 import SubmitButton from '../ui/forms/SubmitButton'
 import validate from '../../utils/validate'
+import userService from '../../services/users'
 
 const SignupPage = () => {
 	const [errors, setErrors] = useState({})
@@ -50,7 +51,11 @@ const SignupPage = () => {
 		if (Object.keys(errors).length > 0) {
 			setErrors(errors)
 		} else {
-			alert('axios and loginservice here')
+			userService
+				.createUser(values)
+				.then(() => {
+					alert('signup succesful')
+				})
 		}
 	}
 

@@ -4,7 +4,9 @@ const app = express()
 const cors = require('cors')
 //const setupDb = require('./utils/setup')
 
-const exampleRouter = require('./routes/exampleRoute')
+const exampleRouter = require('./routes/example')
+const userRouter = require('./routes/users')
+const loginRouter = require('./routes/login')
 
 const middleware = require('./utils/middleware')
 
@@ -17,6 +19,8 @@ app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 
 app.use('/api/example', exampleRouter)
+app.use('/api/users', userRouter)
+app.use('/api/login', loginRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
