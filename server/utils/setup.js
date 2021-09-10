@@ -39,19 +39,18 @@ const setupDb = () => {
         password varchar(255) NOT NULL,
         token varchar(255) NOT NULL,
         verified tinyint(1) NOT NULL DEFAULT 0,
-        gender
-        orientation
-        avatar
-        bio
-        latitude
-        longitude
-        age
-        fame
-        last_online datetime NOT NULL,
+        gender int DEFAULT 0,
+        orientation int DEFAULT 0,
+        avatar int DEFAULT 0,
+        bio text,
+        latitude float DEFAULT NULL,
+        longitude float DEFAULT NULL,
+        age int DEFAULT 0,
+        fame int DEFAULT 0,
+        last_online datetime DEFAULT NULL,
         online tinyint(1) NOT NULL DEFAULT 0
     )`
 
-	//FOREIGN KEY (id_user) REFERENCES users(id_user)
 	const tags = `CREATE TABLE IF NOT EXISTS tags (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
         tag varchar(255) NOT NULL,
@@ -68,61 +67,61 @@ const setupDb = () => {
 
 	const likes = `CREATE TABLE IF NOT EXISTS likes (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        to int NOT NULL,
-        from int NOT NULL,
-        match tinyint(1) NOT NULL DEFAULT 0,
+        liker int NOT NULL,
+        liked int NOT NULL,
+        is_match tinyint(1) NOT NULL DEFAULT 0,
         created_at datetime NOT NULL,
-        FOREIGN KEY (from) REFERENCES users(id),
-        FOREIGN KEY (to) REFERENCES users(id)
+        FOREIGN KEY (liker) REFERENCES users(id),
+        FOREIGN KEY (liked) REFERENCES users(id)
     )`
 
 	const views = `CREATE TABLE IF NOT EXISTS views (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        to int NOT NULL,
-        from int NOT NULL,
+        viewer int NOT NULL,
+        viewed int NOT NULL,
         created_at datetime NOT NULL,
         status tinyint(1) NOT NULL DEFAULT 0,
-        FOREIGN KEY (from) REFERENCES users(id),
-        FOREIGN KEY (to) REFERENCES users(id)
+        FOREIGN KEY (viewer) REFERENCES users(id),
+        FOREIGN KEY (viewed) REFERENCES users(id)
     )`
 
 	const blocks = `CREATE TABLE IF NOT EXISTS blocks (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        to int NOT NULL,
-        from int NOT NULL,
-        FOREIGN KEY (from) REFERENCES users(id),
-        FOREIGN KEY (to) REFERENCES users(id)
+        blocker int NOT NULL,
+        blocked int NOT NULL,
+        FOREIGN KEY (blocker) REFERENCES users(id),
+        FOREIGN KEY (blocked) REFERENCES users(id)
     )`
 
 	const reports = `CREATE TABLE IF NOT EXISTS reports (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        to int NOT NULL,
-        from int NOT NULL,
-        FOREIGN KEY (from) REFERENCES users(id),
-        FOREIGN KEY (to) REFERENCES users(id)
+        reporter int NOT NULL,
+        reported int NOT NULL,
+        FOREIGN KEY (reporter) REFERENCES users(id),
+        FOREIGN KEY (reported) REFERENCES users(id)
     )`
 
 	const messages = `CREATE TABLE IF NOT EXISTS messages (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        to int NOT NULL,
-        from int NOT NULL,
+        sender int NOT NULL,
+        receiver int NOT NULL,
         message text,
         created_at datetime NOT NULL,
         status tinyint(1) NOT NULL DEFAULT 0,
-        FOREIGN KEY (from) REFERENCES users(id),
-        FOREIGN KEY (to) REFERENCES users(id)
+        FOREIGN KEY (sender) REFERENCES users(id),
+        FOREIGN KEY (receiver) REFERENCES users(id)
     )`
 
 	const notif = `CREATE TABLE IF NOT EXISTS notif (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        to int NOT NULL,
-        from int NOT NULL,
+        sender int NOT NULL,
+        receiver int NOT NULL,
         message text,
         created_at datetime NOT NULL,
         status tinyint(1) NOT NULL DEFAULT 0,
         user int NOT NULL,
-        FOREIGN KEY (from) REFERENCES users(id),
-        FOREIGN KEY (to) REFERENCES users(id)
+        FOREIGN KEY (sender) REFERENCES users(id),
+        FOREIGN KEY (receiver) REFERENCES users(id)
     )`
 
 	//executing queries to create tables

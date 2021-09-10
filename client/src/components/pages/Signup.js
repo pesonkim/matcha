@@ -10,6 +10,8 @@ import userService from '../../services/users'
 
 const SignupPage = () => {
 	const [errors, setErrors] = useState({})
+	const [errorMessage, setErrorMessage] = useState('')
+	const [notification, setNotification] = useState('')
 
 	const inputStyle = {
 		borderWidth: '1px',
@@ -33,7 +35,11 @@ const SignupPage = () => {
 	const handleSubmit = (event) => {
 		event.preventDefault()
 
-		const values = {
+		const rand = () => Math.random().toString(36).substr(2)
+		const randToken = () => rand() + rand() + rand()
+		const token = randToken()
+
+		const userData = {
 			firstname: event.target.firstname.value,
 			lastname: event.target.lastname.value,
 			birthdate: {
@@ -44,17 +50,27 @@ const SignupPage = () => {
 			username: event.target.username.value,
 			email: event.target.email.value,
 			password: event.target.password.value,
+			token,
 		}
 
-		const errors = validate(values)
+		const errors = validate(userData)
+		setErrors(errors)
 
-		if (Object.keys(errors).length > 0) {
-			setErrors(errors)
-		} else {
+		console.log(errors)
+		if (Object.keys(errors).length === 0) {
 			userService
-				.createUser(values)
+				.createUser(userData)
 				.then(() => {
-					alert('signup succesful')
+					setErrorMessage('')
+					setNotification('Signup succesful, please check your email')
+					event.target.remove()
+				})
+				.catch((error) => {
+					if (error.response && error.response.data) {
+						setErrorMessage(error.response.data.error)
+					} else {
+						setErrorMessage('Database error')
+					}
 				})
 		}
 	}
@@ -76,6 +92,8 @@ const SignupPage = () => {
 		<>
 			<Wrapper>
 				<Heading title='Signup' />
+				{errorMessage && <label className='text-red-500 text-center mb-2'>{errorMessage}</label>}
+				{notification && <label className='text-green-500 text-center mb-2'>{notification}</label>}
 				<form onSubmit={handleSubmit}>
 					<div className='flex'>
 						<div className='inline-block mr-2 w-1/2'>

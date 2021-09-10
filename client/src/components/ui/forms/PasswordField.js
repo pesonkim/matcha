@@ -15,7 +15,7 @@ const PasswordField = (props) => {
 	const button = {
 		position: 'absolute',
 		top: 15,
-		right: 15
+		right: 15,
 	}
 
 	const toggle = event => {
@@ -34,7 +34,7 @@ const PasswordField = (props) => {
 			{props.errors && <label className='text-red-500'> *</label>}
 			<div className='relative'>
 				<input name='password' type={show ? 'text' : 'password'} style={style} onBlur={props.onBlur}/>
-				<button style={button} onClick={toggle}>{show ? 'Show' : 'Hide'}</button>
+				<button tabIndex={-1} style={button} onClick={toggle}>{show ? 'Show' : 'Hide'}</button>
 			</div>
 			<div className='text-red-500 mb-4'>{error}</div>
 		</div>
