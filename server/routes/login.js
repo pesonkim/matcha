@@ -30,7 +30,7 @@ loginRouter.post('/', async (req, res) => {
 		//allow login
 		pool.query('SELECT * from users WHERE username = ?', username, (error, result) => {
 			if (result) {
-				console.log(result[0])
+				//console.log(result[0])
 				pool.query(`UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ${result[0].id}`)
 
 				const userForToken = {
@@ -45,6 +45,7 @@ loginRouter.post('/', async (req, res) => {
 					{ expiresIn: 60 * 60 }
 				)
 
+				console.log(`User id ${result[0].id} logged in`)
 				res
 					.status(200)
 					.send({

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import Wrapper from '../ui/Wrapper'
 import Heading from '../ui/forms/Heading'

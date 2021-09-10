@@ -6,6 +6,7 @@ const DB_USER = process.env.DB_USER
 const DB_PW = process.env.DB_PW
 const DB_NAME = process.env.DB_NAME
 const TOKEN_SECRET = process.env.TOKEN_SECRET
+const INFO_EMAIL = process.env.INFO_EMAIL
 
 module.exports = {
 	PORT,
@@ -13,5 +14,6 @@ module.exports = {
 	DB_USER,
 	DB_PW,
 	DB_NAME,
-	TOKEN_SECRET
+	TOKEN_SECRET,
+	INFO_EMAIL
 }
