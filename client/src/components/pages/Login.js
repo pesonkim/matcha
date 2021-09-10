@@ -1,13 +1,17 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import Wrapper from '../ui/Wrapper'
 import Heading from '../ui/forms/Heading'
 import InputField from '../ui/forms/InputField'
 import PasswordField from '../ui/forms/PasswordField'
 import SubmitButton from '../ui/forms/SubmitButton'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../../reducers/userReducer'
 
 const LoginPage = () => {
-	const [errorMessage, setErrorMessage] = useState('')
+	const { loggedIn } = useSelector(state => state.user)
+	const { errorMessage } = useSelector(state => state.user)
+	const dispatch = useDispatch()
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
@@ -15,14 +19,11 @@ const LoginPage = () => {
 			username: event.target.username.value,
 			password: event.target.password.value
 		}
-		if (!data.username) {
-			setErrorMessage('Invalid username or password')
-			setTimeout(() => {
-				setErrorMessage('')
-			}, 5000)
-		}
+		dispatch(login(data))
+	}
 
-		console.log(data)
+	if (loggedIn) {
+		return <Redirect to='/' />
 	}
 
 	return (

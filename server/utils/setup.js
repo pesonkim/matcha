@@ -25,6 +25,7 @@ const setupDb = () => {
 	connection.query(`USE ${config.DB_NAME};`, (error) => {
 		if (error) {
 			logger.error('Error connecting to db:', error.message)
+			return
 		}
 		logger.info(`Connected to database: ${config.DB_NAME}`)
 	})
@@ -37,7 +38,7 @@ const setupDb = () => {
         username varchar(50) UNIQUE NOT NULL,
         email varchar(255) UNIQUE NOT NULL,
         password varchar(255) NOT NULL,
-        token varchar(255) NOT NULL,
+        token varchar(255) NOT NULL DEFAULT 0,
         verified tinyint(1) NOT NULL DEFAULT 0,
         gender int DEFAULT 0,
         orientation int DEFAULT 0,
@@ -47,7 +48,7 @@ const setupDb = () => {
         longitude float DEFAULT NULL,
         age int DEFAULT 0,
         fame int DEFAULT 0,
-        last_online datetime DEFAULT NULL,
+        last_login datetime DEFAULT NULL,
         online tinyint(1) NOT NULL DEFAULT 0
     )`
 
@@ -195,10 +196,22 @@ const setupDb = () => {
 			return
 		}
 		logger.info('Created table: notif')
-		logger.info(`Finished setting up database: ${config.DB_NAME}`)
 	})
 
-	//inserting dummy users into database
+	//inserting dummy users into database, passwords are 'asd'
+	//$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe
+	const dummy = `INSERT INTO users (username, firstname, lastname, email, verified, password) VALUES
+		('admin', 'firstname', 'lastname', 'admin@example.com', 1, '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe'),
+		('test', 'firstname', 'lastname', 'test@example.com', 0, '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe')`
+
+	connection.query(dummy, (error) => {
+		if (error) {
+			logger.error('Error creating dummy users', error.message)
+			return
+		}
+		logger.info('Created dummy users')
+		logger.info(`Finished setting up database: ${config.DB_NAME}`)
+	})
 
 	connection.end()
 }

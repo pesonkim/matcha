@@ -3,9 +3,11 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import exampleReducer from './reducers/exampleReducer'
+import userReducer from './reducers/userReducer'
 
 const reducer = combineReducers({
-	example: exampleReducer
+	example: exampleReducer,
+	user: userReducer
 })
 
 const store = createStore(

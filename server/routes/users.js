@@ -25,15 +25,15 @@ userRouter.post('/', async (req, res) => {
 		passwordHash,
 		token
 	]
-	console.log(values)
 	const prepared = mysql.format(sql, values)
 	pool.query(prepared, (error, result) => {
 		if (result) {
-			res.status(200).json(result)
+			console.log('Created user id', result.insertId)
+			res.status(200).end()
 		} else if (error && error.sqlMessage.includes('users.username')) {
-			res.status(409).json({ error: 'Username already exists' })
+			res.status(409).send({ error: 'Username already exists' })
 		} else if (error && error.sqlMessage.includes('users.email')) {
-			res.status(409).json({ error: 'Email already exists' })
+			res.status(409).send({ error: 'Email already exists' })
 		} else {
 			res.status(500).send(error)
 		}
