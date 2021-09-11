@@ -5,7 +5,6 @@ const initialState = {
 	username: null,
 	token: null,
 	loggedIn: false,
-	errorMessage: '',
 }
 
 const userReducer = (state = initialState, action) => {
@@ -19,11 +18,6 @@ const userReducer = (state = initialState, action) => {
 		}
 	case 'LOGOUT':
 		return initialState
-	case 'ERROR':
-		return {
-			...state,
-			errorMessage: action.data
-		}
 	default:
 		return state
 	}

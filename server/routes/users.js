@@ -4,6 +4,7 @@ const pool = require('../utils/db')
 const mysql = require('mysql')
 const nodemailer = require('nodemailer')
 const mailInfo = require('../utils/config').INFO_EMAIL
+const port = require('../utils/config').PORT
 
 //async await routes
 
@@ -18,20 +19,21 @@ userRouter.post('/', async (req, res) => {
 
 	const verifyMail = (email, token) => {
 		const transporter = nodemailer.createTransport({
-			name: 'ethereal.email',
-			host: 'smtp.ethereal.email',
-			port: 587,
+			service: 'gmail',
 			auth: {
-				user: 'ewald.feeney78@ethereal.email',
+				user: 'hivewebhelper',
 				pass: mailInfo
 			}
 		})
 
 		const mailConfig = {
-			from: 'ewald.feeney78@ethereal.email',
+			from: 'hivewebhelper@gmail.com',
 			to: email,
 			subject: 'Verify your Matcha account',
-			text: `Howdy! ${token}`
+			text: `Welcome to Matcha!
+
+Before you can log in, we ask that you visit the following link to verify your account email:
+http://localhost:${port}/verify?token=${token}`
 		}
 
 		transporter.sendMail(mailConfig, (error, info) => {

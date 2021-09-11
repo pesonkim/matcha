@@ -2,11 +2,11 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import exampleReducer from './reducers/exampleReducer'
+import messageReducer from './reducers/messageReducer'
 import userReducer from './reducers/userReducer'
 
 const reducer = combineReducers({
-	example: exampleReducer,
+	message: messageReducer,
 	user: userReducer
 })
 

@@ -7,6 +7,7 @@ const setupDb = require('./utils/setup')
 const exampleRouter = require('./routes/example')
 const userRouter = require('./routes/users')
 const loginRouter = require('./routes/login')
+const verifyRouter = require('./routes/verify')
 
 const middleware = require('./utils/middleware')
 
@@ -20,7 +21,8 @@ app.use(middleware.tokenExtractor)
 
 app.use('/api/example', exampleRouter)
 app.use('/api/users', userRouter)
-app.use('/api/login', loginRouter)
+app.use('/login', loginRouter)
+app.use('/verify', verifyRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
