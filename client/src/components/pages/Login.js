@@ -7,7 +7,7 @@ import PasswordField from '../ui/forms/PasswordField'
 import SubmitButton from '../ui/forms/SubmitButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../reducers/userReducer'
-import { notif, clear } from '../../reducers/messageReducer'
+import { setNotif, clear } from '../../reducers/messageReducer'
 
 const LoginPage = () => {
 	const { loggedIn } = useSelector(state => state.user)
@@ -17,7 +17,7 @@ const LoginPage = () => {
 
 	useEffect(() => {
 		if (window.location.pathname === '/verify') {
-			dispatch(notif('Account verified. You can now access Matcha'))
+			dispatch(setNotif('Account verified. You can now access Matcha'))
 		} else {
 			dispatch(clear())
 		}
@@ -44,11 +44,12 @@ const LoginPage = () => {
 				{errorMessage && <div className='mb-4 text-center text-red-500'>{errorMessage}</div>}
 				<form onSubmit={handleSubmit}>
 					<InputField type='text' name='username' />
+					<label>Password</label>
 					<PasswordField />
 					<SubmitButton text='Login' />
 				</form>
 				<div className='text-center'>
-					<Link to='/reset' style={{ color: '#3490dc' }} >
+					<Link to='/forgot' style={{ color: '#3490dc' }} >
 						Forgot password?
 					</Link>
 				</div>

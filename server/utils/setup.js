@@ -200,9 +200,10 @@ const setupDb = () => {
 
 	//inserting dummy users into database, passwords are 'asd'
 	//$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe
-	const dummy = `INSERT INTO users (username, firstname, lastname, email, verified, password) VALUES
-		('admin', 'firstname', 'lastname', 'admin@example.com', 1, '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe'),
-		('test', 'firstname', 'lastname', 'test@example.com', 0, '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe')`
+	const dummy = `INSERT INTO users (username, firstname, lastname, email, verified, token, password) VALUES
+		('admin', 'firstname', 'lastname', 'admin@example.com', 1, 'asd', '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe'),
+		('test', 'firstname', 'lastname', 'test@example.com', 0, 'asd123', '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe'),
+		('kimmi', 'firstname', 'lastname', 'pesonkim@gmail.com', 1, 'asdasd', '$2b$10$OtdoKvY2JKiVc8bOqlIoQeGjIgJcKtgShpI70mHInGv9OCryWUwzi')`
 
 	connection.query(dummy, (error) => {
 		if (error) {

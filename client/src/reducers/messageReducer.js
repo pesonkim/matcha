@@ -22,7 +22,7 @@ const messageReducer = (state = initialState, action) => {
 	}
 }
 
-export const notif = (message) => {
+export const setNotif = (message) => {
 	return dispatch => {
 		dispatch({
 			type: 'NOTIF',
@@ -31,7 +31,7 @@ export const notif = (message) => {
 	}
 }
 
-export const error = (message) => {
+export const setError = (message) => {
 	return dispatch => {
 		dispatch({
 			type: 'ERROR',

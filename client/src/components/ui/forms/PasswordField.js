@@ -30,7 +30,6 @@ const PasswordField = (props) => {
 
 	return (
 		<div>
-			<label>Password</label>
 			{props.errors && <label className='text-red-500'> *</label>}
 			<div className='relative'>
 				<input name='password' type={show ? 'text' : 'password'} style={style} onBlur={props.onBlur}/>

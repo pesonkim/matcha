@@ -134,6 +134,7 @@ const SignupPage = () => {
 						</div>
 					</div>
 					<InputField type='text' name='email' errors={errors.email} onBlur={onBlur} />
+					<label>Password</label>
 					<PasswordField errors={errors.password} onBlur={onBlur} />
 					<SubmitButton text='Create account' />
 				</form>
