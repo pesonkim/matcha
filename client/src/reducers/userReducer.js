@@ -1,17 +1,22 @@
 import loginService from '../services/login'
 import forgotService from '../services/forgot'
+import axios from 'axios'
 
 const initialState = {
 	id: null,
 	username: null,
 	token: null,
 	loggedIn: false,
+	ip: null,
+	latitude: null,
+	longitude: null,
 }
 
 const userReducer = (state = initialState, action) => {
 	switch (action.type) {
 	case 'LOGIN':
 		return {
+			...state,
 			id: action.data.id,
 			username: action.data.username,
 			token: action.data.token,
@@ -19,6 +24,13 @@ const userReducer = (state = initialState, action) => {
 		}
 	case 'LOGOUT':
 		return initialState
+	case 'LOCATE':
+		return {
+			...state,
+			ip: action.data.ip,
+			latitude: action.data.latitude,
+			longitude: action.data.longitude,
+		}
 	default:
 		return state
 	}
@@ -90,6 +102,22 @@ export const reset = (password) => {
 				data,
 			})
 		}
+	}
+}
+
+export const locate = () => {
+	return async dispatch => {
+		const coords = await axios.get('https://geolocation-db.com/json/')
+		const data = {
+			ip: coords.data.IPv4,
+			latitude: coords.data.latitude,
+			longitude: coords.data.longitude
+		}
+		console.log(data)
+		dispatch({
+			type: 'LOCATE',
+			data
+		})
 	}
 }
 

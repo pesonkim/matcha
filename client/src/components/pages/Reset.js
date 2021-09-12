@@ -14,8 +14,6 @@ const ResetPage = () => {
 	const dispatch = useDispatch()
 	let { token } = useParams()
 
-	console.log(token)
-
 	const handleSubmit = (event) => {
 		event.preventDefault()
 

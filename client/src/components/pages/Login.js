@@ -11,6 +11,8 @@ import { setNotif, clear } from '../../reducers/messageReducer'
 
 const LoginPage = () => {
 	const { loggedIn } = useSelector(state => state.user)
+	const { latitude } = useSelector(state => state.user)
+	const { longitude } = useSelector(state => state.user)
 	const { errorMessage } = useSelector(state => state.message)
 	const { notification } = useSelector(state => state.message)
 	const dispatch = useDispatch()
@@ -27,8 +29,11 @@ const LoginPage = () => {
 		event.preventDefault()
 		const data = {
 			username: event.target.username.value,
-			password: event.target.password.value
+			password: event.target.password.value,
+			latitude: latitude,
+			longitude: longitude
 		}
+		//console.log(data)
 		dispatch(login(data))
 	}
 

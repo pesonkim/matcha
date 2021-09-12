@@ -3,6 +3,7 @@ import Layout from './components/layout/Layout'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
+import { locate } from './reducers/userReducer'
 
 import LoginPage from './components/pages/Login'
 import SignupPage from './components/pages/Signup'
@@ -16,6 +17,7 @@ const App = () => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
+		dispatch(locate())
 		if (!loggedIn) {
 			window.localStorage.clear()
 		}

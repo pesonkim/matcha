@@ -6,7 +6,7 @@ const mysql = require('mysql')
 const tokenSecret = require('../utils/config').TOKEN_SECRET
 
 loginRouter.post('/', async (req, res) => {
-	const { username, password } = req.body
+	const { username, password, latitude, longitude } = req.body
 
 	const sql = 'SELECT password, verified FROM users WHERE username = ?'
 	const prepared = mysql.format(sql, username)
@@ -31,7 +31,8 @@ loginRouter.post('/', async (req, res) => {
 		pool.query('SELECT * from users WHERE username = ?', username, (error, result) => {
 			if (result) {
 				//console.log(result[0])
-				pool.query(`UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ${result[0].id}`)
+				pool.query(`UPDATE users SET last_login = CURRENT_TIMESTAMP, latitude = ${latitude}, \
+				longitude = ${longitude} WHERE id = ${result[0].id}`)
 
 				const userForToken = {
 					username: result[0].username,
