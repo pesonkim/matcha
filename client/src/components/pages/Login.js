@@ -1,4 +1,4 @@
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import Wrapper from '../ui/Wrapper'
 import Heading from '../ui/forms/Heading'

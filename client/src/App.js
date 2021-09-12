@@ -12,6 +12,8 @@ import VerifyPage from './components/pages/Verify'
 import ForgotPage from './components/pages/Forgot'
 import BrowsePage from './components/pages/Browse'
 import ResetPage from './components/pages/Reset'
+import ProfilePage from './components/pages/Profile'
+import ProfileForm from './components/ui/forms/Profile'
 
 const App = () => {
 	const dispatch = useDispatch()
@@ -31,13 +33,20 @@ const App = () => {
 		dispatch(locate())
 	}, [dispatch])
 
-	const { loggedIn } = useSelector(state => state.user)
+	const { loggedIn, gender, orientation } = useSelector(state => state.user)
+	console.log(auth.config())
+
+	const userComplete = (loggedIn && gender && orientation)
+		? true
+		: false
 
 	return (
 		<Layout>
 			<Switch>
 				<Route path='/browse' render={() => loggedIn
-					? <BrowsePage />
+					? userComplete
+						? <BrowsePage />
+						: <ProfileForm />
 					: <Redirect to='/' />
 				} />
 				<Route path='/login' render={() => !loggedIn
@@ -60,8 +69,8 @@ const App = () => {
 					? <ResetPage />
 					: <Redirect to='/' />
 				} />
-				<Route path='/profile' render={() => loggedIn
-					? <BrowsePage />
+				<Route path='/profile' render={() => loggedIn && userComplete
+					? <ProfilePage />
 					: <Redirect to='/' />
 				} />
 				<Route path='/matches' render={() => loggedIn

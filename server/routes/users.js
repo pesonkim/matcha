@@ -5,6 +5,7 @@ const mysql = require('mysql')
 const nodemailer = require('nodemailer')
 const mailInfo = require('../utils/config').INFO_EMAIL
 const port = require('../utils/config').PORT
+const moment = require('moment')
 
 //async await routes
 
@@ -15,7 +16,14 @@ const port = require('../utils/config').PORT
 //delete id
 
 userRouter.post('/', async (req, res) => {
-	const { firstname, lastname, username, email, password, token } = req.body
+	const { firstname, lastname, username, birthdate, email, password, token } = req.body
+
+	const date = moment(birthdate, 'YYYY-MM-DD')
+	const age = moment().diff(moment(date, 'YYYY-MM-DD'), 'years')
+
+	if (!date.isValid() || age < 16) {
+		return res.status(403).send({ error: 'You must be at least 16 years old to register' })
+	}
 
 	const verifyMail = (email, token) => {
 		const transporter = nodemailer.createTransport({
@@ -47,13 +55,14 @@ http://localhost:${port}/verify?token=${token}`
 
 	const passwordHash = await bcrypt.hash(password, 10)
 
-	const sql = 'INSERT INTO users (firstname, lastname, username, email, password, token) VALUES (?,?,?,?,?,?)'
+	const sql = 'INSERT INTO users (firstname, lastname, username, email, password, birthdate, token) VALUES (?,?,?,?,?,?,?)'
 	const values = [
 		firstname,
 		lastname,
 		username,
 		email,
 		passwordHash,
+		birthdate,
 		token
 	]
 	const prepared = mysql.format(sql, values)

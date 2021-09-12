@@ -40,13 +40,13 @@ const setupDb = () => {
         password varchar(255) NOT NULL,
         token varchar(255) NOT NULL DEFAULT 0,
         verified tinyint(1) NOT NULL DEFAULT 0,
-        gender int DEFAULT 0,
-        orientation int DEFAULT 0,
-        avatar int DEFAULT 0,
+        gender int DEFAULT NULL,
+        orientation int DEFAULT NULL,
+        avatar int DEFAULT NULL,
         bio text,
         latitude float DEFAULT NULL,
         longitude float DEFAULT NULL,
-        age int DEFAULT 0,
+        birthdate date NOT NULL,
         fame int DEFAULT 0,
         last_login datetime DEFAULT NULL,
         online tinyint(1) NOT NULL DEFAULT 0
@@ -200,10 +200,10 @@ const setupDb = () => {
 
 	//inserting dummy users into database, passwords are 'asd'
 	//$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe
-	const dummy = `INSERT INTO users (username, firstname, lastname, email, verified, token, password) VALUES
-		('admin', 'firstname', 'lastname', 'admin@example.com', 1, 'asd', '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe'),
-		('test', 'firstname', 'lastname', 'test@example.com', 0, 'asd123', '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe'),
-		('kimmi', 'firstname', 'lastname', 'pesonkim@gmail.com', 1, 'asdasd', '$2b$10$OtdoKvY2JKiVc8bOqlIoQeGjIgJcKtgShpI70mHInGv9OCryWUwzi')`
+	const dummy = `INSERT INTO users (username, firstname, lastname, email, verified, birthdate, token, password) VALUES
+		('admin', 'firstname', 'lastname', 'admin@example.com', 1, '2000-01-01', 'asd', '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe'),
+		('test', 'firstname', 'lastname', 'test@example.com', 0, '2000-01-01', 'asd123', '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe'),
+		('kimmi', 'firstname', 'lastname', 'pesonkim@gmail.com', 1, '1992-04-08', 'asdasd', '$2b$10$OtdoKvY2JKiVc8bOqlIoQeGjIgJcKtgShpI70mHInGv9OCryWUwzi')`
 
 	connection.query(dummy, (error) => {
 		if (error) {

@@ -18,7 +18,6 @@ const SignupPage = () => {
 		borderColor: '#dae4e9',
 		borderRadius: '.25rem',
 		padding: '.75rem',
-		marginBottom: '1rem',
 		width: '100%',
 	}
 
@@ -42,17 +41,14 @@ const SignupPage = () => {
 		const userData = {
 			firstname: event.target.firstname.value,
 			lastname: event.target.lastname.value,
-			birthdate: {
-				day: event.target.day.value,
-				month: event.target.month.value,
-				year: event.target.year.value
-			},
+			birthdate: `${event.target.year.value}-${event.target.month.value}-${event.target.day.value}`,
 			username: event.target.username.value,
 			email: event.target.email.value,
 			password: event.target.password.value,
 			token,
 		}
 
+		//console.log(userData)
 		const errors = validate(userData)
 		setErrors(errors)
 
@@ -133,6 +129,7 @@ const SignupPage = () => {
 							</select>
 						</div>
 					</div>
+					<div className='text-red-500 mb-4'>{errors.birthdate}</div>
 					<InputField type='text' name='email' errors={errors.email} onBlur={onBlur} />
 					<label>Password</label>
 					<PasswordField errors={errors.password} onBlur={onBlur} />

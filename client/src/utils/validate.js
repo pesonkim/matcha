@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 const validate = (values) => {
 	const errors = {}
 
@@ -19,8 +21,13 @@ const validate = (values) => {
 	}
 	//birthdate
 	if (values.birthdate) {
-		if (Object.values(values.birthdate).includes('')) {
+		if (Object.values(values.birthdate.split('-')).includes('')) {
 			errors.birthdate = 'Birthdate is required'
+		}
+		const date = moment(values.birthdate, 'YYYY-MM-DD')
+
+		if (!date.isValid()) {
+			errors.birthdate = 'This is not a valid date'
 		}
 	}
 	//email

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const pool = require('../utils/db')
 const mysql = require('mysql')
 const tokenSecret = require('../utils/config').TOKEN_SECRET
+const moment = require('moment')
 
 loginRouter.post('/', async (req, res) => {
 	const { username, password, latitude, longitude } = req.body
@@ -55,7 +56,9 @@ loginRouter.post('/', async (req, res) => {
 						username: result[0].username,
 						firstname: result[0].firstname,
 						lastname: result[0].lastname,
-						age: result[0].age,
+						age: moment().diff(moment(result[0].birthdate, 'YYYY-MM-DD'), 'years'),
+						gender: result[0].gender,
+						orientation: result[0].orientation,
 					})
 			} else {
 				return res.status(500).send({ error: 'Database error' })

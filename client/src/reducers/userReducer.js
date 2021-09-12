@@ -10,6 +10,9 @@ const initialState = {
 	ip: null,
 	latitude: null,
 	longitude: null,
+	age: null,
+	gender: null,
+	orientation: null,
 }
 
 const userReducer = (state = initialState, action) => {
@@ -20,6 +23,9 @@ const userReducer = (state = initialState, action) => {
 			id: action.data.id,
 			username: action.data.username,
 			token: action.data.token,
+			age: action.data.age,
+			gender: action.data.gender,
+			orientation: action.data.orientation,
 			loggedIn: true
 		}
 	case 'LOGOUT':
@@ -41,6 +47,7 @@ export const login = (credentials) => {
 		let data
 		try {
 			data = await loginService.login(credentials)
+			//console.log(data)
 			dispatch({
 				type: 'LOGIN',
 				data
