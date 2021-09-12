@@ -10,7 +10,6 @@ import { login } from '../../reducers/userReducer'
 import { setNotif, clear } from '../../reducers/messageReducer'
 
 const LoginPage = () => {
-	const { loggedIn } = useSelector(state => state.user)
 	const { latitude } = useSelector(state => state.user)
 	const { longitude } = useSelector(state => state.user)
 	const { errorMessage } = useSelector(state => state.message)
@@ -35,10 +34,6 @@ const LoginPage = () => {
 		}
 		//console.log(data)
 		dispatch(login(data))
-	}
-
-	if (loggedIn) {
-		return <Redirect to='/' />
 	}
 
 	return (

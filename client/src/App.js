@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { locate } from './reducers/userReducer'
+import auth from './utils/auth'
 
 import LoginPage from './components/pages/Login'
 import SignupPage from './components/pages/Signup'
@@ -13,28 +14,68 @@ import BrowsePage from './components/pages/Browse'
 import ResetPage from './components/pages/Reset'
 
 const App = () => {
-	const { loggedIn } = useSelector(state => state.user)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		dispatch(locate())
-		if (!loggedIn) {
+		const user = JSON.parse(window.localStorage.getItem('user'))
+
+		if (user) {
+			dispatch({
+				type: 'LOGIN',
+				data: user
+			})
+			auth.setToken(user.token)
+		} else {
 			window.localStorage.clear()
 		}
+		dispatch(locate())
 	}, [dispatch])
+
+	const { loggedIn } = useSelector(state => state.user)
 
 	return (
 		<Layout>
 			<Switch>
-				<Route path='/login' component={LoginPage} />
-				<Route path='/verify' component={VerifyPage}/>
-				<Route path='/signup' component={SignupPage} />
-				<Route path='/forgot' component={ForgotPage} />
-				<Route path='/reset/:token' component={ResetPage} />
-				<Route path='/browse' component={BrowsePage} />
-				<Route path='/' render={() => {
-					return !loggedIn ? <Redirect to='/login' /> : <div>home page here</div>
-				}} />
+				<Route path='/browse' render={() => loggedIn
+					? <BrowsePage />
+					: <Redirect to='/' />
+				} />
+				<Route path='/login' render={() => !loggedIn
+					? <LoginPage />
+					: <Redirect to='/' />
+				} />
+				<Route path='/verify' render={() => !loggedIn
+					? <VerifyPage />
+					: <Redirect to='/' />
+				} />
+				<Route path='/signup' render={() => !loggedIn
+					? <SignupPage />
+					: <Redirect to='/' />
+				} />
+				<Route path='/forgot' render={() => !loggedIn
+					? <ForgotPage />
+					: <Redirect to='/' />
+				} />
+				<Route path='/reset/:token' render={() => !loggedIn
+					? <ResetPage />
+					: <Redirect to='/' />
+				} />
+				<Route path='/profile' render={() => loggedIn
+					? <BrowsePage />
+					: <Redirect to='/' />
+				} />
+				<Route path='/matches' render={() => loggedIn
+					? <BrowsePage />
+					: <Redirect to='/' />
+				} />
+				<Route path='/notif' render={() => loggedIn
+					? <BrowsePage />
+					: <Redirect to='/' />
+				} />
+				<Route path='/' render={() => loggedIn
+					? <Redirect to='/browse' />
+					: <Redirect to='/login' />
+				} />
 			</Switch>
 		</Layout>
 	)

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { HeartIcon } from '@heroicons/react/outline'
+import { HeartIcon, LogoutIcon, LoginIcon } from '@heroicons/react/outline'
+import { UserCircleIcon, ChatIcon, BellIcon, UserAddIcon } from '@heroicons/react/solid'
 import { useSelector } from 'react-redux'
 import loginService from '../../services/login'
 
@@ -13,25 +14,37 @@ const Header = () => {
 					<Link to='/'>
 						<p className="text-2xl">matcha </p>
 					</Link>
-					<Link to='/browse'>
+					<Link to='/'>
 						<HeartIcon className=' h-6 w-6' />
 					</Link>
 				</section>
 				{loggedIn
 					? <section className="flex items-center">
-						<Link to='/signup'>
-							<p className="text-xl mx-2 hover:opacity-50">profile</p>
+						<Link to='/notif' className='flex flex-col items-center mx-2 xs:mx-4'>
+							<BellIcon className=' h-8 w-8' />
+							<p className='hidden sm:block'>notifications</p>
 						</Link>
-						<Link to='/login'>
-							<p className="text-xl mx-2 hover:opacity-50" onClick={() => loginService.logout()}>logout</p>
+						<Link to='/chat' className='flex flex-col items-center mx-2 xs:mx-4'>
+							<ChatIcon className=' h-8 w-8' />
+							<p className='hidden sm:block'>matches</p>
+						</Link>
+						<Link to='/profile' className='flex flex-col items-center mx-2 xs:mx-4'>
+							<UserCircleIcon className=' h-8 w-8' />
+							<p className='hidden sm:block'>profile</p>
+						</Link>
+						<Link to='/login' className='flex flex-col items-center ml-2 xs:ml-4'>
+							<LogoutIcon className=' h-8 w-8' onClick={() => loginService.logout()} />
+							<p className='hidden sm:block'>logout</p>
 						</Link>
 					</section>
 					: <section className="flex items-center">
-						<Link to='/signup'>
-							<p className="text-xl mx-2 hover:opacity-50">signup</p>
+						<Link to='/signup' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50'>
+							<UserAddIcon className=' h-8 w-8 mx-2' />
+							<p className="">signup</p>
 						</Link>
-						<Link to='/login'>
-							<p className="text-xl mx-2 hover:opacity-50">login</p>
+						<Link to='/login' className='flex flex-col items-center ml-2 xs:ml-4 hover:opacity-50'>
+							<LoginIcon className=' h-8 w-8 mx-2' />
+							<p className="">login</p>
 						</Link>
 					</section>
 				}
