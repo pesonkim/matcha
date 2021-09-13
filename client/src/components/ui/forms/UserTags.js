@@ -17,9 +17,9 @@ const UserTags = () => {
 	return (
 		<>
 			<label>My interests</label>
-			<input type='text' name='tags' style={baseStyle} className='' />
 			<Select
 				isMulti
+				name='tags'
 				value={selected}
 				onChange={setSelected}
 				options={options}

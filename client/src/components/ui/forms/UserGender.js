@@ -19,7 +19,6 @@ const UserGender = () => {
 			<label>Gender</label>
 			<Select
 				name='gender'
-				isMulti
 				value={selected}
 				onChange={setSelected}
 				options={options}

@@ -47,6 +47,7 @@ loginRouter.post('/', async (req, res) => {
 					{ expiresIn: 60 * 60 }
 				)
 
+				console.log(result[0])
 				console.log(`User id ${result[0].id} logged in`)
 				res
 					.status(200)
@@ -59,6 +60,8 @@ loginRouter.post('/', async (req, res) => {
 						age: moment().diff(moment(result[0].birthdate, 'YYYY-MM-DD'), 'years'),
 						gender: result[0].gender,
 						orientation: result[0].orientation,
+						bio: result[0].bio,
+						tags: result[0].tags,
 					})
 			} else {
 				return res.status(500).send({ error: 'Database error' })

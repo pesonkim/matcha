@@ -6,18 +6,20 @@ import UserGender from './UserGender'
 import UserOrientation from './UserOrientation'
 import UserBio from './UserBio'
 import UserTags from './UserTags'
+import { useSelector, useDispatch } from 'react-redux'
 
 const ProfileForm = () => {
-
+	const { orientation, gender, bio, tags } = useSelector(state => state.user)
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
 		const data = {
-			gender: event.target.gender.value,
-			orientation: event.target.orientation.value,
-			bio: event.target.bio.value,
-			tags: event.target.tags.value,
+			gender: gender,
+			orientation: orientation,
+			bio: bio,
+			tags: tags,
 		}
+
 		console.log(data)
 
 	}

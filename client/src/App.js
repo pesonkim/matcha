@@ -13,7 +13,7 @@ import ForgotPage from './components/pages/Forgot'
 import BrowsePage from './components/pages/Browse'
 import ResetPage from './components/pages/Reset'
 import ProfilePage from './components/pages/Profile'
-import ProfileForm from './components/ui/forms/Profile'
+import ProfileForm from './components/ui/forms/ProfileForm'
 
 const App = () => {
 	const dispatch = useDispatch()

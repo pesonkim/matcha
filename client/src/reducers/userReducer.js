@@ -13,6 +13,8 @@ const initialState = {
 	age: null,
 	gender: null,
 	orientation: null,
+	bio: null,
+	tags: null,
 }
 
 const userReducer = (state = initialState, action) => {
@@ -26,6 +28,8 @@ const userReducer = (state = initialState, action) => {
 			age: action.data.age,
 			gender: action.data.gender,
 			orientation: action.data.orientation,
+			bio: action.data.orientation,
+			tags: action.data.orientation,
 			loggedIn: true
 		}
 	case 'LOGOUT':
@@ -36,6 +40,26 @@ const userReducer = (state = initialState, action) => {
 			ip: action.data.ip,
 			latitude: action.data.latitude,
 			longitude: action.data.longitude,
+		}
+	case 'GENDER':
+		return {
+			...state,
+			gender: action.data.gender,
+		}
+	case 'ORIENTATION':
+		return {
+			...state,
+			orientation: action.data.orientation,
+		}
+	case 'BIO':
+		return {
+			...state,
+			orientation: action.data.bio,
+		}
+	case 'TAGS':
+		return {
+			...state,
+			orientation: action.data.tags,
 		}
 	default:
 		return state
