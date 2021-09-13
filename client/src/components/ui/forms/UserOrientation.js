@@ -1,12 +1,11 @@
 import Select from 'react-select'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useState } from 'react'
 
 const UserOrientation = () => {
-	//const { orientation } = useSelector(state => state.user)
+	const { orientation } = useSelector(state => state.user)
 	const dispatch = useDispatch()
 
-	const [selected, setSelected] = useState([])
+	const selected = () => orientation ? orientation.map(o => ({ value: o, label: o })) : []
 
 	const options = [
 		{ value: 'male', label: 'male' },
@@ -14,12 +13,9 @@ const UserOrientation = () => {
 		{ value: 'other', label: 'other' },
 	]
 
-	//const selected = () => orientation ? orientation.map(o => ({ value: o, label: o })) : ''
-
 	const handleChange = (option) => {
 		const current = Array.isArray(option) ? option.map(i => i.value) : []
-		console.log(current)
-		setSelected(current)
+		//console.log(current)
 		dispatch({
 			type: 'ORIENTATION',
 			data: {
@@ -28,15 +24,13 @@ const UserOrientation = () => {
 		})
 	}
 
-	//console.log(selected)
-
 	return (
 		<>
 			<label>Looking for</label>
 			<Select
 				isMulti
 				name='orientation'
-				value={selected.value}
+				value={selected()}
 				onChange={handleChange}
 				options={options}
 				className='mb-4'

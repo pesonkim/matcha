@@ -1,12 +1,15 @@
 import loginService from '../services/login'
+import userService from '../services/users'
 import forgotService from '../services/forgot'
 import axios from 'axios'
+import parse from '../utils/parse'
 
 const initialState = {
 	id: null,
 	username: null,
 	token: null,
 	loggedIn: false,
+	userComplete: false,
 	ip: null,
 	latitude: null,
 	longitude: null,
@@ -24,13 +27,16 @@ const userReducer = (state = initialState, action) => {
 			...state,
 			id: action.data.id,
 			username: action.data.username,
+			firstname: action.data.firstname,
+			lastname: action.data.lastname,
 			token: action.data.token,
 			age: action.data.age,
 			gender: action.data.gender,
 			orientation: action.data.orientation,
-			bio: action.data.orientation,
-			tags: action.data.orientation,
-			loggedIn: true
+			bio: action.data.bio,
+			tags: parse.parseTags(action.data.tags),
+			loggedIn: true,
+			userComplete: (action.data.gender && action.data.orientation ? true : false)
 		}
 	case 'LOGOUT':
 		return initialState
@@ -54,12 +60,24 @@ const userReducer = (state = initialState, action) => {
 	case 'BIO':
 		return {
 			...state,
-			orientation: action.data.bio,
+			bio: action.data.bio,
 		}
 	case 'TAGS':
 		return {
 			...state,
-			orientation: action.data.tags,
+			tags: action.data.tags,
+		}
+	case 'PROFILE':
+		return {
+			...state,
+			username: action.data.username,
+			firstname: action.data.firstname,
+			lastname: action.data.lastname,
+			gender: action.data.gender,
+			orientation: action.data.orientation,
+			bio: action.data.bio,
+			tags: parse.parseTags(action.data.tags),
+			userComplete: (action.data.gender && action.data.orientation ? true : false)
 		}
 	default:
 		return state
@@ -74,6 +92,29 @@ export const login = (credentials) => {
 			//console.log(data)
 			dispatch({
 				type: 'LOGIN',
+				data
+			})
+		} catch (error) {
+			if (error.response && error.response.data) {
+				data = error.response.data.error
+			} else {
+				data = 'Database error'
+			}
+			dispatch({
+				type: 'ERROR',
+				data,
+			})
+		}
+	}
+}
+
+export const update = (input, id) => {
+	return async dispatch => {
+		let data
+		try {
+			data = await userService.updateProfile(input, id)
+			dispatch({
+				type: 'PROFILE',
 				data
 			})
 		} catch (error) {

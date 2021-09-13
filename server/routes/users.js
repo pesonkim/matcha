@@ -1,10 +1,12 @@
 const userRouter = require('express').Router()
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const pool = require('../utils/db')
 const mysql = require('mysql')
 const nodemailer = require('nodemailer')
 const mailInfo = require('../utils/config').INFO_EMAIL
 const port = require('../utils/config').PORT
+const tokenSecret = require('../utils/config').TOKEN_SECRET
 const moment = require('moment')
 
 //async await routes
@@ -77,6 +79,66 @@ http://localhost:${port}/verify?token=${token}`
 			res.status(409).send({ error: 'Email already exists' })
 		} else {
 			res.status(500).send(error)
+		}
+	})
+})
+
+userRouter.put('/:id', async (req, res) => {
+	//console.log(req.token)
+	const user = jwt.verify(req.token, tokenSecret)
+
+	if (!user || user.id !== Number(req.params.id)) {
+		return res.status(401).send({ error: 'Invalid token or unauthorized' })
+	}
+
+	const { gender, orientation, tags, bio } = req.body
+
+	if (!gender || gender === '') {
+		return res.status(403).send({ error: 'Gender is required' })
+	} else if (!orientation || orientation === '') {
+		return res.status(403).send({ error: 'Sexual orientation is required' })
+	}
+
+	let query = 'UPDATE users SET '
+	let parameters = []
+
+	const { ...body } = req.body
+	Object.keys(body).forEach((key) => {
+		query = query.concat(`${key} = ?, `)
+	})
+	Object.values(body).forEach((value) => {
+		parameters.push(value)
+	})
+
+	query = query.slice(0, -2)
+	query = query.concat(` WHERE id = ${user.id}`)
+
+	//console.log(query)
+
+	const prepared = mysql.format(query, parameters)
+	//console.log(prepared)
+	pool.query(prepared, (error, result) => {
+		if (result && result.affectedRows) {
+			pool.query('SELECT * from users WHERE id = ?', user.id, (error, result) => {
+				if (result) {
+					res
+						.status(200)
+						.send({
+							username: result[0].username,
+							firstname: result[0].firstname,
+							lastname: result[0].lastname,
+							gender: result[0].gender,
+							orientation: result[0].orientation,
+							bio: result[0].bio,
+							tags: result[0].tags,
+						})
+				} else {
+					return res.status(500).send({ error: 'Database error' })
+				}
+			})
+		}
+		else {
+			return res.status(500).send({ error: 'Database error' })
 		}
 	})
 })

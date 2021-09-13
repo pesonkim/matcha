@@ -1,4 +1,5 @@
 import axios from 'axios'
+import auth from '../utils/auth'
 
 const baseUrl = 'http://localhost:3001/api/users'
 
@@ -14,4 +15,10 @@ const createUser = async (userObject) => {
 	return response.data
 }
 
-export default { createUser }
+const updateProfile = async (userObject, id) => {
+	const response = await axios.put(`${baseUrl}/${id}`, userObject, auth.config())
+	console.log(response)
+	return response.data
+}
+
+export default { createUser, updateProfile }

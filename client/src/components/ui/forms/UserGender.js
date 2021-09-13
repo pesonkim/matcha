@@ -1,12 +1,11 @@
 import Select from 'react-select'
-import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 const UserGender = () => {
-	const baseStyle = {
+	const { gender } = useSelector(state => state.user)
+	const dispatch = useDispatch()
 
-	}
-
-	const [selected, setSelected] = useState(null)
+	const selected = () => gender ? { value: gender, label: gender } : ''
 
 	const options = [
 		{ value: 'male', label: 'male' },
@@ -14,15 +13,23 @@ const UserGender = () => {
 		{ value: 'other', label: 'other' },
 	]
 
+	const handleChange = (option) => {
+		dispatch({
+			type: 'GENDER',
+			data: {
+				gender: option.value
+			}
+		})
+	}
+
 	return (
 		<>
 			<label>Gender</label>
 			<Select
 				name='gender'
-				value={selected}
-				onChange={setSelected}
+				value={selected()}
+				onChange={handleChange}
 				options={options}
-				style={baseStyle}
 				className='mb-4'
 			/>
 		</>

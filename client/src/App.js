@@ -33,12 +33,8 @@ const App = () => {
 		dispatch(locate())
 	}, [dispatch])
 
-	const { loggedIn, gender, orientation } = useSelector(state => state.user)
+	const { loggedIn, userComplete } = useSelector(state => state.user)
 	console.log(auth.config())
-
-	const userComplete = (loggedIn && gender && orientation)
-		? true
-		: false
 
 	return (
 		<Layout>
