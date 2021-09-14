@@ -5,6 +5,7 @@ const initialState = {
 	notification: '',
 	errorMessage: '',
 	id: null,
+	email: null,
 	username: null,
 	latitude: null,
 	longitude: null,
@@ -20,6 +21,7 @@ const formReducer = (state = initialState, action) => {
 	case 'POPULATE':
 		return {
 			...initialState,
+			email: action.data.email,
 			username: action.data.username,
 			firstname: action.data.firstname,
 			lastname: action.data.lastname,

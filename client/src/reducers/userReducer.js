@@ -7,6 +7,7 @@ import parse from '../utils/parse'
 const initialState = {
 	id: null,
 	username: null,
+	email: null,
 	token: null,
 	loggedIn: false,
 	userComplete: false,
@@ -27,6 +28,7 @@ const userReducer = (state = initialState, action) => {
 			...state,
 			id: action.data.id,
 			username: action.data.username,
+			email: action.data.email,
 			firstname: action.data.firstname,
 			lastname: action.data.lastname,
 			token: action.data.token,
@@ -73,6 +75,9 @@ export const login = (credentials) => {
 			dispatch({
 				type: 'LOGIN',
 				data
+			})
+			dispatch({
+				type: 'CLEAR',
 			})
 		} catch (error) {
 			if (error.response && error.response.data) {

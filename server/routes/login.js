@@ -36,7 +36,6 @@ loginRouter.post('/', async (req, res) => {
 				longitude = ${longitude} WHERE id = ${result[0].id}`)
 
 				const userForToken = {
-					username: result[0].username,
 					id: result[0].id,
 				}
 
@@ -54,6 +53,7 @@ loginRouter.post('/', async (req, res) => {
 					.send({
 						token,
 						id: result[0].id,
+						email: result[0].email,
 						username: result[0].username,
 						firstname: result[0].firstname,
 						lastname: result[0].lastname,

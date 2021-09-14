@@ -95,6 +95,7 @@ userRouter.get('/:id', async (req, res) => {
 			res
 				.status(200)
 				.send({
+					email: result[0].email,
 					username: result[0].username,
 					firstname: result[0].firstname,
 					lastname: result[0].lastname,
@@ -117,18 +118,45 @@ userRouter.put('/:id', async (req, res) => {
 		return res.status(401).send({ error: 'Invalid token or unauthorized' })
 	}
 
-	const { gender, orientation, tags, bio } = req.body
+	const { password, ...body } = req.body
 
-	if (!gender || gender === '') {
+	if (!body.gender || body.gender === '') {
 		return res.status(403).send({ error: 'Gender is required' })
-	} else if (!orientation || orientation === '') {
+	} else if (!body.orientation || body.orientation === '') {
 		return res.status(403).send({ error: 'Sexual orientation is required' })
+	}
+
+	if (password) {
+		const sql = 'SELECT password FROM users WHERE id = ?'
+		const check = mysql.format(sql, [user.id])
+		pool.query(check, async (error, result) => {
+			//console.log(check)
+			//console.log(result)
+			if (result.length === 0) {
+				return res.status(401).send({ error: 'Not authorized' })
+			}
+			if (error) {
+				return res.status(500).send({ error: 'Database error' })
+			}
+			const newHash = await bcrypt.hash(password, 10)
+
+			const sql = 'UPDATE users SET password=? WHERE id=?'
+			const prepared = mysql.format(sql, [newHash, user.id])
+			//console.log(prepared)
+			pool.query(prepared, (error, result) => {
+				if (result) {
+					console.log('Updated password, affected rows:', result.affectedRows)
+				}
+				if (error) {
+					return res.status(500).send(error)
+				}
+			})
+		})
 	}
 
 	let query = 'UPDATE users SET '
 	let parameters = []
 
-	const { ...body } = req.body
 	Object.keys(body).forEach((key) => {
 		query = query.concat(`${key} = ?, `)
 	})
@@ -142,12 +170,15 @@ userRouter.put('/:id', async (req, res) => {
 	//console.log(query)
 
 	const prepared = mysql.format(query, parameters)
-	//console.log(prepared)
+	console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result && result.affectedRows) {
 			pool.query('SELECT * from users WHERE id = ?', user.id, (error, result) => {
-				if (result) {
-					res
+				if (error) {
+					return res.status(500).send(error)
+				}
+				else if (result) {
+					return res
 						.status(200)
 						.send({
 							username: result[0].username,
@@ -163,8 +194,12 @@ userRouter.put('/:id', async (req, res) => {
 				}
 			})
 		}
-		else {
-			return res.status(500).send({ error: 'Database error' })
+		else if (error && error.sqlMessage.includes('users.username')) {
+			return res.status(409).send({ error: 'Username already exists' })
+		} else if (error && error.sqlMessage.includes('users.email')) {
+			return res.status(409).send({ error: 'Email already exists' })
+		} else {
+			return res.status(500).send(error)
 		}
 	})
 })

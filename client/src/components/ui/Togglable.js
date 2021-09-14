@@ -12,8 +12,8 @@ const Togglable = (props) => {
 
 	return (
 		<>
-			<div className='flex justify-between my-2'>
-				<p>{props.text || ''}</p>
+			<div className='flex justify-between my-4'>
+				<p className=' font-bold'>{props.text || ''}</p>
 				<button style={{ color: '#3490dc' }} tabIndex={-1} onClick={toggleVisibility}>{visible ? 'Hide' : 'Show'}</button>
 			</div>
 			<div style={showWhenVisible}>

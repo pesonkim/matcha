@@ -91,7 +91,7 @@ const SignupPage = () => {
 				{errorMessage && <label className='text-red-500 text-center mb-2'>{errorMessage}</label>}
 				{notification && <label className='text-green-500 text-center mb-2'>{notification}</label>}
 				<form onSubmit={handleSubmit}>
-					<div className='flex'>
+					<div className='flex mb-4'>
 						<div className='inline-block mr-2 w-1/2'>
 							<label>First name</label>
 							{errors.firstname && <label className='text-red-500'> *</label>}

@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 
 const UserOrientation = () => {
 	const { orientation } = useSelector(state => state.form)
-	console.log(orientation)
 	const dispatch = useDispatch()
 
 	const selected = () => orientation ? orientation.map(o => ({ value: o, label: o })) : []

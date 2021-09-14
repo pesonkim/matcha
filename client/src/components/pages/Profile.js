@@ -11,11 +11,14 @@ import { update } from '../../reducers/userReducer'
 import parse from '../../utils/parse'
 import Togglable from '../ui/Togglable'
 import { useEffect } from 'react'
-import { clear, populate } from '../../reducers/formReducer'
+import { setError, clear, populate } from '../../reducers/formReducer'
+import PasswordField from '../ui/forms/PasswordField'
+import validate from '../../utils/validate'
+
 
 const ProfilePage = () => {
 	const { id } = useSelector(state => state.user)
-	const { orientation, gender, bio, tags, errorMessage, notification } = useSelector(state => state.form)
+	const { firstname, lastname, username, email, orientation, gender, bio, tags, errorMessage, notification } = useSelector(state => state.form)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -25,31 +28,119 @@ const ProfilePage = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
+		dispatch(clear())
 
-		const data = {
+		const firstname = event.target.firstname.value
+		const lastname = event.target.lastname.value
+		const username = event.target.username.value
+		const email = event.target.email.value
+		const password = event.target.password.value
+
+		if (email) {
+			const check = validate({ email: email })
+			if (check.email) {
+				return dispatch(setError(check.email))
+			}
+		}
+		if (password) {
+			const check = validate({ password: password })
+			if (check.password) {
+				return dispatch(setError(check.password))
+			}
+		}
+
+		let data = {
+			firstname: firstname,
+			lastname: lastname,
+			username: username,
+			email: email,
+			password: password,
 			gender: gender,
 			orientation: parse.oToDb(orientation),
 			tags: (tags ? tags.map(t => t).join('') : ''),
 			bio: bio,
 		}
 
+		for (var propName in data) {
+			if (data[propName] === null || data[propName] === '') {
+				delete data[propName]
+			}
+		}
+
+		console.log(data)
 		dispatch(update(data, id))
+	}
+
+	const inputStyle = {
+		borderWidth: '1px',
+		borderColor: '#dae4e9',
+		borderRadius: '.25rem',
+		padding: '.75rem',
+		width: '100%',
+		height: '38px'
 	}
 
 	return (
 		<Wrapper>
 			<Heading title='Your profile' />
 			{notification && <div className='mb-4 text-center text-green-500'>{notification}</div>}
+			{errorMessage && <div className='mb-4 text-center text-red-500'>{errorMessage}</div>}
 			<form onSubmit={handleSubmit}>
-				{errorMessage && <div className='mb-4 text-center text-red-500'>{errorMessage}</div>}
+				<Togglable text='Photos'>
+					Pictures would go here
+				</Togglable>
+				<hr className='my-4' />
 
-				{/* <UserImage /> */}
-				<UserGender />
-				<UserOrientation />
+				<Togglable text='User details'>
+					<div className='flex mb-4'>
+						<div className='inline-block mr-2 w-1/2'>
+							<label>First name</label>
+							<input name='firstname' type='text' style={inputStyle} placeholder={firstname} />
+						</div>
+						<div className='inline-block ml-2 w-1/2'>
+							<label>Last name</label>
+							<input name='lastname' type='text' style={inputStyle} placeholder={lastname} />
+						</div>
+					</div>
+					<label>Username</label>
+					<input name='username' type='text' style={inputStyle} placeholder={username} className='mb-4' />
 
-				<UserTags />
-				<UserBio />
-				<SubmitButton text='Save changes' />
+					<label>Email</label>
+					<input name='email' type='text' style={inputStyle} placeholder={email} className='mb-4' />
+
+					<label>Password</label>
+					<PasswordField />
+
+					<SubmitButton text='Save changes' />
+				</Togglable>
+				<hr className='my-4' />
+
+				<Togglable text='Site preferences'>
+					<UserGender />
+
+					<UserOrientation />
+
+					<UserTags />
+
+					<UserBio />
+
+					<SubmitButton text='Save changes' />
+				</Togglable>
+				<hr className='my-4' />
+
+				<Togglable text='Location'>
+					Google map or something
+				</Togglable>
+				<hr className='my-4' />
+
+				<Togglable text='History'>
+					View history would go here
+				</Togglable>
+				<hr className='my-4' />
+
+				<Togglable text='Blocked users'>
+					Blocklist would go here
+				</Togglable>
 			</form>
 		</Wrapper>
 	)
