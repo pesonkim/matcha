@@ -2,7 +2,7 @@ import CreatableSelect from 'react-select/creatable'
 import { useSelector, useDispatch } from 'react-redux'
 
 const UserTags = () => {
-	const { tags } = useSelector(state => state.user)
+	const { tags } = useSelector(state => state.form)
 	const dispatch = useDispatch()
 
 	const selected = () => tags ? tags.map(o => ({ value: o, label: o })) : []

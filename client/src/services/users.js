@@ -15,10 +15,16 @@ const createUser = async (userObject) => {
 	return response.data
 }
 
+const getProfile = async (id) => {
+	const response = await axios.get(`${baseUrl}/${id}`, auth.config())
+	console.log(response)
+	return response.data
+}
+
 const updateProfile = async (userObject, id) => {
 	const response = await axios.put(`${baseUrl}/${id}`, userObject, auth.config())
 	console.log(response)
 	return response.data
 }
 
-export default { createUser, updateProfile }
+export default { createUser, getProfile, updateProfile }

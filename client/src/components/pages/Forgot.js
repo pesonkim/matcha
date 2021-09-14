@@ -4,13 +4,13 @@ import Wrapper from '../ui/Wrapper'
 import Heading from '../ui/forms/Heading'
 import SubmitButton from '../ui/forms/SubmitButton'
 import { useDispatch, useSelector } from 'react-redux'
-import { setError, clear } from '../../reducers/messageReducer'
+import { setError, clear } from '../../reducers/formReducer'
 import { forgot } from '../../reducers/userReducer'
 import validate from '../../utils/validate'
 
 const ForgotPage = () => {
-	const { errorMessage } = useSelector(state => state.message)
-	const { notification } = useSelector(state => state.message)
+	const { errorMessage } = useSelector(state => state.form)
+	const { notification } = useSelector(state => state.form)
 	const dispatch = useDispatch()
 
 	useEffect(() => {

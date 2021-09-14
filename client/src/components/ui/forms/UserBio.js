@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 
 const UserBio = () => {
-	const { bio } = useSelector(state => state.user)
+	const { bio } = useSelector(state => state.form)
 	const dispatch = useDispatch()
 
 	const baseStyle = {

@@ -2,7 +2,7 @@ import Select from 'react-select'
 import { useSelector, useDispatch } from 'react-redux'
 
 const UserGender = () => {
-	const { gender } = useSelector(state => state.user)
+	const { gender } = useSelector(state => state.form)
 	const dispatch = useDispatch()
 
 	const selected = () => gender ? { value: gender, label: gender } : ''

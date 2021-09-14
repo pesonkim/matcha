@@ -9,8 +9,8 @@ const BrowsePage = () => {
 
 	const { latitude } = useSelector(state => state.user)
 	const { longitude } = useSelector(state => state.user)
-	const { errorMessage } = useSelector(state => state.message)
-	const { notification } = useSelector(state => state.message)
+	const { errorMessage } = useSelector(state => state.form)
+	const { notification } = useSelector(state => state.form)
 
 	return (
 		<>

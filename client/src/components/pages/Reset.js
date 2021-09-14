@@ -5,12 +5,12 @@ import PasswordField from '../ui/forms/PasswordField'
 import SubmitButton from '../ui/forms/SubmitButton'
 import validate from '../../utils/validate'
 import { useDispatch, useSelector } from 'react-redux'
-import { setError, setNotif } from '../../reducers/messageReducer'
+import { setError, setNotif } from '../../reducers/formReducer'
 import { reset } from '../../reducers/userReducer'
 
 const ResetPage = () => {
-	const { errorMessage } = useSelector(state => state.message)
-	const { notification } = useSelector(state => state.message)
+	const { errorMessage } = useSelector(state => state.form)
+	const { notification } = useSelector(state => state.form)
 	const dispatch = useDispatch()
 	let { token } = useParams()
 

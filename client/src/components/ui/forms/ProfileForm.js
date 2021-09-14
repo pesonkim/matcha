@@ -11,8 +11,8 @@ import { update } from '../../../reducers/userReducer'
 import parse from '../../../utils/parse'
 
 const ProfileForm = () => {
-	const { orientation, gender, bio, tags, id } = useSelector(state => state.user)
-	const { errorMessage, notification } = useSelector(state => state.message)
+	const { id } = useSelector(state => state.user)
+	const { orientation, gender, bio, tags, errorMessage, notification } = useSelector(state => state.form)
 	const dispatch = useDispatch()
 
 	const handleSubmit = (event) => {
@@ -20,7 +20,7 @@ const ProfileForm = () => {
 
 		const data = {
 			gender: gender,
-			orientation: parse.parseOrientation(orientation),
+			orientation: parse.oToDb(orientation),
 			tags: (tags ? tags.map(t => t).join('') : ''),
 			bio: bio,
 		}

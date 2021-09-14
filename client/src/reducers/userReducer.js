@@ -32,7 +32,7 @@ const userReducer = (state = initialState, action) => {
 			token: action.data.token,
 			age: action.data.age,
 			gender: action.data.gender,
-			orientation: action.data.orientation,
+			orientation: parse.oFromDb(action.data.orientation),
 			bio: action.data.bio,
 			tags: parse.parseTags(action.data.tags),
 			loggedIn: true,
@@ -47,26 +47,6 @@ const userReducer = (state = initialState, action) => {
 			latitude: action.data.latitude,
 			longitude: action.data.longitude,
 		}
-	case 'GENDER':
-		return {
-			...state,
-			gender: action.data.gender,
-		}
-	case 'ORIENTATION':
-		return {
-			...state,
-			orientation: action.data.orientation,
-		}
-	case 'BIO':
-		return {
-			...state,
-			bio: action.data.bio,
-		}
-	case 'TAGS':
-		return {
-			...state,
-			tags: action.data.tags,
-		}
 	case 'PROFILE':
 		return {
 			...state,
@@ -74,7 +54,7 @@ const userReducer = (state = initialState, action) => {
 			firstname: action.data.firstname,
 			lastname: action.data.lastname,
 			gender: action.data.gender,
-			orientation: action.data.orientation,
+			orientation: parse.oFromDb(action.data.orientation),
 			bio: action.data.bio,
 			tags: parse.parseTags(action.data.tags),
 			userComplete: (action.data.gender && action.data.orientation ? true : false)
@@ -116,6 +96,10 @@ export const update = (input, id) => {
 			dispatch({
 				type: 'PROFILE',
 				data
+			})
+			dispatch({
+				type: 'NOTIF',
+				data: 'Profile updated'
 			})
 		} catch (error) {
 			if (error.response && error.response.data) {
