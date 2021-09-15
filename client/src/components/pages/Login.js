@@ -10,8 +10,7 @@ import { login } from '../../reducers/userReducer'
 import { setNotif, clear } from '../../reducers/formReducer'
 
 const LoginPage = () => {
-	const { latitude } = useSelector(state => state.user)
-	const { longitude } = useSelector(state => state.user)
+	const { ip } = useSelector(state => state.user)
 	const { errorMessage } = useSelector(state => state.form)
 	const { notification } = useSelector(state => state.form)
 	const dispatch = useDispatch()
@@ -29,8 +28,7 @@ const LoginPage = () => {
 		const data = {
 			username: event.target.username.value,
 			password: event.target.password.value,
-			latitude: latitude,
-			longitude: longitude
+			ip: ip,
 		}
 		//console.log(data)
 		dispatch(login(data))

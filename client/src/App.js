@@ -3,7 +3,7 @@ import Layout from './components/layout/Layout'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
-import { locate } from './reducers/userReducer'
+import { lookup } from './reducers/userReducer'
 import auth from './utils/auth'
 
 import LoginPage from './components/pages/Login'
@@ -30,7 +30,7 @@ const App = () => {
 		} else {
 			window.localStorage.clear()
 		}
-		dispatch(locate())
+		dispatch(lookup())
 	}, [dispatch])
 
 	const { loggedIn, userComplete } = useSelector(state => state.user)

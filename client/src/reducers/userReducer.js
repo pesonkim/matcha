@@ -38,16 +38,16 @@ const userReducer = (state = initialState, action) => {
 			bio: action.data.bio,
 			tags: parse.parseTags(action.data.tags),
 			loggedIn: true,
-			userComplete: (action.data.gender && action.data.orientation ? true : false)
+			userComplete: (action.data.gender && action.data.orientation ? true : false),
+			latitude: action.data.latitude,
+			longitude: action.data.longitude,
 		}
 	case 'LOGOUT':
 		return initialState
-	case 'LOCATE':
+	case 'LOOKUP':
 		return {
 			...state,
 			ip: action.data.ip,
-			latitude: action.data.latitude,
-			longitude: action.data.longitude,
 		}
 	case 'PROFILE':
 		return {
@@ -61,7 +61,9 @@ const userReducer = (state = initialState, action) => {
 			orientation: parse.oFromDb(action.data.orientation),
 			bio: action.data.bio,
 			tags: parse.parseTags(action.data.tags),
-			userComplete: (action.data.gender && action.data.orientation ? true : false)
+			userComplete: (action.data.gender && action.data.orientation ? true : false),
+			latitude: action.data.latitude,
+			longitude: action.data.longitude,
 		}
 	default:
 		return state
@@ -168,17 +170,14 @@ export const reset = (password) => {
 	}
 }
 
-export const locate = () => {
+export const lookup = () => {
 	return async dispatch => {
 		const coords = await axios.get('https://geolocation-db.com/json/')
 		const data = {
 			ip: coords.data.IPv4,
-			latitude: coords.data.latitude,
-			longitude: coords.data.longitude
 		}
-		console.log(data)
 		dispatch({
-			type: 'LOCATE',
+			type: 'LOOKUP',
 			data
 		})
 	}

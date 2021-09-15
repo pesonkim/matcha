@@ -14,6 +14,7 @@ import { useEffect } from 'react'
 import { setError, clear, populate } from '../../reducers/formReducer'
 import PasswordField from '../ui/forms/PasswordField'
 import validate from '../../utils/validate'
+import UserLocation from '../ui/forms/UserLocation'
 
 
 const ProfilePage = () => {
@@ -129,7 +130,7 @@ const ProfilePage = () => {
 				<hr className='my-4' />
 
 				<Togglable text='Location'>
-					Google map or something
+					<UserLocation />
 				</Togglable>
 				<hr className='my-4' />
 
