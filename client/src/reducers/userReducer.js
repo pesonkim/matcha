@@ -52,10 +52,12 @@ const userReducer = (state = initialState, action) => {
 	case 'PROFILE':
 		return {
 			...state,
+			email: action.data.email,
 			username: action.data.username,
 			firstname: action.data.firstname,
 			lastname: action.data.lastname,
 			gender: action.data.gender,
+			token: action.data.token,
 			orientation: parse.oFromDb(action.data.orientation),
 			bio: action.data.bio,
 			tags: parse.parseTags(action.data.tags),

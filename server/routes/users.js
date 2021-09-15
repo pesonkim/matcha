@@ -170,7 +170,7 @@ userRouter.put('/:id', async (req, res) => {
 	//console.log(query)
 
 	const prepared = mysql.format(query, parameters)
-	console.log(prepared)
+	//console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result && result.affectedRows) {
 			pool.query('SELECT * from users WHERE id = ?', user.id, (error, result) => {
@@ -178,12 +178,29 @@ userRouter.put('/:id', async (req, res) => {
 					return res.status(500).send(error)
 				}
 				else if (result) {
+					console.log(`User id ${result[0].id} profile updated`)
+					//update token to match new profile
+					const userForToken = {
+						id: result[0].id,
+					}
+
+					//expire token in 60 minutes
+					const token = jwt.sign(
+						userForToken,
+						tokenSecret,
+						{ expiresIn: 60 * 60 }
+					)
+
 					return res
 						.status(200)
 						.send({
+							token,
+							id: result[0].id,
+							email: result[0].email,
 							username: result[0].username,
 							firstname: result[0].firstname,
 							lastname: result[0].lastname,
+							age: moment().diff(moment(result[0].birthdate, 'YYYY-MM-DD'), 'years'),
 							gender: result[0].gender,
 							orientation: result[0].orientation,
 							bio: result[0].bio,

@@ -31,7 +31,7 @@ loginRouter.post('/', async (req, res) => {
 		//allow login
 		pool.query('SELECT * from users WHERE username = ?', username, (error, result) => {
 			if (result) {
-				//console.log(result[0])
+				console.log(result[0])
 				pool.query(`UPDATE users SET last_login = CURRENT_TIMESTAMP, latitude = ${latitude}, \
 				longitude = ${longitude} WHERE id = ${result[0].id}`)
 

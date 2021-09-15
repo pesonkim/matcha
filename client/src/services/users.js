@@ -24,6 +24,7 @@ const getProfile = async (id) => {
 const updateProfile = async (userObject, id) => {
 	const response = await axios.put(`${baseUrl}/${id}`, userObject, auth.config())
 	console.log(response)
+	window.localStorage.setItem('user', JSON.stringify(response.data))
 	return response.data
 }
 
