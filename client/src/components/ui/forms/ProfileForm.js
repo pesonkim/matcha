@@ -8,6 +8,7 @@ import UserBio from './UserBio'
 import UserTags from './UserTags'
 import { useSelector, useDispatch } from 'react-redux'
 import { update } from '../../../reducers/userReducer'
+import { updateTags } from '../../../reducers/publicReducer'
 import parse from '../../../utils/parse'
 
 const ProfileForm = () => {
@@ -15,7 +16,7 @@ const ProfileForm = () => {
 	const { orientation, gender, bio, tags, errorMessage, notification } = useSelector(state => state.form)
 	const dispatch = useDispatch()
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault()
 
 		const data = {
@@ -26,7 +27,8 @@ const ProfileForm = () => {
 		}
 
 		//console.log(data)
-		dispatch(update(data, id))
+		await dispatch(update(data, id))
+		await dispatch(updateTags(tags))
 	}
 
 	return (
@@ -37,7 +39,7 @@ const ProfileForm = () => {
 				<p className='mb-4 text-center'>Finish setting up your profile to start matching</p>
 				{errorMessage && <div className='mb-4 text-center text-red-500'>{errorMessage}</div>}
 
-				{/* <UserImage /> */}
+				<UserImage />
 				<UserGender />
 				<UserOrientation />
 				<UserTags />

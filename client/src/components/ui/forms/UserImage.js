@@ -11,8 +11,7 @@ const UserImage = () => {
 
 	return (
 		<>
-			<label>Image upload magic</label>
-			<input type='text' name='image' style={baseStyle} className='' />
+
 		</>
 	)
 }

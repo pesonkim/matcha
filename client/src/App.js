@@ -34,6 +34,7 @@ const App = () => {
 	}, [dispatch])
 
 	const { loggedIn, userComplete } = useSelector(state => state.user)
+	//console.log(loggedIn, userComplete)
 	console.log(auth.config())
 
 	return (

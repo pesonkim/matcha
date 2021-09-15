@@ -54,10 +54,7 @@ const setupDb = () => {
     )`
 
 	const tags = `CREATE TABLE IF NOT EXISTS tags (
-        id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        tag varchar(255) NOT NULL,
-        user int NOT NULL,
-        FOREIGN KEY (user) REFERENCES users(id)
+        tags varchar(5000) NOT NULL
     )`
 
 	const photos = `CREATE TABLE IF NOT EXISTS photos (
@@ -141,6 +138,13 @@ const setupDb = () => {
 			return
 		}
 		logger.info('Created table: tags')
+	})
+
+	connection.query('INSERT INTO tags (tags) VALUES ("")', (error) => {
+		if (error) {
+			logger.error('Error creating table: tags', error.message)
+			return
+		}
 	})
 
 	connection.query(photos, (error) => {

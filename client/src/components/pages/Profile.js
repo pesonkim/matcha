@@ -8,6 +8,7 @@ import UserBio from '../ui/forms/UserBio'
 import UserTags from '../ui/forms/UserTags'
 import { useSelector, useDispatch } from 'react-redux'
 import { update } from '../../reducers/userReducer'
+import { updateTags } from '../../reducers/publicReducer'
 import parse from '../../utils/parse'
 import Togglable from '../ui/Togglable'
 import { useEffect } from 'react'
@@ -27,7 +28,7 @@ const ProfilePage = () => {
 	}, [])
 
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault()
 		dispatch(clear())
 
@@ -69,7 +70,8 @@ const ProfilePage = () => {
 		}
 
 		console.log(data)
-		dispatch(update(data, id))
+		await dispatch(update(data, id))
+		await dispatch(updateTags(tags))
 	}
 
 	const inputStyle = {

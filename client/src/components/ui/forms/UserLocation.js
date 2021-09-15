@@ -26,6 +26,7 @@ const UserLocation = () => {
 		zoom: 9,
 		streetViewControl: false,
 		disableDefaultUI: true,
+		zoomControl: true,
 	}
 
 	const handleDrag = (event) => {
