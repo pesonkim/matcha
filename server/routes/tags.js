@@ -21,7 +21,7 @@ tagsRouter.get('/', (req, res) => {
 })
 
 tagsRouter.post('/', (req, res) => {
-	if (!req.body.tags) {
+	if (!req.body.tags && req.body.tags !== '') {
 		return res.status(400).send({ error: 'Tags missing' })
 	}
 

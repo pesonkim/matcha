@@ -90,7 +90,7 @@ const ProfilePage = () => {
 			{errorMessage && <div className='mb-4 text-center text-red-500'>{errorMessage}</div>}
 			<form onSubmit={handleSubmit}>
 				<Togglable text='Photos'>
-					Pictures would go here
+					<UserImage />
 				</Togglable>
 				<hr className='my-4' />
 

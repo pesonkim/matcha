@@ -1,5 +1,6 @@
 import userService from '../services/users'
 import parse from '../utils/parse'
+import photosService from '../services/photos'
 
 const initialState = {
 	notification: '',
@@ -14,6 +15,7 @@ const initialState = {
 	orientation: null,
 	bio: null,
 	tags: null,
+	photo: null,
 }
 
 const formReducer = (state = initialState, action) => {
@@ -29,6 +31,11 @@ const formReducer = (state = initialState, action) => {
 			orientation: parse.oFromDb(action.data.orientation),
 			bio: action.data.bio,
 			tags: parse.parseTags(action.data.tags),
+		}
+	case 'PHOTO':
+		return {
+			...state,
+			photo: action.data.filepath,
 		}
 	case 'GENDER':
 		return {
@@ -81,6 +88,29 @@ export const populate = (id) => {
 			//console.log(data)
 			dispatch({
 				type: 'POPULATE',
+				data
+			})
+		} catch (error) {
+			if (error.response && error.response.data) {
+				data = error.response.data.error
+			} else {
+				data = 'Database error'
+			}
+			dispatch({
+				type: 'ERROR',
+				data,
+			})
+		}
+	}
+}
+
+export const avatar = (formData, token) => {
+	return async dispatch => {
+		let data
+		try {
+			data = await photosService.addPhoto(formData, token)
+			dispatch({
+				type: 'PHOTO',
 				data
 			})
 		} catch (error) {

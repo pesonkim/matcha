@@ -9,7 +9,6 @@ const UserTags = () => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		console.log('tags fetched')
 		dispatch(getTags())
 	}, [])
 
