@@ -34,6 +34,16 @@ const UserImage = () => {
 		const reader = new FileReader()
 		const file = event.target.files[0]
 
+		if (!file) {
+			return
+		} else if (file.size > 1000000) {
+			dispatch({
+				type: 'ERROR',
+				data: 'Max file size is 1Mb'
+			})
+			return
+		}
+
 		reader.readAsDataURL(file)
 		reader.onloadend = () => {
 			dispatch({

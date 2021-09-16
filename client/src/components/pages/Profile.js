@@ -1,7 +1,7 @@
 import Wrapper from '../ui/Wrapper'
 import Heading from '../ui/forms/Heading'
 import SubmitButton from '../ui/forms/SubmitButton'
-import UpdateImage from '../ui/forms/UpdateImage'
+import UserImage from '../ui/forms/UserImage'
 import UserGender from '../ui/forms/UserGender'
 import UserOrientation from '../ui/forms/UserOrientation'
 import UserBio from '../ui/forms/UserBio'
@@ -12,7 +12,7 @@ import { updateTags } from '../../reducers/publicReducer'
 import parse from '../../utils/parse'
 import Togglable from '../ui/Togglable'
 import { useEffect } from 'react'
-import { setError, clear, populate } from '../../reducers/formReducer'
+import { setError, clear, populate, avatar } from '../../reducers/formReducer'
 import PasswordField from '../ui/forms/PasswordField'
 import validate from '../../utils/validate'
 import UserLocation from '../ui/forms/UserLocation'
@@ -72,6 +72,42 @@ const ProfilePage = () => {
 		console.log(data)
 		await dispatch(update(data, id))
 		await dispatch(updateTags(tags))
+
+		if (data.firstname) {
+			event.target.firstname.value = ''
+			event.target.firstname.placeholder = data.firstname
+		}
+		if (data.lastname) {
+			event.target.lastname.value = ''
+			event.target.lastname.placeholder = data.lastname
+		}
+		if (data.username) {
+			event.target.username.value = ''
+			event.target.username.placeholder = data.username
+		}
+		if (data.email) {
+			event.target.email.value = ''
+			event.target.email.placeholder = data.email
+		}
+
+		const reader = new FileReader()
+		const file = event.target.photo.files[0]
+
+		if (!file) {
+			return
+		} else if (file.size > 1000000) {
+			dispatch({
+				type: 'ERROR',
+				data: 'Max file size is 1Mb'
+			})
+			return
+		}
+
+		reader.readAsDataURL(file)
+		reader.onloadend = () => {
+			dispatch(avatar({ blob: reader.result }))
+			event.target.photo.value = null
+		}
 	}
 
 	const inputStyle = {
@@ -90,7 +126,7 @@ const ProfilePage = () => {
 			{errorMessage && <div className='mb-4 text-center text-red-500'>{errorMessage}</div>}
 			<form onSubmit={handleSubmit}>
 				<Togglable text='Profile picture'>
-					<UpdateImage />
+					<UserImage />
 				</Togglable>
 				<hr className='my-4' />
 
@@ -114,7 +150,6 @@ const ProfilePage = () => {
 					<label>Password</label>
 					<PasswordField />
 
-					<SubmitButton text='Save changes' />
 				</Togglable>
 				<hr className='my-4' />
 
@@ -126,8 +161,6 @@ const ProfilePage = () => {
 					<UserTags />
 
 					<UserBio />
-
-					<SubmitButton text='Save changes' />
 				</Togglable>
 				<hr className='my-4' />
 
@@ -144,6 +177,7 @@ const ProfilePage = () => {
 				<Togglable text='Blocked users'>
 					Blocklist would go here
 				</Togglable>
+				<SubmitButton text='Save changes' />
 			</form>
 		</Wrapper>
 	)

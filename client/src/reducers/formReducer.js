@@ -32,17 +32,17 @@ const formReducer = (state = initialState, action) => {
 			orientation: parse.oFromDb(action.data.orientation),
 			bio: action.data.bio,
 			tags: parse.parseTags(action.data.tags),
-			photoSrc: action.data.avatar,
-		}
-	case 'PHOTO':
-		return {
-			...state,
-			photoSrc: action.data.filepath,
+			photoStr: action.data.avatar,
 		}
 	case 'PREVIEW':
 		return {
 			...state,
 			photoStr: action.data,
+		}
+	case 'PHOTO':
+		return {
+			...state,
+			photoStr: action.data.blob,
 		}
 	case 'GENDER':
 		return {
@@ -97,12 +97,7 @@ export const populate = (id) => {
 				type: 'POPULATE',
 				data
 			})
-			if (data.avatar) {
-				fetch('../../../public/uploads/1/blank.png')
-					.then(res => {
-						console.log(res)
-					})
-				/*
+			/*
 				const reader = new FileReader()
 				const file = data.avatar
 
@@ -113,7 +108,6 @@ export const populate = (id) => {
 						data: reader.result
 					})
 				}*/
-			}
 		} catch (error) {
 			if (error.response && error.response.data) {
 				data = error.response.data.error
@@ -128,11 +122,13 @@ export const populate = (id) => {
 	}
 }
 
-export const avatar = (formData, token) => {
+export const avatar = (blob) => {
 	return async dispatch => {
 		let data
 		try {
-			data = await photosService.addPhoto(formData, token)
+			//console.log(blob)
+			data = await photosService.addPhoto(blob)
+			//console.log(data)
 			dispatch({
 				type: 'PHOTO',
 				data

@@ -32,12 +32,29 @@ const ProfileForm = () => {
 		await dispatch(update(data, id))
 		await dispatch(updateTags(tags))
 
+		//const file = event.target.photo.files[0]
+
+		//const formData = new FormData()
+		//formData.append('file', file)
+		//console.log(formData)
+
+		const reader = new FileReader()
 		const file = event.target.photo.files[0]
 
-		const formData = new FormData()
-		formData.append('file', file)
-		//console.log(formData)
-		dispatch(avatar(formData, token))
+		if (!file) {
+			return
+		} else if (file.size > 1000000) {
+			dispatch({
+				type: 'ERROR',
+				data: 'Max file size is 1Mb'
+			})
+			return
+		}
+
+		reader.readAsDataURL(file)
+		reader.onloadend = () => {
+			dispatch(avatar({ blob: reader.result }))
+		}
 	}
 
 	return (

@@ -3,20 +3,22 @@ const pool = require('../utils/db')
 const mysql = require('mysql')
 const jwt = require('jsonwebtoken')
 const tokenSecret = require('../utils/config').TOKEN_SECRET
-const path = require('path')
-const fs = require('fs')
+//const path = require('path')
+//const fs = require('fs')
 
 photosRouter.post('/', (req, res) => {
+	console.log(req.body)
 	const user = jwt.verify(req.token, tokenSecret)
 
 	if (!user) {
 		return res.status(401).send({ error: 'Invalid token or unauthorized' })
 	}
 
-	if (req.files === null ) {
+	if (req.body.blob === null ) {
 		return
 	}
 
+	/*
 	const file = req.files.file
 	//console.log(file)
 	//const baseDir = path.join(__dirname, '../public/uploads')
@@ -38,17 +40,17 @@ photosRouter.post('/', (req, res) => {
 		}
 
 		return res.status(200).json({ filename: file.name, filepath: `${targetDir}/${file.name}` })
-	})
+	})*/
 
-	const sql = 'INSERT INTO photos (src, user) VALUES (?,?)'
-	const prepared = mysql.format(sql, [`${targetDir}/${file.name}`, user.id])
+	const sql = 'UPDATE users SET avatar = ? WHERE id = ?'
+	const prepared = mysql.format(sql, [req.body.blob, user.id])
 	//console.log(prepared)
 	pool.query(prepared, (error, result) => {
+		if (error) {
+			return res.status(500).send(error)
+		}
 		if (result) {
-			const sql = 'UPDATE users SET avatar = ? WHERE id = ?'
-			const prepared = mysql.format(sql, [`${targetDir}/${file.name}`, user.id])
-			pool.query(prepared)
-			return res.status(200).end()
+			return res.status(200).send({ blob: req.body.blob })
 		} else {
 			return res.status(500).send(error)
 		}

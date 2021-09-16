@@ -40,7 +40,7 @@ const setupDb = () => {
         password varchar(255) NOT NULL,
         token varchar(255) NOT NULL DEFAULT 0,
         verified tinyint(1) NOT NULL DEFAULT 0,
-		avatar varchar(255) DEFAULT NULL,
+		avatar mediumtext DEFAULT NULL,
         gender varchar(255) DEFAULT NULL,
         orientation varchar(255) DEFAULT NULL,
 		tags varchar(255),
@@ -55,13 +55,6 @@ const setupDb = () => {
 
 	const tags = `CREATE TABLE IF NOT EXISTS tags (
         tags varchar(5000) NOT NULL
-    )`
-
-	const photos = `CREATE TABLE IF NOT EXISTS photos (
-        id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        src varchar(5000),
-        user int NOT NULL,
-        FOREIGN KEY (user) REFERENCES users(id)
     )`
 
 	const likes = `CREATE TABLE IF NOT EXISTS likes (
@@ -146,23 +139,6 @@ const setupDb = () => {
 			return
 		}
 	})
-
-	connection.query(photos, (error) => {
-		if (error) {
-			logger.error('Error creating table: photos', error.message)
-			return
-		}
-		logger.info('Created table: photos')
-	})
-
-	/*
-	connection.query('ALTER TABLE users ADD CONSTRAINT FOREIGN KEY avatar REFERENCES photos(id)', (error) => {
-		if (error) {
-			logger.error('Error creating foreign key for users:', error.message)
-			return
-		}
-		logger.info('Created foreign key for users: avatar')
-	})*/
 
 	connection.query(likes, (error) => {
 		if (error) {
