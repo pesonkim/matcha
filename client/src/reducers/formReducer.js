@@ -15,7 +15,8 @@ const initialState = {
 	orientation: null,
 	bio: null,
 	tags: null,
-	photo: null,
+	photoSrc: null,
+	photoStr: null,
 }
 
 const formReducer = (state = initialState, action) => {
@@ -31,11 +32,17 @@ const formReducer = (state = initialState, action) => {
 			orientation: parse.oFromDb(action.data.orientation),
 			bio: action.data.bio,
 			tags: parse.parseTags(action.data.tags),
+			photoSrc: action.data.avatar,
 		}
 	case 'PHOTO':
 		return {
 			...state,
-			photo: action.data.filepath,
+			photoSrc: action.data.filepath,
+		}
+	case 'PREVIEW':
+		return {
+			...state,
+			photoStr: action.data,
 		}
 	case 'GENDER':
 		return {
@@ -90,6 +97,23 @@ export const populate = (id) => {
 				type: 'POPULATE',
 				data
 			})
+			if (data.avatar) {
+				fetch('../../../public/uploads/1/blank.png')
+					.then(res => {
+						console.log(res)
+					})
+				/*
+				const reader = new FileReader()
+				const file = data.avatar
+
+				reader.readAsDataURL(file)
+				reader.onloadend = () => {
+					dispatch({
+						type: 'PREVIEW',
+						data: reader.result
+					})
+				}*/
+			}
 		} catch (error) {
 			if (error.response && error.response.data) {
 				data = error.response.data.error

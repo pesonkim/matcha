@@ -1,9 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { TrashIcon } from '@heroicons/react/outline'
+import { useEffect } from 'react'
 
-const UserImage = () => {
-	const { photoStr } = useSelector(state => state.form)
+const UpdateImage = () => {
+	const { photoStr, photoSrc } = useSelector(state => state.form)
 	const dispatch = useDispatch()
+
+	useEffect(() => {
+		console.log(photoSrc)
+	}, [])
 
 	const baseStyle = {
 		display: 'block',
@@ -46,12 +51,11 @@ const UserImage = () => {
 	return (
 		<>
 			<div className='mb-4 mx-auto'>
-				{photoStr && <img src={photoStr} style={imgStyle}/>}
+				{photoStr && <img src={photoStr} style={imgStyle} />}
 			</div>
-			<label>Profile picture</label>
 			<input name='photo' type='file' style={baseStyle} onChange={handleImage} accept=".png, .jpg .jpeg" />
 		</>
 	)
 }
 
-export default UserImage
+export default UpdateImage

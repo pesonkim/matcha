@@ -70,6 +70,7 @@ loginRouter.post('/', async (req, res) => {
 						orientation: result[0].orientation,
 						bio: result[0].bio,
 						tags: result[0].tags,
+						avatar: result[0].avatar,
 					})
 			} else {
 				return res.status(500).send({ error: 'Database error' })

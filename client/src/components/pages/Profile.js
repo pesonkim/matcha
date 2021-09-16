@@ -1,7 +1,7 @@
 import Wrapper from '../ui/Wrapper'
 import Heading from '../ui/forms/Heading'
 import SubmitButton from '../ui/forms/SubmitButton'
-import UserImage from '../ui/forms/UserImage'
+import UpdateImage from '../ui/forms/UpdateImage'
 import UserGender from '../ui/forms/UserGender'
 import UserOrientation from '../ui/forms/UserOrientation'
 import UserBio from '../ui/forms/UserBio'
@@ -89,8 +89,8 @@ const ProfilePage = () => {
 			{notification && <div className='mb-4 text-center text-green-500'>{notification}</div>}
 			{errorMessage && <div className='mb-4 text-center text-red-500'>{errorMessage}</div>}
 			<form onSubmit={handleSubmit}>
-				<Togglable text='Photos'>
-					<UserImage />
+				<Togglable text='Profile picture'>
+					<UpdateImage />
 				</Togglable>
 				<hr className='my-4' />
 

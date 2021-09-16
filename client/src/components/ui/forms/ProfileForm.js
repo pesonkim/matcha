@@ -10,15 +10,17 @@ import { useSelector, useDispatch } from 'react-redux'
 import { update } from '../../../reducers/userReducer'
 import { updateTags } from '../../../reducers/publicReducer'
 import parse from '../../../utils/parse'
+import { avatar } from '../../../reducers/formReducer'
 
 const ProfileForm = () => {
-	const { id } = useSelector(state => state.user)
+	const { id, token } = useSelector(state => state.user)
 	const { orientation, gender, bio, tags, errorMessage, notification } = useSelector(state => state.form)
 	const dispatch = useDispatch()
 
 	const handleSubmit = async (event) => {
 		event.preventDefault()
 
+		//console.log(event.target.photo.files[0])
 		const data = {
 			gender: gender,
 			orientation: parse.oToDb(orientation),
@@ -29,6 +31,13 @@ const ProfileForm = () => {
 		//console.log(data)
 		await dispatch(update(data, id))
 		await dispatch(updateTags(tags))
+
+		const file = event.target.photo.files[0]
+
+		const formData = new FormData()
+		formData.append('file', file)
+		//console.log(formData)
+		dispatch(avatar(formData, token))
 	}
 
 	return (
@@ -38,8 +47,8 @@ const ProfileForm = () => {
 			<p className='mb-4 text-center'>Finish setting up your profile to start matching</p>
 			{errorMessage && <div className='mb-4 text-center text-red-500'>{errorMessage}</div>}
 
-			<UserImage />
 			<form onSubmit={handleSubmit}>
+				<UserImage />
 				<UserGender />
 				<UserOrientation />
 				<UserTags />

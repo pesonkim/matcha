@@ -14,7 +14,7 @@ photosRouter.post('/', (req, res) => {
 	}
 
 	if (req.files === null ) {
-		return res.status(400).send({ error: 'No file uploaded' })
+		return
 	}
 
 	const file = req.files.file
@@ -23,6 +23,7 @@ photosRouter.post('/', (req, res) => {
 	//const targetDir = path.join(baseDir, `/${user.id}`)
 
 	const baseDir = path.join(__dirname, '../../public/uploads')
+	//console.log(baseDir)
 	const targetDir = path.join(baseDir, `/${user.id}`)
 
 	//console.log(targetDir)
@@ -36,18 +37,22 @@ photosRouter.post('/', (req, res) => {
 			return res.status(500).send({ error })
 		}
 
-		return res.status(200).json({ filename: file.name, filepath: `/${targetDir}/${file.name}` })
+		return res.status(200).json({ filename: file.name, filepath: `${targetDir}/${file.name}` })
 	})
-	/*
+
 	const sql = 'INSERT INTO photos (src, user) VALUES (?,?)'
-	const prepared = mysql.format(sql, [req.body.photo, user.id])
+	const prepared = mysql.format(sql, [`${targetDir}/${file.name}`, user.id])
+	//console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
-			res.status(200).end()
+			const sql = 'UPDATE users SET avatar = ? WHERE id = ?'
+			const prepared = mysql.format(sql, [`${targetDir}/${file.name}`, user.id])
+			pool.query(prepared)
+			return res.status(200).end()
 		} else {
-			res.status(500).send(error)
+			return res.status(500).send(error)
 		}
-	})*/
+	})
 })
 
 module.exports = photosRouter

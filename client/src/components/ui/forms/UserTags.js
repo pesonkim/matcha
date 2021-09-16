@@ -32,7 +32,7 @@ const UserTags = () => {
 			<CreatableSelect
 				isMulti
 				name='tags'
-				placeholder='Type new tags or select...'
+				placeholder='Select or type...'
 				value={selected()}
 				options={options()}
 				onChange={handleChange}
