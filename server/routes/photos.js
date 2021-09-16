@@ -18,14 +18,14 @@ photosRouter.post('/', (req, res) => {
 	}
 
 	const file = req.files.file
-	console.log(file)
+	//console.log(file)
 	//const baseDir = path.join(__dirname, '../public/uploads')
 	//const targetDir = path.join(baseDir, `/${user.id}`)
 
-	const baseDir = path.join(__dirname, '../../client/public/uploads')
+	const baseDir = path.join(__dirname, '../../public/uploads')
 	const targetDir = path.join(baseDir, `/${user.id}`)
 
-	console.log(targetDir)
+	//console.log(targetDir)
 	if (!fs.existsSync(targetDir)) {
 		fs.mkdirSync(targetDir, { recursive: true })
 	}
@@ -36,7 +36,7 @@ photosRouter.post('/', (req, res) => {
 			return res.status(500).send({ error })
 		}
 
-		res.json({ filename: file.name, filepath: `/uploads/${user.id}/${file.name}` })
+		return res.status(200).json({ filename: file.name, filepath: `/${targetDir}/${file.name}` })
 	})
 	/*
 	const sql = 'INSERT INTO photos (src, user) VALUES (?,?)'

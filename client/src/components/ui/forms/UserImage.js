@@ -1,6 +1,7 @@
 import { avatar } from '../../../reducers/formReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { TrashIcon } from '@heroicons/react/outline'
+import photosService from '../../../services/photos'
 
 const UserImage = () => {
 	const { token } = useSelector(state => state.user)
@@ -29,8 +30,9 @@ const UserImage = () => {
 		borderRadius: '50%',
 	}
 
-	const handleImage = async (event) => {
+	const handleImage = (event) => {
 		event.preventDefault()
+		console.log(event)
 
 		let file = event.target.files[0]
 		const formData = new FormData()
@@ -39,18 +41,11 @@ const UserImage = () => {
 	}
 
 	return (
-		<div>
-			{photo
-				? <div className="w-48 h-48 flex mb-4 mx-auto relative">
-					<div className="bg-red-500 w-full h-full rounded-full overflow-hidden">
-						<img src={photo}/>
-					</div>
-				</div>
-				: ''
-			}
+		<form>
+
 			<label>Profile picture</label>
 			<input name='photo' type='file' style={baseStyle} onChange={handleImage} accept=".png, .jpg .jpeg" />
-		</div>
+		</form>
 	)
 }
 

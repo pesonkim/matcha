@@ -35,11 +35,11 @@ const ProfileForm = () => {
 		<Wrapper>
 			<Heading title='Your profile' />
 			{notification && <div className='mb-4 text-center text-green-500'>{notification}</div>}
-			<form onSubmit={handleSubmit}>
-				<p className='mb-4 text-center'>Finish setting up your profile to start matching</p>
-				{errorMessage && <div className='mb-4 text-center text-red-500'>{errorMessage}</div>}
+			<p className='mb-4 text-center'>Finish setting up your profile to start matching</p>
+			{errorMessage && <div className='mb-4 text-center text-red-500'>{errorMessage}</div>}
 
-				<UserImage />
+			<UserImage />
+			<form onSubmit={handleSubmit}>
 				<UserGender />
 				<UserOrientation />
 				<UserTags />
