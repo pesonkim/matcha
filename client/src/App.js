@@ -18,6 +18,7 @@ import ProfileForm from './components/ui/forms/ProfileForm'
 import Chat from './components/pages/Chat'
 
 const App = () => {
+	const { loggedIn, userComplete } = useSelector(state => state.user)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -33,11 +34,10 @@ const App = () => {
 			window.localStorage.clear()
 		}
 		dispatch(lookup())
-	}, [dispatch])
+		console.log(auth.config())
+	}, [])
 
-	const { loggedIn, userComplete } = useSelector(state => state.user)
 	//console.log(loggedIn, userComplete)
-	console.log(auth.config())
 
 	return (
 		<Layout>
