@@ -15,6 +15,8 @@ import ResetPage from './components/pages/Reset'
 import ProfilePage from './components/pages/Profile'
 import ProfileForm from './components/ui/forms/ProfileForm'
 
+import Chat from './components/pages/Chat'
+
 const App = () => {
 	const dispatch = useDispatch()
 
@@ -46,6 +48,7 @@ const App = () => {
 						: <ProfileForm />
 					: <Redirect to='/' />
 				} />
+				<Route path='/chat' component={Chat} />
 				<Route path='/login' render={() => !loggedIn
 					? <LoginPage />
 					: <Redirect to='/' />

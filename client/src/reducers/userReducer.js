@@ -19,6 +19,7 @@ const initialState = {
 	orientation: null,
 	bio: null,
 	tags: null,
+	avatar: null,
 }
 
 const userReducer = (state = initialState, action) => {
@@ -41,6 +42,7 @@ const userReducer = (state = initialState, action) => {
 			userComplete: (action.data.gender && action.data.orientation ? true : false),
 			latitude: action.data.latitude,
 			longitude: action.data.longitude,
+			avatar: action.data.avatar,
 		}
 	case 'LOGOUT':
 		return initialState
@@ -64,6 +66,12 @@ const userReducer = (state = initialState, action) => {
 			userComplete: (action.data.gender && action.data.orientation ? true : false),
 			latitude: action.data.latitude,
 			longitude: action.data.longitude,
+			avatar: action.data.avatar,
+		}
+	case 'PHOTO':
+		return {
+			...state,
+			avatar: action.data.blob,
 		}
 	default:
 		return state

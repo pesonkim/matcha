@@ -81,11 +81,11 @@ const ProfilePage = () => {
 			event.target.lastname.value = ''
 			event.target.lastname.placeholder = data.lastname
 		}
-		if (data.username) {
+		if (data.username && !errorMessage) {
 			event.target.username.value = ''
 			event.target.username.placeholder = data.username
 		}
-		if (data.email) {
+		if (data.email && !errorMessage) {
 			event.target.email.value = ''
 			event.target.email.placeholder = data.email
 		}
