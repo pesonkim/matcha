@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import queryString from 'query-string'
 import io from 'socket.io-client'
 
-import Wrapper from '../ui/Wrapper'
+import InfoBar from '../ui/InfoBar'
+import ChatMessages from '../ui/ChatMessages'
+import ChatInput from '../ui/ChatInput'
 import Heading from '../ui/forms/Heading'
 import SubmitButton from '../ui/forms/SubmitButton'
 
@@ -15,6 +17,14 @@ const Chat = () => {
 	const [messages, setMessages] = useState([])
 	const ENDPOINT = 'localhost:3001'
 
+	const container = {
+		borderWidth: '1px',
+		borderColor: '#dae4e9',
+		borderRadius: '.25rem',
+		padding: '.75rem',
+		width: '100%',
+		height: '38px'
+	}
 
 	useEffect(() => {
 		const { name, room } = queryString.parse(window.location.search)
@@ -37,6 +47,12 @@ const Chat = () => {
 		})
 	}, [])
 
+	useEffect(() => {
+		return () => {
+			socket.close()
+		}
+	}, [])
+
 	const sendMessage = (event) => {
 		event.preventDefault()
 
@@ -45,18 +61,14 @@ const Chat = () => {
 		}
 	}
 
-	console.log(messages)
-
 	return (
-		<Wrapper>
-			<div>
-				<input
-					value={message}
-					onChange={e => setMessage(e.target.value)}
-					onKeyPress={e => e.key === 'Enter' ? sendMessage(event) : null}
-				/>
+		<div className='max-w-screen-sm mx-auto px-2 '>
+			<div className='flex flex-col justify-center my-4 bg-white rounded ui-shadow'>
+				<InfoBar room={room} />
+				<ChatMessages messages={messages} name={name} />
+				<ChatInput message={message} setMessage={setMessage} sendMessage={sendMessage} />
 			</div>
-		</Wrapper>
+		</div>
 	)
 }
 
