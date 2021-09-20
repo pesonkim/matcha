@@ -7,7 +7,7 @@ import PasswordField from '../ui/forms/PasswordField'
 import SubmitButton from '../ui/forms/SubmitButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../reducers/userReducer'
-import { setNotif, clear } from '../../reducers/formReducer'
+import { setNotif, setError, clear } from '../../reducers/formReducer'
 
 const LoginPage = () => {
 	const { ip } = useSelector(state => state.user)
@@ -18,7 +18,10 @@ const LoginPage = () => {
 	useEffect(() => {
 		if (window.location.pathname === '/verify') {
 			dispatch(setNotif('Account verified. You can now access Matcha'))
-		} else {
+		} else if (window.location.pathname === '/expired') {
+			dispatch(setError('Your session has expired, please login again'))
+		}
+		else {
 			dispatch(clear())
 		}
 	},[])

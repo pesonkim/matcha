@@ -48,7 +48,7 @@ const setupDb = () => {
         latitude float DEFAULT NULL,
         longitude float DEFAULT NULL,
         birthdate date NOT NULL,
-        fame int DEFAULT 0,
+        fame int DEFAULT 100,
         last_login datetime DEFAULT NULL,
         online tinyint(1) NOT NULL DEFAULT 0
     )`

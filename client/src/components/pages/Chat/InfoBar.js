@@ -14,7 +14,7 @@ const InfoBar = ({ room }) => {
 				<h2>{room}</h2>
 			</section>
 			<section className="flex items-center">
-				<Link to='/' className='flex items-center hover:opacity-50'>
+				<Link to='/join' className='flex items-center hover:opacity-50'>
 					<XIcon className=' h-6 w-6' />
 				</Link>
 			</section>

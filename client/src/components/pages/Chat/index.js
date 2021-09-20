@@ -2,11 +2,9 @@ import { useState, useEffect } from 'react'
 import queryString from 'query-string'
 import io from 'socket.io-client'
 
-import InfoBar from '../ui/InfoBar'
-import ChatMessages from '../ui/ChatMessages'
-import ChatInput from '../ui/ChatInput'
-import Heading from '../ui/forms/Heading'
-import SubmitButton from '../ui/forms/SubmitButton'
+import InfoBar from './InfoBar'
+import ChatMessages from './ChatMessages'
+import ChatInput from './ChatInput'
 
 let socket
 

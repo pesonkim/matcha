@@ -7,8 +7,13 @@ import loginService from '../../services/login'
 const Header = () => {
 	const { loggedIn } = useSelector(state => state.user)
 
+	const blur = {
+		backgroundColor: 'rgba(255, 255, 255, 0.5)',
+		backdropFilter: 'blur(5px)',
+	}
+
 	return (
-		<header className="h-16 w-full flex justify-center fixed top-0 left-0 right-0 z-50 blur ui-shadow">
+		<header className="h-16 w-full flex justify-center fixed top-0 left-0 right-0 z-50 ui-shadow" style={blur}>
 			<section className="w-full max-w-screen-lg flex justify-between items-center mx-4">
 				<section className="flex items-center">
 					<Link to='/' className='flex items-center hover:opacity-50'>
@@ -22,7 +27,7 @@ const Header = () => {
 							<BellIcon className=' h-8 w-8' />
 							<p className='hidden sm:block'>notifications</p>
 						</Link>
-						<Link to='/chat' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50'>
+						<Link to='/join' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50'>
 							<ChatIcon className=' h-8 w-8' />
 							<p className='hidden sm:block'>matches</p>
 						</Link>

@@ -26,7 +26,7 @@ const Join = () => {
 			<input name='email' type='text' style={inputStyle} onChange={e => setName(e.target.value)} className='mb-4' />
 			<label>Room</label>
 			<input name='email' type='text' style={inputStyle} onChange={e => setRoom(e.target.value)} className='mb-4' />
-			<Link onClick={e => (!name || !room) ? e.preventDefault() : null} to={`/chat?name=${name}&room=${room}`}>
+			<Link onClick={e => (!name || !room) ? e.preventDefault() : null} to={`/chat?name=${name}&room=${room}`} tabIndex={-1}>
 				<SubmitButton text='Join a chat room' />
 			</Link>
 		</Wrapper>

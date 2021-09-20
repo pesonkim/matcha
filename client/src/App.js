@@ -5,10 +5,10 @@ import { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { lookup } from './reducers/userReducer'
 import auth from './utils/auth'
+import loginService from './services/login'
 
 import LoginPage from './components/pages/Login'
 import SignupPage from './components/pages/Signup'
-import VerifyPage from './components/pages/Verify'
 import ForgotPage from './components/pages/Forgot'
 import BrowsePage from './components/pages/Browse'
 import ResetPage from './components/pages/Reset'
@@ -16,9 +16,11 @@ import ProfilePage from './components/pages/Profile'
 import ProfileForm from './components/ui/forms/ProfileForm'
 
 import Chat from './components/pages/Chat'
+import Join from './components/pages/Join'
 
 const App = () => {
 	const { loggedIn, userComplete } = useSelector(state => state.user)
+	const { errorMessage } = useSelector(state => state.form)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -37,6 +39,13 @@ const App = () => {
 		console.log(auth.config())
 	}, [])
 
+	useEffect(async () => {
+		if (errorMessage === 'token expired') {
+			window.localStorage.clear()
+			window.location.href = '/expired'
+		}
+	}, [errorMessage])
+
 	//console.log(loggedIn, userComplete)
 
 	return (
@@ -49,12 +58,18 @@ const App = () => {
 					: <Redirect to='/' />
 				} />
 				<Route path='/chat' component={Chat} />
+				<Route path='/join' component={Join} />
 				<Route path='/login' render={() => !loggedIn
 					? <LoginPage />
 					: <Redirect to='/' />
 				} />
 				<Route path='/verify' render={() => !loggedIn
-					? <VerifyPage />
+					? <LoginPage />
+					: <Redirect to='/' />
+				} />
+				{/* <Route path='/expired' component={LoginPage} /> */}
+				<Route path='/expired' render={() => !loggedIn
+					? <LoginPage />
 					: <Redirect to='/' />
 				} />
 				<Route path='/signup' render={() => !loggedIn

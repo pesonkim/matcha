@@ -1,10 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import Wrapper from '../ui/Wrapper'
 import Preview from '../ui/Preview'
-import PublicProfile from '../pages/PublicProfile'
-
-import Join from './Join'
-
+import PublicProfile from './PublicProfile'
 
 const BrowsePage = () => {
 	const dispatch = useDispatch()
@@ -18,7 +15,7 @@ const BrowsePage = () => {
 
 	return (
 		<>
-			<Join />
+			<PublicProfile />
 		</>
 	)
 }
