@@ -83,7 +83,24 @@ http://localhost:${port}/verify?token=${token}`
 	})
 })
 
-userRouter.get('/:id', async (req, res) => {
+userRouter.get('/', (req, res) => {
+	const user = jwt.verify(req.token, tokenSecret)
+
+	if (!user) {
+		return res.status(401).send({ error: 'Invalid token or unauthorized' })
+	}
+
+	let sql = 'SELECT * from users WHERE id != ?'
+	pool.query(sql, [user.id], (error, result) => {
+		if (result) {
+			return res.status(200).send(result)
+		} else {
+			return res.status(500).send({ error: 'Database error' })
+		}
+	})
+})
+
+userRouter.get('/:id', (req, res) => {
 	const user = jwt.verify(req.token, tokenSecret)
 
 	if (!user || user.id !== Number(req.params.id)) {

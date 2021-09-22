@@ -3,11 +3,11 @@ import auth from '../utils/auth'
 
 const baseUrl = 'http://localhost:3001/users'
 
-//get
-//get id
-//post
-//patch id
-//delete id
+const getUsers = async () => {
+	const response = await axios.get(baseUrl, auth.config())
+	console.log(response)
+	return response.data
+}
 
 const createUser = async (userObject) => {
 	const response = await axios.post(baseUrl, userObject)
@@ -28,4 +28,4 @@ const updateProfile = async (userObject, id) => {
 	return response.data
 }
 
-export default { createUser, getProfile, updateProfile }
+export default { getUsers, createUser, getProfile, updateProfile }

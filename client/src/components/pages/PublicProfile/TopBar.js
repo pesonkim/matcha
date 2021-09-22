@@ -23,7 +23,7 @@ const TopBar = ({ room }) => {
 				<span className='ml-2 text-2xl'>31</span>
 			</section>
 			<section className="flex items-center">
-				<Link to='/join' className='flex items-center hover:opacity-50'>
+				<Link to='/browse' className='flex items-center hover:opacity-50'>
 					<span>Back to browse</span>
 					<XIcon className='ml-2 h-8 w-8' />
 				</Link>

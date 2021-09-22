@@ -22,9 +22,10 @@ const UserImage = () => {
 	}
 
 	const imgStyle = {
-		width: '200px',
-		height: '200px',
-		borderRadius: '50%',
+		width: 'auto',
+		height: 'auto',
+		maxWidth: '100%',
+		maxHeight: '300px',
 		margin: 'auto',
 	}
 

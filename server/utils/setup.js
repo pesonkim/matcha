@@ -1,8 +1,9 @@
 const mysql = require('mysql')
 const config = require('./config')
 const logger = require('./logger')
+const faker = require('faker')
 
-const setupDb = () => {
+const setupDb = async () => {
 	const connection = mysql.createConnection({
 		host: config.DB_HOST,
 		user: config.DB_USER,
@@ -11,7 +12,7 @@ const setupDb = () => {
 	})
 
 	//creating empty database
-	connection.query(`
+	await connection.query(`
         DROP DATABASE IF EXISTS ${config.DB_NAME};
         CREATE DATABASE IF NOT EXISTS ${config.DB_NAME};`, (error) => {
 		if (error) {
@@ -22,7 +23,7 @@ const setupDb = () => {
 	})
 
 	//switching to new database
-	connection.query(`USE ${config.DB_NAME};`, (error) => {
+	await connection.query(`USE ${config.DB_NAME};`, (error) => {
 		if (error) {
 			logger.error('Error connecting to db:', error.message)
 			return
@@ -117,7 +118,7 @@ const setupDb = () => {
     )`
 
 	//executing queries to create tables
-	connection.query(users, (error) => {
+	await connection.query(users, (error) => {
 		if (error) {
 			logger.error('Error creating table: users', error.message)
 			return
@@ -125,7 +126,7 @@ const setupDb = () => {
 		logger.info('Created table: users')
 	})
 
-	connection.query(tags, (error) => {
+	await connection.query(tags, (error) => {
 		if (error) {
 			logger.error('Error creating table: tags', error.message)
 			return
@@ -133,14 +134,14 @@ const setupDb = () => {
 		logger.info('Created table: tags')
 	})
 
-	connection.query('INSERT INTO tags (tags) VALUES ("")', (error) => {
+	await connection.query('INSERT INTO tags (tags) VALUES ("")', (error) => {
 		if (error) {
 			logger.error('Error creating table: tags', error.message)
 			return
 		}
 	})
 
-	connection.query(likes, (error) => {
+	await connection.query(likes, (error) => {
 		if (error) {
 			logger.error('Error creating table: likes', error.message)
 			return
@@ -148,7 +149,7 @@ const setupDb = () => {
 		logger.info('Created table: likes')
 	})
 
-	connection.query(views, (error) => {
+	await connection.query(views, (error) => {
 		if (error) {
 			logger.error('Error creating table: views', error.message)
 			return
@@ -156,7 +157,7 @@ const setupDb = () => {
 		logger.info('Created table: views')
 	})
 
-	connection.query(reports, (error) => {
+	await connection.query(reports, (error) => {
 		if (error) {
 			logger.error('Error creating table: reports', error.message)
 			return
@@ -164,7 +165,7 @@ const setupDb = () => {
 		logger.info('Created table: reports')
 	})
 
-	connection.query(blocks, (error) => {
+	await connection.query(blocks, (error) => {
 		if (error) {
 			logger.error('Error creating table: blocks', error.message)
 			return
@@ -172,7 +173,7 @@ const setupDb = () => {
 		logger.info('Created table: blocks')
 	})
 
-	connection.query(messages, (error) => {
+	await connection.query(messages, (error) => {
 		if (error) {
 			logger.error('Error creating table: messages', error.message)
 			return
@@ -180,7 +181,7 @@ const setupDb = () => {
 		logger.info('Created table: messages')
 	})
 
-	connection.query(notif, (error) => {
+	await connection.query(notif, (error) => {
 		if (error) {
 			logger.error('Error creating table: notif', error.message)
 			return
@@ -190,13 +191,49 @@ const setupDb = () => {
 
 	//inserting dummy users into database, passwords are 'asd'
 	//$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe
-	const dummy = `INSERT INTO users (username, firstname, lastname, email, verified, birthdate, token, password) VALUES
-		('admin', 'firstname', 'lastname', 'admin@example.com', 1, '2000-01-01', 'asd', '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe'),
-		('test', 'firstname', 'lastname', 'test@example.com', 0, '2000-01-01', 'asd123', '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe'),
-		('kimmi', 'firstname', 'lastname', 'pesonkim@gmail.com', 1, '1992-04-08', 'asdasd', '$2b$10$OtdoKvY2JKiVc8bOqlIoQeGjIgJcKtgShpI70mHInGv9OCryWUwzi')`
+	let dummy = 'INSERT INTO users (firstname, lastname, username, email, password, verified, avatar, gender, orientation, bio, latitude, longitude, birthdate, fame, last_login) VALUES'
 
-	connection.query(dummy, (error) => {
+	const gender = ['female', 'male', 'other']
+	const orientation = ['fmo', 'fm', 'fo', 'mo', 'f', 'm', 'o']
+	const locale = ['en', 'de', 'fr', 'es', 'fi', 'it']
+
+	dummy = dummy.concat(`('firstname', 'lastname', 'admin', 'admin@example.com', '$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe', 1, null, 'male', 'f', 'asd', null, null, '2000-01-01', 100, null),`)
+
+	for (let i = 0; i < 500; i++) {
+		let month = Math.ceil(Math.random() * 12)
+		let day = Math.ceil(Math.random() * 28)
+		let year = Math.floor(Math.random() * (2005 - 1980) + 1980)
+		let birthdate = `${year}-${month}-${day}`
+		faker.locale = locale[Math.floor(Math.random() * locale.length)]
+		console.log(faker.locale)
+		dummy = dummy.concat(`(
+				'${faker.name.firstName().replace('\'', '')}',
+				'${faker.name.lastName().replace('\'', '')}',
+				'${faker.internet.userName()}',
+				'${faker.internet.email()}',
+				'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe',
+				1,
+				'${faker.internet.avatar()}',
+				'${gender[Math.floor(Math.random() * gender.length)]}',
+				'${orientation[Math.floor(Math.random() * orientation.length)]}',
+				'${faker.lorem.sentence()}',
+				'${faker.address.latitude()}',
+				'${faker.address.longitude()}',
+				'${birthdate}',
+				100,
+				CURRENT_TIMESTAMP - INTERVAL FLOOR(RAND() * 30) DAY
+			)`)
+		if (i < 499) {
+			dummy = dummy.concat(',')
+		}
+	}
+
+	const prepared = mysql.format(dummy)
+	//console.log(prepared)
+
+	await connection.query(prepared, (error) => {
 		if (error) {
+			// console.log(error)
 			logger.error('Error creating dummy users', error.message)
 			return
 		}
