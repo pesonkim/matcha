@@ -83,19 +83,51 @@ http://localhost:${port}/verify?token=${token}`
 	})
 })
 
-userRouter.get('/', (req, res) => {
+userRouter.get('/', async (req, res) => {
 	const user = jwt.verify(req.token, tokenSecret)
 
 	if (!user) {
 		return res.status(401).send({ error: 'Invalid token or unauthorized' })
 	}
 
-	let sql = 'SELECT * from users WHERE id != ?'
-	pool.query(sql, [user.id], (error, result) => {
-		if (result) {
-			return res.status(200).send(result)
-		} else {
+	let sql = 'SELECT orientation from users WHERE id = ?'
+	await pool.query(sql, [user.id], (error, result) => {
+		if (error) {
 			return res.status(500).send({ error: 'Database error' })
+		}
+		if (result) {
+			//console.log(result[0].orientation)
+			sql = 'SELECT * from users WHERE ('
+			let parameters = []
+
+			if (result[0].orientation.split('').length) {
+				if (result[0].orientation.split('').includes('f')) {
+					parameters.push('female')
+				}
+				if (result[0].orientation.split('').includes('m')) {
+					parameters.push('male')
+				}
+				if (result[0].orientation.split('').includes('o')) {
+					parameters.push('other')
+				}
+			}
+
+			for (let i = 0; i < parameters.length; i++) {
+				sql = sql.concat(`gender = '${parameters[i]}'`)
+				if (i < parameters.length - 1) {
+					sql = sql.concat(' OR ')
+				}
+			}
+			sql = sql.concat(') AND id != ? ')
+			const prepared = mysql.format(sql, [user.id])
+			console.log(prepared)
+			pool.query(prepared, (error, result) => {
+				if (result) {
+					return res.status(200).send(result)
+				} else {
+					return res.status(500).send({ error: 'Database error' })
+				}
+			})
 		}
 	})
 })

@@ -5,7 +5,7 @@ const baseUrl = 'http://localhost:3001/users'
 
 const getUsers = async () => {
 	const response = await axios.get(baseUrl, auth.config())
-	console.log(response)
+	// console.log(response)
 	return response.data
 }
 
