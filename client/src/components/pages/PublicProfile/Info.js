@@ -20,7 +20,7 @@ const Info = ({ name, fame, age, lat, lng, gender, orientation, bio, tags, onlin
 
 		return (
 			<span className='text-lg text-gray-600'>{`
-			${km} kilometres away
+			${km} km away
 			`}</span>
 		)
 	}

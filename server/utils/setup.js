@@ -215,11 +215,11 @@ const setupDb = async () => {
 				'${gender[Math.floor(Math.random() * gender.length)]}',
 				'${orientation[Math.floor(Math.random() * orientation.length)]}',
 				'${'#' + interests[Math.floor(Math.random() * interests.length)].toLowerCase()}',
-				'${khaled({ count: 2, units: 'words' })}',
+				'${khaled({ count: 3, units: 'words' })}',
 				'${faker.address.latitude()}',
 				'${faker.address.longitude()}',
 				'${birthdate}',
-				100,
+				'${Math.floor(Math.random() * (250 - 50) + 50)}',
 				CURRENT_TIMESTAMP - INTERVAL FLOOR(RAND() * 14) DAY
 			)`)
 		if (i < 499) {
