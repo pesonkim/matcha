@@ -1,4 +1,4 @@
-const Image = ({ room }) => {
+const Image = ({ image }) => {
 	const divStyle = {
 		height: '500px',
 		width: '100%',
@@ -17,7 +17,7 @@ const Image = ({ room }) => {
 
 	return (
 		<div style={divStyle} >
-			<img src='https://source.unsplash.com/random' style={imgStyle} />
+			<img src={image} style={imgStyle} />
 		</div>
 	)
 }

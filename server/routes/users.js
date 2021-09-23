@@ -97,7 +97,8 @@ userRouter.get('/', async (req, res) => {
 		}
 		if (result) {
 			//console.log(result[0].orientation)
-			sql = 'SELECT * from users WHERE ('
+			sql = 'SELECT id, firstname, lastname, username, avatar, gender, orientation, tags, bio, latitude, longitude,\
+				TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age, fame, last_login, online from users WHERE ('
 			let parameters = []
 
 			if (result[0].orientation.split('').length) {
@@ -120,7 +121,7 @@ userRouter.get('/', async (req, res) => {
 			}
 			sql = sql.concat(') AND id != ? ')
 			const prepared = mysql.format(sql, [user.id])
-			console.log(prepared)
+			// console.log(prepared)
 			pool.query(prepared, (error, result) => {
 				if (result) {
 					return res.status(200).send(result)

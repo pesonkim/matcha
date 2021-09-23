@@ -23,7 +23,7 @@ const UserLocation = () => {
 
 	const options = {
 		center: center,
-		zoom: 9,
+		zoom: 7,
 		streetViewControl: false,
 		disableDefaultUI: true,
 		zoomControl: true,

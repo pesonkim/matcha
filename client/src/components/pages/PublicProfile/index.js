@@ -4,8 +4,8 @@ import Image from './Image'
 import Info from './Info'
 import Actions from './Actions'
 
-const PublicProfile = () => {
-	const { avatar } = useSelector(state => state.user)
+const PublicProfile = ({ user }) => {
+	console.log(user)
 
 	return (
 		// <Wrapper>
@@ -17,7 +17,7 @@ const PublicProfile = () => {
 		<div className='max-w-screen-sm mx-auto px-2 '>
 			<div className='flex flex-col justify-center my-4 bg-white rounded ui-shadow'>
 				<TopBar />
-				<Image />
+				<Image image={user.avatar}/>
 				<Info />
 				<Actions />
 			</div>

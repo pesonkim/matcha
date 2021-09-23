@@ -35,7 +35,7 @@ const Header = () => {
 							<UserCircleIcon className=' h-8 w-8' />
 							<p className='hidden sm:block'>profile</p>
 						</Link>
-						<Link to='/login' className='flex flex-col items-center ml-2 xs:ml-4 hover:opacity-50' onClick={() => loginService.logout()} >
+						<Link to='/' className='flex flex-col items-center ml-2 xs:ml-4 hover:opacity-50' onClick={() => loginService.logout()} >
 							<LogoutIcon className=' h-8 w-8' />
 							<p className='hidden sm:block'>logout</p>
 						</Link>

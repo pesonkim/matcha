@@ -4,6 +4,7 @@ import axios from 'axios'
 import parse from '../utils/parse'
 
 const initialState = {
+	users: [],
 	allTags: null,
 }
 
@@ -14,8 +15,41 @@ const publicReducer = (state = initialState, action) => {
 			...state,
 			allTags: parse.parseTags(action.data),
 		}
+	case 'GETUSERS':
+		return {
+			...state,
+			users: action.data,
+		}
 	default:
 		return state
+	}
+}
+
+export const getUsers = () => {
+	return async dispatch => {
+		let data
+		try {
+			data = await userService.getUsers()
+			data.map(user => {
+				user.orientation = parse.oFromDb(user.orientation)
+				user.tags = parse.parseTags(user.tags)
+			})
+			console.log(data)
+			dispatch({
+				type: 'GETUSERS',
+				data
+			})
+		} catch (error) {
+			if (error.response && error.response.data) {
+				data = error.response.data.error
+			} else {
+				data = 'Database error'
+			}
+			dispatch({
+				type: 'ERROR',
+				data,
+			})
+		}
 	}
 }
 
