@@ -1,6 +1,7 @@
 const Image = ({ image }) => {
 	const divStyle = {
-		height: '500px',
+		height: '300px',
+		maxHeight: '100%',
 		width: '100%',
 		display: 'flex',
 		justifyContent: 'center',
@@ -9,9 +10,11 @@ const Image = ({ image }) => {
 	}
 
 	const imgStyle = {
+		objectFit: 'contain',
 		height: 'auto',
+		width: '100%',
 		maxHeight: '100%',
-		width: 'auto',
+		maxWidth: '100%',
 		margin: 'auto',
 	}
 

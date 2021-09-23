@@ -68,7 +68,6 @@ const App = () => {
 					<Route path='/browse/:id' render={({ match }) => {
 						const id = parseInt(match.params.id)
 						const foundUser = users.find(user => user.id === id)
-						console.log('match', foundUser)
 						return (
 							loggedIn
 								? userComplete
@@ -95,7 +94,6 @@ const App = () => {
 						? <LoginPage />
 						: <Redirect to='/' />
 					} />
-					{/* <Route path='/expired' component={LoginPage} /> */}
 					<Route path='/expired' render={() => !loggedIn
 						? <LoginPage />
 						: <Redirect to='/' />

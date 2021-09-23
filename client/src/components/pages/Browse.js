@@ -18,6 +18,7 @@ const BrowsePage = () => {
 					<Link key={user.id} to={`/browse/${user.id}`}>
 						<p>
 							<strong>id: </strong>{user.id}
+							<strong> name: </strong>{user.firstname}
 							<strong> user: </strong>{user.username}
 							<strong> gender: </strong>{user.gender}
 							<strong> looking for: </strong>{user.orientation.join(',')}

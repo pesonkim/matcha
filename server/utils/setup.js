@@ -220,7 +220,7 @@ const setupDb = async () => {
 				'${faker.address.longitude()}',
 				'${birthdate}',
 				100,
-				CURRENT_TIMESTAMP - INTERVAL FLOOR(RAND() * 30) DAY
+				CURRENT_TIMESTAMP - INTERVAL FLOOR(RAND() * 14) DAY
 			)`)
 		if (i < 499) {
 			dummy = dummy.concat(',')
