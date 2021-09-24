@@ -2,6 +2,7 @@ import TimeAgo from 'react-timeago'
 import { FireIcon, LocationMarkerIcon } from '@heroicons/react/outline'
 import { useSelector } from 'react-redux'
 import { getDistance, convertDistance } from 'geolib'
+import ReactTooltip from 'react-tooltip'
 
 const Info = ({ name, fame, age, lat, lng, gender, orientation, bio, tags, online, login }) => {
 	const { latitude, longitude } = useSelector(state => state.user)
@@ -33,9 +34,10 @@ const Info = ({ name, fame, age, lat, lng, gender, orientation, bio, tags, onlin
 					<strong className='text-xl'>{age}</strong>
 				</section>
 				<section className="flex justify-between items-center mt-2 mb-4">
-					<section className="flex">
+					<section className="flex" data-tip={lat + ', ' + lng}>
 						<LocationMarkerIcon className='h-6 w-6 mr-1' />
 						{distance()}
+						<ReactTooltip />
 					</section>
 					<section className="flex ">
 						<FireIcon className='h-6 w-6 mr-1' />

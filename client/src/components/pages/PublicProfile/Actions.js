@@ -1,29 +1,52 @@
 import { HeartIcon, FlagIcon, BanIcon } from '@heroicons/react/solid'
+import { useSelector, useDispatch } from 'react-redux'
+import ReactTooltip from 'react-tooltip'
 
-const Actions = ({ room }) => {
+const ReportButton = ({ user, onClick, action }) => (
+	<div className='flex flex-row items-center p-4 select-none cursor-pointer hover:underline text-gray-800' onClick={() => onClick({ type: 'report', user, action })}>
+		<FlagIcon className=' h-8 w-8 mr-2' />
+		<span>Report</span>
+	</div>
+)
+
+const BlockButton = ({ user, onClick, action }) => (
+	<div className='flex flex-row items-center p-4 select-none cursor-pointer hover:underline text-gray-800' onClick={() => onClick({ type: 'block', user, action })}>
+		<BanIcon className=' h-8 w-8 mr-2' />
+		<span>Block</span>
+	</div>
+)
+
+const LikeButton = ({ onClick }) => (
+	<div className='flex flex-row items-center p-4 select-none cursor-pointer hover:underline text-gray-800' onClick={e => onClick(e)}>
+		<HeartIcon className=' h-8 w-8 mr-2' />
+		<span>Like</span>
+	</div>
+)
+
+const CantLikeButton = () => (
+	<div className='flex flex-row items-center p-4 select-none text-gray-500' data-tip='Your profile needs an avatar before you can leave likes'>
+		<HeartIcon className=' h-8 w-8 mr-2' />
+		<span>Like</span>
+		<ReactTooltip />
+	</div>
+)
+
+const Actions = ({ user, handleLike, askConfirm, handleReport, handleBlock }) => {
+	const { avatar } = useSelector(state => state.user)
+
 	const divStyle = {
 		borderBottomWidth: '2px',
 		borderColor: '#dae4e9',
 	}
 
-	const buttonStyle = {
-		color: '#3490dc',
-	}
-
 	return (
 		<div className="w-full flex justify-between sm:px-4" style={divStyle}>
-			<div className='flex flex-row items-center p-4 select-none cursor-pointer hover:underline text-pink-500'>
-				<HeartIcon className=' h-8 w-8 mr-2' />
-				<span>Like</span>
-			</div>
-			<div className='flex flex-row items-center p-4 select-none cursor-pointer hover:underline text-gray-800'>
-				<FlagIcon className=' h-8 w-8 mr-2' />
-				<span>Report</span>
-			</div>
-			<div className='flex flex-row items-center p-4 select-none cursor-pointer hover:underline text-gray-800'>
-				<BanIcon className=' h-8 w-8 mr-2' />
-				<span>Block</span>
-			</div>
+			{avatar
+				? <LikeButton onClick={handleLike}/>
+				: <CantLikeButton />
+			}
+			<ReportButton user={user} onClick={askConfirm} action={handleReport}/>
+			<BlockButton user={user} onClick={askConfirm} action={handleBlock}/>
 		</div>
 	)
 }

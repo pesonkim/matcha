@@ -3,9 +3,15 @@ import TopBar from './TopBar'
 import Image from './Image'
 import Info from './Info'
 import Actions from './Actions'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
+import Confirm from '../../ui/Confirm'
+import Modal from '../../ui/Modal'
 
 const PublicProfile = ({ user }) => {
+	const [modal, setModal] = useState(null)
+	const [dialog, setDialog] = useState(null)
+
 	useEffect(() => {
 		window.scroll({
 			top: 0,
@@ -13,6 +19,19 @@ const PublicProfile = ({ user }) => {
 			behavior: 'smooth',
 		})
 	}, [])
+
+	const handleLike = () => {
+		console.log('like')
+	}
+
+	const handleReport = () => {
+		console.log('report')
+	}
+
+	const handleBlock = () => {
+		console.log('block')
+	}
+
 	return (
 		<div className='max-w-screen-sm mx-auto px-2 '>
 			<div className='flex flex-col justify-center my-4 bg-white rounded ui-shadow'>
@@ -38,7 +57,13 @@ const PublicProfile = ({ user }) => {
 					login={user.last_login}
 				/>
 				<Actions
+					user={user.firstname}
+					handleLike={handleLike}
+					askConfirm={setDialog}
+					handleReport={handleReport}
+					handleBlock={handleBlock}
 				/>
+				<Confirm dialog={dialog} setDialog={setDialog} />
 			</div>
 		</div>
 	)

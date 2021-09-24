@@ -44,6 +44,7 @@ const Preview = ({ user }) => {
 			`}</span>
 		)
 	}
+
 	return (
 		<div className='flex flex-col  justify-center p-4 bg-white rounded ui-shadow'>
 			<section className="flex items-center mb-2">
