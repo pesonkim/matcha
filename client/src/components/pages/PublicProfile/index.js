@@ -25,10 +25,12 @@ const PublicProfile = ({ user }) => {
 	}
 
 	const handleReport = () => {
+		setDialog(null)
 		console.log('report')
 	}
 
 	const handleBlock = () => {
+		setDialog(null)
 		console.log('block')
 	}
 

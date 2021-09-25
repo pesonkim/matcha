@@ -211,8 +211,8 @@ const setupDb = async () => {
 		dummy = dummy.concat(`(
 				'${faker.name.firstName().replace('\'', '')}',
 				'${faker.name.lastName().replace('\'', '')}',
-				'${faker.internet.userName()}',
-				'${faker.internet.email()}',
+				'${faker.unique(faker.internet.userName)}',
+				'${faker.unique(faker.internet.email)}',
 				'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe',
 				1,
 				'${faker.internet.avatar()}',

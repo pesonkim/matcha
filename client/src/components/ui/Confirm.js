@@ -2,7 +2,6 @@ import Wrapper from './Wrapper'
 import Heading from './forms/Heading'
 
 const Confirm = ({ dialog, setDialog }) => {
-	console.log('render')
 	return (
 		!dialog
 			? null

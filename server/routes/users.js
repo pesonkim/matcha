@@ -156,6 +156,9 @@ userRouter.get('/:id', (req, res) => {
 					bio: result[0].bio,
 					tags: result[0].tags,
 					avatar: result[0].avatar,
+					fame: result[0].fame,
+					online: result[0].online,
+					last_login: result[0].last_login,
 				})
 		} else {
 			return res.status(500).send({ error: 'Database error' })

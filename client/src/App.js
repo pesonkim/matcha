@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRef, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { lookup } from './reducers/userReducer'
-import { getUsers } from './reducers/publicReducer'
+import { getUserIds } from './reducers/publicReducer'
 import auth from './utils/auth'
 
 import LoginPage from './components/pages/Login'
@@ -53,7 +53,7 @@ const App = () => {
 
 	useEffect(() => {
 		if (userComplete) {
-			dispatch(getUsers())
+			dispatch(getUserIds())
 			loading.current = false
 		}
 	}, [loggedIn, orientation])
