@@ -15,6 +15,7 @@ import PublicProfile from './components/pages/PublicProfile'
 import ResetPage from './components/pages/Reset'
 import ProfilePage from './components/pages/Profile'
 import ProfileForm from './components/ui/forms/ProfileForm'
+import Wrapper from './components/ui/Wrapper'
 
 import Chat from './components/pages/Chat'
 import Join from './components/pages/Join'
@@ -22,7 +23,7 @@ import Join from './components/pages/Join'
 const App = () => {
 	const { loggedIn, userComplete } = useSelector(state => state.user)
 	const { errorMessage } = useSelector(state => state.form)
-	const { users } = useSelector(state => state.public)
+	const { ids } = useSelector(state => state.public)
 	const { orientation } = useSelector(state => state.user)
 	const dispatch = useDispatch()
 	const loading = useRef(true)
@@ -58,21 +59,23 @@ const App = () => {
 		}
 	}, [loggedIn, orientation])
 
-	//console.log(loggedIn, userComplete)
-
 	return (
 		<Layout>
 			{loading.current
-				? <p>Loading</p>
+				? <Wrapper>
+					<div className='text-center'>
+						Loading...
+					</div>
+				</Wrapper>
 				: <Switch>
 					<Route path='/browse/:id' render={({ match }) => {
 						const id = parseInt(match.params.id)
-						const foundUser = users.find(user => user.id === id)
+						const foundUser = ids.find(user => user === id)
 						return (
 							loggedIn
 								? userComplete
 									? foundUser
-										? <PublicProfile user={foundUser} />
+										? <PublicProfile id={foundUser} />
 										: <Redirect to='/browse' />
 									: <ProfileForm />
 								: <Redirect to='/' />

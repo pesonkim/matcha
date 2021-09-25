@@ -8,8 +8,11 @@ const initialState = {
 	ids: [],
 	users: [],
 	previews: [],
+	profile: null,
 	sortFilter: null,
 	allTags: null,
+	filterTags: [],
+	loading: true,
 }
 
 const publicReducer = (state = initialState, action) => {
@@ -18,6 +21,11 @@ const publicReducer = (state = initialState, action) => {
 		return {
 			...state,
 			allTags: parse.parseTags(action.data),
+		}
+	case 'SETFILTERTAGS':
+		return {
+			...state,
+			filterTags: action.data,
 		}
 	case 'SETSORT':
 		return {
@@ -29,10 +37,25 @@ const publicReducer = (state = initialState, action) => {
 			...state,
 			users: action.data,
 		}
+	case 'GETPREVIEWS':
+		return {
+			...state,
+			previews: action.data,
+		}
 	case 'GETIDS':
 		return {
 			...state,
 			ids: action.data,
+		}
+	case 'SETLOADING':
+		return {
+			...state,
+			loading: false,
+		}
+	case 'GETPROFILE':
+		return {
+			...state,
+			profile: action.data,
 		}
 	default:
 		return state
@@ -48,8 +71,6 @@ export const getUsers = (sort, latitude, longitude) => {
 				user.orientation = parse.oFromDb(user.orientation)
 				user.tags = parse.parseTags(user.tags)
 			})
-			console.log(data)
-			console.log(sort, latitude, longitude)
 			//sort here
 			if (sort === 'distance') {
 				data = data.sort((a,b) => {
@@ -78,8 +99,40 @@ export const getUsers = (sort, latitude, longitude) => {
 					return b.age - a.age
 				})
 			}
+			// console.log(data)
 			dispatch({
 				type: 'GETUSERS',
+				data
+			})
+			dispatch({
+				type: 'GETPREVIEWS',
+				data
+			})
+		} catch (error) {
+			if (error.response && error.response.data) {
+				data = error.response.data.error
+			} else {
+				data = 'Database error'
+			}
+			dispatch({
+				type: 'ERROR',
+				data,
+			})
+		}
+	}
+}
+
+export const getUserById = (id) => {
+	return async dispatch => {
+		let data
+		try {
+			data = await userService.getUsers()
+			data = data.find(user => user.id === id)
+			data.orientation = parse.oFromDb(data.orientation)
+			data.tags = parse.parseTags(data.tags)
+			console.log(data)
+			dispatch({
+				type: 'GETPROFILE',
 				data
 			})
 		} catch (error) {

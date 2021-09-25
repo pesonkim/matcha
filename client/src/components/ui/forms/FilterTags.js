@@ -4,31 +4,28 @@ import { useEffect } from 'react'
 import { getTags } from '../../../reducers/publicReducer'
 
 const FilterTags = () => {
-	const { tags } = useSelector(state => state.form)
-	const { allTags } = useSelector(state => state.public)
+	const { allTags, filterTags } = useSelector(state => state.public)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
 		dispatch(getTags())
 	}, [])
 
-	const selected = () => tags ? tags.map(o => ({ value: o, label: o })) : []
+	const selected = () => filterTags ? filterTags.map(o => ({ value: o, label: o })) : []
 	const options = () => allTags ? allTags.map(o => ({ value: o, label: o })) : []
 
 	const handleChange = (option) => {
 		const current = Array.isArray(option) ? option.map(i => (i.value.substr(0, 1) !== '#' ? '#' : '') + i.value) : []
-		//console.log(current)
+		// console.log(current)
 		dispatch({
-			type: 'TAGS',
-			data: {
-				tags: current
-			}
+			type: 'SETFILTERTAGS',
+			data: current
 		})
 	}
 
 	return (
 		<>
-			<label>Tags</label>
+			<label className=''>Tags</label>
 			<Select
 				isMulti
 				name='tags'

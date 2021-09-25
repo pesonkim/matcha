@@ -203,7 +203,7 @@ const setupDb = async () => {
 	for (let i = 0; i < 500; i++) {
 		let month = Math.ceil(Math.random() * 12)
 		let day = Math.ceil(Math.random() * 28)
-		let year = Math.floor(Math.random() * (2005 - 1980) + 1980)
+		let year = Math.floor(Math.random() * (2005 - 1971) + 1971)
 		let birthdate = `${year}-${month}-${day}`
 		let randomPoint = randomLocation.randomCirclePoint(P, 1000000)
 		faker.locale = locale[Math.floor(Math.random() * locale.length)]
@@ -223,7 +223,7 @@ const setupDb = async () => {
 				'${randomPoint.latitude}',
 				'${randomPoint.longitude}',
 				'${birthdate}',
-				'${Math.floor(Math.random() * (250 - 50) + 50)}',
+				'${Math.floor(Math.random() * (500 - 50) + 50)}',
 				CURRENT_TIMESTAMP - INTERVAL FLOOR(RAND() * 14) DAY
 			)`)
 		if (i < 499) {

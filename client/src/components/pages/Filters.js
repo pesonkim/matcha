@@ -16,8 +16,8 @@ const Togglable = (props) => {
 		setVisible(!visible)
 	}
 
-	const Show = () => <ChevronDownIcon className='w-10 h-10' />
-	const Hide = () => <ChevronUpIcon className='w-10 h-10' />
+	const Show = () => <ChevronDownIcon className='w-8 h-8' />
+	const Hide = () => <ChevronUpIcon className='w-8 h-8' />
 
 	return (
 		<>
@@ -25,7 +25,7 @@ const Togglable = (props) => {
 				<p className=''>{props.text || ''}</p>
 				<button tabIndex={-1} onClick={toggleVisibility}>{visible ? Hide() : Show()}</button>
 			</div>
-			<div style={showWhenVisible}>
+			<div style={showWhenVisible} className='mt-2'>
 				{props.children}
 			</div>
 		</>
@@ -39,14 +39,13 @@ const Filters = () => {
 			{/* <ResultSort />
 			<hr className='my-2' /> */}
 			<UserSort />
-			{/* <hr className='my-2' />
+			<hr className='my-2' />
 			<Togglable text='User filters'>
-				<hr className='my-2' />
 				<FilterTags />
-				<p>Fame</p>
+				{/* <p>Fame</p>
 				<p>Distance</p>
-				<p>Age</p>
-			</Togglable> */}
+				<p>Age</p> */}
+			</Togglable>
 		</Wrapper>
 	)
 }
