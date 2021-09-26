@@ -10,17 +10,17 @@ import Filters from './Filters'
 const BrowsePage = () => {
 	const dispatch = useDispatch()
 	const { latitude, longitude } = useSelector(state => state.user)
-	const { ids, users, sortFilter, filterTags, loadingUsers } = useSelector(state => state.public)
+	const { ids, users, sortFilter, filterTags, filterSliders, loadingUsers } = useSelector(state => state.public)
 
 	useEffect(async () => {
 		if (ids && sortFilter) {
-			await dispatch(getUsers(filterTags, sortFilter, latitude, longitude))
+			await dispatch(getUsers(filterTags, filterSliders, sortFilter, latitude, longitude))
 			dispatch({
 				type: 'LOADINGUSERS',
 				data: false
 			})
 		}
-	}, [ids, sortFilter, filterTags])
+	}, [ids, sortFilter, filterTags, filterSliders])
 
 	useEffect(() => {
 		return () => {

@@ -205,7 +205,7 @@ const setupDb = async () => {
 		let day = Math.ceil(Math.random() * 28)
 		let year = Math.floor(Math.random() * (2005 - 1971) + 1971)
 		let birthdate = `${year}-${month}-${day}`
-		let randomPoint = randomLocation.randomCirclePoint(P, 1000000)
+		let randomPoint = randomLocation.randomCirclePoint(P, 500000)
 		faker.locale = locale[Math.floor(Math.random() * locale.length)]
 		// console.log(faker.locale)
 		dummy = dummy.concat(`(

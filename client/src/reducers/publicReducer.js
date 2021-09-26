@@ -1,6 +1,6 @@
 import userService from '../services/users'
 import tagsService from '../services/tags'
-import { getDistance } from 'geolib'
+import { getDistance, convertDistance } from 'geolib'
 import axios from 'axios'
 import parse from '../utils/parse'
 
@@ -12,6 +12,11 @@ const initialState = {
 	sortFilter: null,
 	allTags: null,
 	filterTags: [],
+	filterSliders: {
+		distance: 500,
+		age: [16, 100],
+		fame: [0, 500],
+	},
 	loadingApp: true,
 	loadingUsers: true,
 }
@@ -27,6 +32,17 @@ const publicReducer = (state = initialState, action) => {
 		return {
 			...state,
 			filterTags: action.data,
+		}
+	case 'SETSLIDERS':
+		return {
+			...state,
+			filterSliders: action.data,
+		}
+	case 'RESETFILTERS':
+		return {
+			...state,
+			filterSliders: initialState.filterSliders,
+			filterTags: initialState.filterTags,
 		}
 	case 'SETSORT':
 		return {
@@ -68,22 +84,53 @@ const publicReducer = (state = initialState, action) => {
 	}
 }
 
-export const getUsers = (filter, sort, latitude, longitude) => {
+export const getUsers = (filter, sliders, sort, latitude, longitude) => {
 	return async dispatch => {
 		let data
 		try {
+			// console.log(sliders)
 			data = await userService.getUsers()
 			data.map(user => {
 				user.orientation = parse.oFromDb(user.orientation)
 				user.tags = parse.parseTags(user.tags)
 			})
 			// console.log(data)
-			//filter
+			//filter by tags
 			if (filter.length) {
 				data = data.filter(user => filter.every(tag => user.tags.includes(tag)))
 			}
+			//filter by sliders
+			if (sliders) {
+				if (sliders.distance !== 1000) {
+					data = data.filter(user => {
+						user.distance = getDistance(
+							{ latitude: user.latitude, longitude: user.longitude },
+							{ latitude: latitude, longitude: longitude }
+						)
+						user.distance = Math.ceil(convertDistance(user.distance, 'km'))
+						// console.log(user.distance, sliders.distance)
+						return (
+							(user.distance <= sliders.distance)
+						)
+					})
+				}
+				if (sliders.age) {
+					data = data.filter(user => {
+						return (
+							(user.age >= sliders.age[0] && user.age <= sliders.age[1])
+						)
+					})
+				}
+				if (sliders.fame) {
+					data = data.filter(user => {
+						return (
+							(user.fame >= sliders.fame[0] && user.fame <= sliders.fame[1])
+						)
+					})
+				}
+			}
 			//sort
-			if (sort === 'distance') {
+			if (sort === 'distance (ascending)') {
 				data = data.sort((a,b) => {
 					a.distance = getDistance(
 						{ latitude: a.latitude, longitude: a.longitude },
@@ -97,20 +144,38 @@ export const getUsers = (filter, sort, latitude, longitude) => {
 						(a.distance - b.distance)
 					)
 				})
-			} else if (sort === 'fame') {
+			} else if (sort === 'distance (descending)') {
+				data = data.sort((a,b) => {
+					a.distance = getDistance(
+						{ latitude: a.latitude, longitude: a.longitude },
+						{ latitude: latitude, longitude: longitude }
+					)
+					b.distance = getDistance(
+						{ latitude: b.latitude, longitude: b.longitude },
+						{ latitude: latitude, longitude: longitude }
+					)
+					return (
+						(b.distance - a.distance)
+					)
+				})
+			} else if (sort === 'fame (ascending)') {
+				data = data.sort((a,b) => {
+					return a.fame - b.fame
+				})
+			} else if (sort === 'fame (descending)') {
 				data = data.sort((a,b) => {
 					return b.fame - a.fame
 				})
-			} else if (sort === 'age (from young to old)') {
+			} else if (sort === 'age (ascending)') {
 				data = data.sort((a,b) => {
 					return a.age - b.age
 				})
-			} else if (sort === 'age (from old to young)') {
+			} else if (sort === 'age (descending)') {
 				data = data.sort((a,b) => {
 					return b.age - a.age
 				})
 			}
-			// console.log(data)
+			console.log(data.length)
 			dispatch({
 				type: 'SETUSERS',
 				data

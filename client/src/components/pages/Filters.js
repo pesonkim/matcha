@@ -3,8 +3,10 @@ import Heading from '../ui/forms/Heading'
 import FilterTags from '../ui/forms/FilterTags'
 import UserSort from '../ui/forms/UserSort'
 import ResultSort from '../ui/forms/ResultSort'
+import SliderFilter from '../ui/forms/Slider'
 import { useState } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline'
+import ResetButton from '../ui/forms/ResetButton'
 
 const Togglable = (props) => {
 	const [visible, setVisible] = useState(false)
@@ -42,9 +44,8 @@ const Filters = () => {
 			<hr className='my-2' />
 			<Togglable text='User filters'>
 				<FilterTags />
-				{/* <p>Fame</p>
-				<p>Distance</p>
-				<p>Age</p> */}
+				<SliderFilter />
+				<ResetButton />
 			</Togglable>
 		</Wrapper>
 	)

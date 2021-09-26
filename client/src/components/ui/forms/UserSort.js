@@ -7,10 +7,12 @@ const UserSort = () => {
 	const dispatch = useDispatch()
 
 	const options = [
-		{ value: 'distance', label: 'distance' },
-		{ value: 'fame', label: 'fame' },
-		{ value: 'age (from young to old)', label: 'age (from young to old)' },
-		{ value: 'age (from old to young)', label: 'age (from old to young)' },
+		{ value: 'distance (ascending)', label: 'distance (ascending)' },
+		{ value: 'distance (descending)', label: 'distance (descending)' },
+		{ value: 'fame (ascending)', label: 'fame (ascending)' },
+		{ value: 'fame (descending)', label: 'fame (descending)' },
+		{ value: 'age (ascending)', label: 'age (ascending)' },
+		{ value: 'age (descending)', label: 'age (descending)' },
 	]
 
 	const selected = () => sortFilter ? { value: sortFilter, label: sortFilter } : options[0]
@@ -37,7 +39,7 @@ const UserSort = () => {
 
 	return (
 		<>
-			<label className='text-bold'>Sort by</label>
+			<label className=''>Sort by</label>
 			<Select
 				name='sort'
 				value={selected()}
