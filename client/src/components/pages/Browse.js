@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import Wrapper from '../ui/Wrapper'
 import Preview from '../ui/Preview'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { getUsers } from '../../reducers/publicReducer'
@@ -9,12 +9,12 @@ import Filters from './Filters'
 
 const BrowsePage = () => {
 	const dispatch = useDispatch()
-	const { latitude, longitude } = useSelector(state => state.user)
+	const { tags, latitude, longitude } = useSelector(state => state.user)
 	const { ids, users, sortFilter, filterTags, filterSliders, loadingUsers } = useSelector(state => state.public)
 
 	useEffect(async () => {
 		if (ids && sortFilter) {
-			await dispatch(getUsers(filterTags, filterSliders, sortFilter, latitude, longitude))
+			await dispatch(getUsers(filterTags, filterSliders, sortFilter, tags, latitude, longitude))
 			dispatch({
 				type: 'LOADINGUSERS',
 				data: false

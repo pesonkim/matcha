@@ -90,7 +90,7 @@ userRouter.get('/', async (req, res) => {
 		return res.status(401).send({ error: 'Invalid token or unauthorized' })
 	}
 
-	let sql = 'SELECT orientation from users WHERE id = ?'
+	let sql = 'SELECT orientation, gender from users WHERE id = ?'
 	await pool.query(sql, [user.id], (error, result) => {
 		if (error) {
 			return res.status(500).send({ error: 'Database error' })
@@ -119,9 +119,9 @@ userRouter.get('/', async (req, res) => {
 					sql = sql.concat(' OR ')
 				}
 			}
-			sql = sql.concat(') AND id != ? ')
+			sql = sql.concat(`) AND id != ? AND orientation LIKE '%${result[0].gender.slice(0,1)}%'`)
 			const prepared = mysql.format(sql, [user.id])
-			// console.log(prepared)
+			console.log(prepared)
 			pool.query(prepared, (error, result) => {
 				if (result) {
 					return res.status(200).send(result)

@@ -84,7 +84,7 @@ const publicReducer = (state = initialState, action) => {
 	}
 }
 
-export const getUsers = (filter, sliders, sort, latitude, longitude) => {
+export const getUsers = (filter, sliders, sort, tags, latitude, longitude) => {
 	return async dispatch => {
 		let data
 		try {
@@ -174,6 +174,22 @@ export const getUsers = (filter, sliders, sort, latitude, longitude) => {
 				data = data.sort((a,b) => {
 					return b.age - a.age
 				})
+			} else if (sort === 'tags in common') {
+				let matches = data.filter(user => tags.some(tag => user.tags.includes(tag)))
+				// console.log(matches)
+				matches = matches.sort((a,b) => {
+					a.matches = a.tags.filter(tag => tags.some(v => tag.includes(v)))
+					b.matches = b.tags.filter(tag => tags.some(v => tag.includes(v)))
+					// console.log(a.matches, b.matches)
+					return (
+						(b.matches.length - a.matches.length)
+					)
+				})
+				// console.log(matches)
+				// console.log('len', data.length)
+				data = data.filter(user => !matches.map(i => i.id).includes(user.id))
+				data = matches.concat(data)
+				// console.log(data)
 			}
 			console.log(data.length)
 			dispatch({

@@ -7,6 +7,7 @@ const UserSort = () => {
 	const dispatch = useDispatch()
 
 	const options = [
+		{ value: 'tags in common', label: 'tags in common' },
 		{ value: 'distance (ascending)', label: 'distance (ascending)' },
 		{ value: 'distance (descending)', label: 'distance (descending)' },
 		{ value: 'fame (ascending)', label: 'fame (ascending)' },
