@@ -72,7 +72,7 @@ const BrowsePage = () => {
 
 	return (
 		<>
-			{/* {`total: ${users.length}`} */}
+			{`total: ${users.length}`}
 			<Filters />
 			{loadingUsers
 				? <Wrapper>

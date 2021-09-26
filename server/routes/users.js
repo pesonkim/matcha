@@ -121,7 +121,7 @@ userRouter.get('/', async (req, res) => {
 			}
 			sql = sql.concat(`) AND id != ? AND orientation LIKE '%${result[0].gender.slice(0,1)}%'`)
 			const prepared = mysql.format(sql, [user.id])
-			console.log(prepared)
+			// console.log(prepared)
 			pool.query(prepared, (error, result) => {
 				if (result) {
 					return res.status(200).send(result)

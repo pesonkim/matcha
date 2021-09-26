@@ -1,7 +1,6 @@
 import userService from '../services/users'
 import tagsService from '../services/tags'
 import { getDistance, convertDistance } from 'geolib'
-import axios from 'axios'
 import parse from '../utils/parse'
 
 const initialState = {
@@ -191,7 +190,7 @@ export const getUsers = (filter, sliders, sort, tags, latitude, longitude) => {
 				data = matches.concat(data)
 				// console.log(data)
 			}
-			console.log(data.length)
+			// console.log(data.length)
 			dispatch({
 				type: 'SETUSERS',
 				data
