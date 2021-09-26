@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
+import Wrapper from '../../ui/Wrapper'
 import TopBar from './TopBar'
 import Image from './Image'
 import Info from './Info'
@@ -40,7 +41,11 @@ const PublicProfile = ({ id }) => {
 
 	if (!profile) {
 		return (
-			<p>Loading user profile...</p>
+			<Wrapper>
+				<div className='text-center'>
+					Loading user profile...
+				</div>
+			</Wrapper>
 		)
 	} else {
 		return (

@@ -4,33 +4,32 @@ import Preview from '../ui/Preview'
 import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { getUsers, filterUsers } from '../../reducers/publicReducer'
+import { getUsers } from '../../reducers/publicReducer'
 import Filters from './Filters'
 
 const BrowsePage = () => {
 	const dispatch = useDispatch()
-	// const loading = useRef(true)
 	const { latitude, longitude } = useSelector(state => state.user)
-	const { ids, users, previews, sortFilter, filterTags, loading } = useSelector(state => state.public)
+	const { ids, users, sortFilter, filterTags, loadingUsers } = useSelector(state => state.public)
 
 	useEffect(async () => {
 		if (ids && sortFilter) {
-			await dispatch(getUsers(sortFilter, latitude, longitude))
-			// console.log(users, filterTags)
-			if (users && filterTags.length) {
-				const matches = users.filter(user => filterTags.every(tag => user.tags.includes(tag)))
-				// console.log('filter by', filterTags)
-				// console.log('matches', matches)
-				dispatch({
-					type: 'GETPREVIEWS',
-					data: matches
-				})
-			}
+			await dispatch(getUsers(filterTags, sortFilter, latitude, longitude))
 			dispatch({
-				type: 'SETLOADING',
+				type: 'LOADINGUSERS',
+				data: false
 			})
 		}
 	}, [ids, sortFilter, filterTags])
+
+	useEffect(() => {
+		return () => {
+			dispatch({
+				type: 'LOADINGUSERS',
+				data: true
+			})
+		}
+	}, [])
 
 	// useEffect(() => {
 	// 	if (users.length && filterTags) {
@@ -75,7 +74,7 @@ const BrowsePage = () => {
 		<>
 			{/* {`total: ${users.length}`} */}
 			<Filters />
-			{loading
+			{loadingUsers
 				? <Wrapper>
 					<div className='text-center'>
 						Loading users...
@@ -83,10 +82,9 @@ const BrowsePage = () => {
 				</Wrapper>
 				: null
 			}
-			{previews.length
+			{users.length
 				? <div className="w-full max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-2 md:gap-3 lg:gap-5 mx-auto my-4 px-2">
-					{previews.map(profile => {
-						//infinite scroll magic here
+					{users.map(profile => {
 						return (
 							<Link key={profile.id} to={`/browse/${profile.id}`}>
 								<Preview user={profile} />
@@ -96,7 +94,7 @@ const BrowsePage = () => {
 
 					}
 				</div>
-				: loading
+				: loadingUsers
 					? null
 					: <Wrapper>
 						<div className='text-center'>

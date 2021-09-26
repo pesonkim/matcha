@@ -1,7 +1,7 @@
 import { Route, Switch } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRef, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { lookup } from './reducers/userReducer'
 import { getUserIds } from './reducers/publicReducer'
@@ -23,10 +23,9 @@ import Join from './components/pages/Join'
 const App = () => {
 	const { loggedIn, userComplete } = useSelector(state => state.user)
 	const { errorMessage } = useSelector(state => state.form)
-	const { ids } = useSelector(state => state.public)
+	const { ids, loadingApp } = useSelector(state => state.public)
 	const { orientation } = useSelector(state => state.user)
 	const dispatch = useDispatch()
-	const loading = useRef(true)
 
 	useEffect(() => {
 		const user = JSON.parse(window.localStorage.getItem('user'))
@@ -39,7 +38,10 @@ const App = () => {
 			})
 		} else {
 			window.localStorage.clear()
-			loading.current = false
+			dispatch({
+				type: 'LOADINGAPP',
+				data: false
+			})
 		}
 		dispatch(lookup())
 		console.log(auth.config())
@@ -52,16 +54,20 @@ const App = () => {
 		}
 	}, [errorMessage])
 
-	useEffect(() => {
+	useEffect(async () => {
 		if (userComplete) {
-			dispatch(getUserIds())
-			loading.current = false
+			await dispatch(getUserIds())
+			dispatch({
+				type: 'LOADINGAPP',
+				data: false
+			})
 		}
 	}, [loggedIn, orientation])
 
+	// console.log('check', loadingApp)
 	return (
 		<Layout>
-			{loading.current
+			{loadingApp
 				? <Wrapper>
 					<div className='text-center'>
 						Loading...

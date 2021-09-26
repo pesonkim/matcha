@@ -12,7 +12,8 @@ const initialState = {
 	sortFilter: null,
 	allTags: null,
 	filterTags: [],
-	loading: true,
+	loadingApp: true,
+	loadingUsers: true,
 }
 
 const publicReducer = (state = initialState, action) => {
@@ -32,27 +33,32 @@ const publicReducer = (state = initialState, action) => {
 			...state,
 			sortFilter: action.data.sortFilter,
 		}
-	case 'GETUSERS':
+	case 'SETUSERS':
 		return {
 			...state,
 			users: action.data,
 		}
-	case 'GETPREVIEWS':
+	case 'SETPREVIEWS':
 		return {
 			...state,
 			previews: action.data,
 		}
-	case 'GETIDS':
+	case 'SETIDS':
 		return {
 			...state,
 			ids: action.data,
 		}
-	case 'SETLOADING':
+	case 'LOADINGAPP':
 		return {
 			...state,
-			loading: false,
+			loadingApp: action.data,
 		}
-	case 'GETPROFILE':
+	case 'LOADINGUSERS':
+		return {
+			...state,
+			loadingUsers: action.data,
+		}
+	case 'SETPROFILE':
 		return {
 			...state,
 			profile: action.data,
@@ -62,7 +68,7 @@ const publicReducer = (state = initialState, action) => {
 	}
 }
 
-export const getUsers = (sort, latitude, longitude) => {
+export const getUsers = (filter, sort, latitude, longitude) => {
 	return async dispatch => {
 		let data
 		try {
@@ -71,7 +77,12 @@ export const getUsers = (sort, latitude, longitude) => {
 				user.orientation = parse.oFromDb(user.orientation)
 				user.tags = parse.parseTags(user.tags)
 			})
-			//sort here
+			// console.log(data)
+			//filter
+			if (filter.length) {
+				data = data.filter(user => filter.every(tag => user.tags.includes(tag)))
+			}
+			//sort
 			if (sort === 'distance') {
 				data = data.sort((a,b) => {
 					a.distance = getDistance(
@@ -101,11 +112,7 @@ export const getUsers = (sort, latitude, longitude) => {
 			}
 			// console.log(data)
 			dispatch({
-				type: 'GETUSERS',
-				data
-			})
-			dispatch({
-				type: 'GETPREVIEWS',
+				type: 'SETUSERS',
 				data
 			})
 		} catch (error) {
@@ -132,7 +139,7 @@ export const getUserById = (id) => {
 			data.tags = parse.parseTags(data.tags)
 			console.log(data)
 			dispatch({
-				type: 'GETPROFILE',
+				type: 'SETPROFILE',
 				data
 			})
 		} catch (error) {
@@ -158,7 +165,7 @@ export const getUserIds = () => {
 			data.map(user => ids.push(user.id))
 			console.log(ids)
 			dispatch({
-				type: 'GETIDS',
+				type: 'SETIDS',
 				data: ids
 			})
 		} catch (error) {
