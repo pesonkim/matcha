@@ -11,16 +11,17 @@ const BrowsePage = () => {
 	const dispatch = useDispatch()
 	const { tags, latitude, longitude } = useSelector(state => state.user)
 	const { ids, users, sortFilter, filterTags, filterSliders, loadingUsers } = useSelector(state => state.public)
+	const { blocks } = useSelector(state => state.match)
 
 	useEffect(async () => {
-		if (ids && sortFilter) {
-			await dispatch(getUsers(filterTags, filterSliders, sortFilter, tags, latitude, longitude))
+		if (sortFilter && blocks) {
+			await dispatch(getUsers(filterTags, filterSliders, sortFilter, tags, latitude, longitude, blocks))
 			dispatch({
 				type: 'LOADINGUSERS',
 				data: false
 			})
 		}
-	}, [ids, sortFilter, filterTags, filterSliders])
+	}, [ids, sortFilter, filterTags, filterSliders, blocks])
 
 	useEffect(() => {
 		return () => {
@@ -72,7 +73,7 @@ const BrowsePage = () => {
 
 	return (
 		<>
-			{`total: ${users.length}`}
+			{`total: ${users.length}, blocks: ${blocks ? blocks.length : null}`}
 			<Filters />
 			{loadingUsers
 				? <Wrapper>

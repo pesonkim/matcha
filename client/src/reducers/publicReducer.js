@@ -4,7 +4,7 @@ import { getDistance, convertDistance } from 'geolib'
 import parse from '../utils/parse'
 
 const initialState = {
-	ids: [],
+	ids: null,
 	users: [],
 	previews: [],
 	profile: null,
@@ -83,12 +83,18 @@ const publicReducer = (state = initialState, action) => {
 	}
 }
 
-export const getUsers = (filter, sliders, sort, tags, latitude, longitude) => {
+export const getUsers = (filter, sliders, sort, tags, latitude, longitude, blocks) => {
 	return async dispatch => {
 		let data
 		try {
 			// console.log(sliders)
 			data = await userService.getUsers()
+			// console.log('here', data.length)
+			// console.log(blocks)
+			if (blocks.length) {
+				data = data.filter(i => !blocks.map(b => b.receiver).includes(i.id))
+			}
+			// console.log('now', data.length)
 			data.map(user => {
 				user.orientation = parse.oFromDb(user.orientation)
 				user.tags = parse.parseTags(user.tags)
@@ -236,17 +242,26 @@ export const getUserById = (id) => {
 	}
 }
 
-export const getUserIds = () => {
+export const getUserIds = (blocks) => {
 	return async dispatch => {
 		let data
 		let ids = []
 		try {
+			// console.log(blocks)
 			data = await userService.getUsers()
 			data.map(user => ids.push(user.id))
-			console.log(ids)
+			// console.log(ids)
+			if (blocks.length) {
+				ids = ids.filter(i => !blocks.map(b => b.receiver).includes(i))
+			}
+			// console.log(ids)
 			dispatch({
 				type: 'SETIDS',
 				data: ids
+			})
+			dispatch({
+				type: 'LOADINGAPP',
+				data: false
 			})
 		} catch (error) {
 			if (error.response && error.response.data) {

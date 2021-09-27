@@ -26,6 +26,7 @@ const App = () => {
 	const { errorMessage } = useSelector(state => state.form)
 	const { ids, loadingApp } = useSelector(state => state.public)
 	const { orientation } = useSelector(state => state.user)
+	const { blocks } = useSelector(state => state.match)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -57,16 +58,16 @@ const App = () => {
 
 	useEffect(async () => {
 		if (userComplete) {
-			await dispatch(getUserIds())
 			await dispatch(getHistory())
-			dispatch({
-				type: 'LOADINGAPP',
-				data: false
-			})
 		}
-	}, [loggedIn, orientation])
+	}, [userComplete])
 
-	// console.log('check', loadingApp)
+	useEffect(async () => {
+		if (blocks) {
+			await dispatch(getUserIds(blocks))
+		}
+	}, [blocks, orientation])
+
 	return (
 		<Layout>
 			{loadingApp

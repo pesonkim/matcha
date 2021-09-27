@@ -27,7 +27,7 @@ const UserSort = () => {
 				}
 			})
 		}
-	}, [sortFilter])
+	}, [ids])
 
 	const handleChange = (option) => {
 		dispatch({

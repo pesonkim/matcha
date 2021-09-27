@@ -10,7 +10,7 @@ const initialState = {
 	views: [],
 	likes: [],
 	reports: [],
-	blocks: [],
+	blocks: null,
 	log: [],
 }
 
