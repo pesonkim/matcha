@@ -11,7 +11,21 @@ viewsRouter.get('/', (req, res) => {
 		return res.status(401).send({ error: 'Invalid token or unauthorized' })
 	}
 
-	res.status(200).end()
+	const sql = 'SELECT * FROM views WHERE sender=?'
+	const values = [
+		user.id
+	]
+	const prepared = mysql.format(sql, values)
+	// console.log(prepared)
+	pool.query(prepared, (error, result) => {
+		if (result) {
+			return res.status(200).send(result)
+		} else if (error) {
+			return res.status(500).send(error)
+		} else {
+			return res.status(500).send({ error: 'Database error' })
+		}
+	})
 })
 
 viewsRouter.post('/', (req, res) => {
@@ -36,11 +50,11 @@ viewsRouter.post('/', (req, res) => {
 			pool.query(prepared, (error, result) => {
 				if (result) {
 					console.log('New profile view:', result.insertId)
-					res.status(200).end()
+					return res.status(200).end()
 				} else if (error) {
-					res.status(500).send(error)
+					return res.status(500).send(error)
 				} else {
-					res.status(500).send({ error: 'Database error' })
+					return res.status(500).send({ error: 'Database error' })
 				}
 			})
 		}
@@ -48,8 +62,6 @@ viewsRouter.post('/', (req, res) => {
 			return res.status(500).send(error)
 		}
 	})
-
-
 })
 
 module.exports = viewsRouter

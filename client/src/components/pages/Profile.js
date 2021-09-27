@@ -9,6 +9,7 @@ import UserTags from '../ui/forms/UserTags'
 import { useSelector, useDispatch } from 'react-redux'
 import { update } from '../../reducers/userReducer'
 import { updateTags } from '../../reducers/publicReducer'
+import { getLog, profileBlock } from '../../reducers/matchReducer'
 import parse from '../../utils/parse'
 import Togglable from '../ui/Togglable'
 import { useEffect } from 'react'
@@ -16,17 +17,19 @@ import { setError, clear, populate, avatar } from '../../reducers/formReducer'
 import PasswordField from '../ui/forms/PasswordField'
 import validate from '../../utils/validate'
 import UserLocation from '../ui/forms/UserLocation'
-
+import TimeAgo from 'react-timeago'
+import { Link } from 'react-router-dom'
 
 const ProfilePage = () => {
 	const { id } = useSelector(state => state.user)
 	const { firstname, lastname, username, email, orientation, gender, bio, tags, errorMessage, notification } = useSelector(state => state.form)
+	const { blocks, log, views, likes, reports } = useSelector(state => state.match)
 	const dispatch = useDispatch()
 
-	useEffect(() => {
-		dispatch(populate(id))
+	useEffect(async () => {
+		await dispatch(populate(id))
+		await dispatch(getLog(views, likes, reports))
 	}, [])
-
 
 	const handleSubmit = async (event) => {
 		event.preventDefault()
@@ -110,6 +113,15 @@ const ProfilePage = () => {
 		}
 	}
 
+	const handleUnblock = async (event) => {
+		event.preventDefault()
+		await dispatch(profileBlock({ id: event.target.id, type: 'remove' }))
+		dispatch({
+			type: 'NOTIF',
+			data: 'Profile updated'
+		})
+	}
+
 	const inputStyle = {
 		borderWidth: '1px',
 		borderColor: '#dae4e9',
@@ -117,6 +129,20 @@ const ProfilePage = () => {
 		padding: '.75rem',
 		width: '100%',
 		height: '38px'
+	}
+
+	const logStyle = {
+		maxHeight: '50vh',
+		overflow: 'auto',
+	}
+
+	const entryStyle = {
+		display: 'block',
+		borderWidth: '1px',
+		borderColor: '#dae4e9',
+		borderRadius: '.25rem',
+		width: '100%',
+		padding: '.5rem',
 	}
 
 	return (
@@ -170,12 +196,49 @@ const ProfilePage = () => {
 				<hr className='my-4' />
 
 				<Togglable text='Activity log'>
-					View history would go here
+					<div style={logStyle}>
+						{log.length
+							? (log.map((v, i) => {
+								return (
+									<div key={i + v.date} className='' style={entryStyle}>
+										<span>{v.type} </span>
+										<Link to={`/browse/${v.target.id}`}>
+											<span style={{ color: '#3490dc' }}>{v.target.firstname} </span>
+										</Link>
+										<span><TimeAgo date={v.date} live={false} /></span>
+									</div>
+								)
+							}))
+							: <div style={entryStyle}>
+								<span>You have no activity</span>
+							</div>
+						}
+					</div>
 				</Togglable>
 				<hr className='my-4' />
 
 				<Togglable text='Blocked users'>
-					Blocklist would go here
+					<div style={logStyle} className='mb-4'>
+						{blocks.length
+							? (blocks.map((v) => {
+								return (
+									<div key={v.id} className='flex justify-between ' style={entryStyle}>
+										<span>{v.firstname}</span>
+										<button
+											id={v.id}
+											className='rounded bg-green-500 hover:bg-green-600 text-white ml-2 p-1'
+											onClick={handleUnblock}
+										>
+											Unblock
+										</button>
+									</div>
+								)
+							}))
+							: <div style={entryStyle}>
+								<span>You have no blocked users</span>
+							</div>
+						}
+					</div>
 				</Togglable>
 				<SubmitButton text='Save changes' />
 			</form>

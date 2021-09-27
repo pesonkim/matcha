@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { lookup } from './reducers/userReducer'
 import { getUserIds } from './reducers/publicReducer'
+import { getHistory } from './reducers/matchReducer'
 import auth from './utils/auth'
 
 import LoginPage from './components/pages/Login'
@@ -57,6 +58,7 @@ const App = () => {
 	useEffect(async () => {
 		if (userComplete) {
 			await dispatch(getUserIds())
+			await dispatch(getHistory())
 			dispatch({
 				type: 'LOADINGAPP',
 				data: false

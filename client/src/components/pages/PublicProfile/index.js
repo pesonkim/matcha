@@ -38,7 +38,7 @@ const PublicProfile = ({ profileId }) => {
 	}
 
 	const handleBlock = async () => {
-		await dispatch(profileBlock({ from: id, to: profileId }))
+		await dispatch(profileBlock({ from: id, to: profileId, type: 'new' }))
 		setDialog(null)
 	}
 

@@ -10,6 +10,22 @@ blocksRouter.get('/', (req, res) => {
 	if (!user) {
 		return res.status(401).send({ error: 'Invalid token or unauthorized' })
 	}
+
+	const sql = 'SELECT id, sender, receiver, firstname FROM blocks t1 INNER JOIN (SELECT firstname, id as userid from users) t2 on t2.userid = t1.receiver WHERE sender=?'
+	const values = [
+		user.id
+	]
+	const prepared = mysql.format(sql, values)
+	// console.log(prepared)
+	pool.query(prepared, (error, result) => {
+		if (result) {
+			return res.status(200).send(result)
+		} else if (error) {
+			return res.status(500).send(error)
+		} else {
+			return res.status(500).send({ error: 'Database error' })
+		}
+	})
 })
 
 blocksRouter.post('/', (req, res) => {
@@ -39,12 +55,22 @@ blocksRouter.post('/', (req, res) => {
 	})
 })
 
-blocksRouter.delete('/', (req, res) => {
+blocksRouter.delete('/:id', (req, res) => {
 	const user = jwt.verify(req.token, tokenSecret)
 
 	if (!user) {
 		return res.status(401).send({ error: 'Invalid token or unauthorized' })
 	}
+
+	pool.query('DELETE FROM blocks where id=?', req.params.id, (error, result) => {
+		if (result) {
+			res.status(200).end()
+		} else if (error) {
+			res.status(500).send(error)
+		} else {
+			res.status(500).send({ error: 'Database error' })
+		}
+	})
 })
 
 module.exports = blocksRouter

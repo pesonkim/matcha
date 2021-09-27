@@ -10,6 +10,22 @@ likesRouter.get('/', (req, res) => {
 	if (!user) {
 		return res.status(401).send({ error: 'Invalid token or unauthorized' })
 	}
+
+	const sql = 'SELECT * FROM likes WHERE sender=?'
+	const values = [
+		user.id
+	]
+	const prepared = mysql.format(sql, values)
+	// console.log(prepared)
+	pool.query(prepared, (error, result) => {
+		if (result) {
+			return res.status(200).send(result)
+		} else if (error) {
+			return res.status(500).send(error)
+		} else {
+			return res.status(500).send({ error: 'Database error' })
+		}
+	})
 })
 
 likesRouter.post('/', (req, res) => {

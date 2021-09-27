@@ -92,6 +92,7 @@ const setupDb = async () => {
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
         sender int NOT NULL,
         receiver int NOT NULL,
+		created_at datetime NOT NULL,
         FOREIGN KEY (sender) REFERENCES users(id),
         FOREIGN KEY (receiver) REFERENCES users(id)
     )`

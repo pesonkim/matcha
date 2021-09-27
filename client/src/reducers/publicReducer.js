@@ -100,7 +100,7 @@ export const getUsers = (filter, sliders, sort, tags, latitude, longitude) => {
 			}
 			//filter by sliders
 			if (sliders) {
-				if (sliders.distance !== 1000) {
+				if (sliders.distance) {
 					data = data.filter(user => {
 						user.distance = getDistance(
 							{ latitude: user.latitude, longitude: user.longitude },
