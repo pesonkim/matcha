@@ -62,38 +62,38 @@ const setupDb = async () => {
 
 	const likes = `CREATE TABLE IF NOT EXISTS likes (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        liker int NOT NULL,
-        liked int NOT NULL,
+        sender int NOT NULL,
+        receiver int NOT NULL,
         is_match tinyint(1) NOT NULL DEFAULT 0,
         created_at datetime NOT NULL,
-        FOREIGN KEY (liker) REFERENCES users(id),
-        FOREIGN KEY (liked) REFERENCES users(id)
+        FOREIGN KEY (sender) REFERENCES users(id),
+        FOREIGN KEY (receiver) REFERENCES users(id)
     )`
 
 	const views = `CREATE TABLE IF NOT EXISTS views (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        viewer int NOT NULL,
-        viewed int NOT NULL,
+        sender int NOT NULL,
+        receiver int NOT NULL,
         created_at datetime NOT NULL,
         status tinyint(1) NOT NULL DEFAULT 0,
-        FOREIGN KEY (viewer) REFERENCES users(id),
-        FOREIGN KEY (viewed) REFERENCES users(id)
+        FOREIGN KEY (sender) REFERENCES users(id),
+        FOREIGN KEY (receiver) REFERENCES users(id)
     )`
 
 	const blocks = `CREATE TABLE IF NOT EXISTS blocks (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        blocker int NOT NULL,
-        blocked int NOT NULL,
-        FOREIGN KEY (blocker) REFERENCES users(id),
-        FOREIGN KEY (blocked) REFERENCES users(id)
+        sender int NOT NULL,
+        receiver int NOT NULL,
+        FOREIGN KEY (sender) REFERENCES users(id),
+        FOREIGN KEY (receiver) REFERENCES users(id)
     )`
 
 	const reports = `CREATE TABLE IF NOT EXISTS reports (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        reporter int NOT NULL,
-        reported int NOT NULL,
-        FOREIGN KEY (reporter) REFERENCES users(id),
-        FOREIGN KEY (reported) REFERENCES users(id)
+        sender int NOT NULL,
+        receiver int NOT NULL,
+        FOREIGN KEY (sender) REFERENCES users(id),
+        FOREIGN KEY (receiver) REFERENCES users(id)
     )`
 
 	const messages = `CREATE TABLE IF NOT EXISTS messages (

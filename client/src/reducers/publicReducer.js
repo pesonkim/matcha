@@ -217,7 +217,7 @@ export const getUserById = (id) => {
 			data = data.find(user => user.id === id)
 			data.orientation = parse.oFromDb(data.orientation)
 			data.tags = parse.parseTags(data.tags)
-			console.log(data)
+			// console.log(data)
 			dispatch({
 				type: 'SETPROFILE',
 				data

@@ -6,18 +6,21 @@ import Info from './Info'
 import Actions from './Actions'
 import { useEffect, useState } from 'react'
 import { getUserById } from '../../../reducers/publicReducer'
+import { profileView, profileLike, profileReport, profileBlock } from '../../../reducers/matchReducer'
 
 import Confirm from '../../ui/Confirm'
 import Modal from '../../ui/Modal'
 
-const PublicProfile = ({ id }) => {
+const PublicProfile = ({ profileId }) => {
 	const dispatch = useDispatch()
 	const { profile } = useSelector(state => state.public)
+	const { id } = useSelector(state => state.user)
 	const [modal, setModal] = useState(null)
 	const [dialog, setDialog] = useState(null)
 
 	useEffect(async () => {
-		await dispatch(getUserById(id))
+		await dispatch(getUserById(profileId))
+		await dispatch(profileView({ from: id, to: profileId }))
 		window.scroll({
 			top: 0,
 			left: 0,
@@ -25,18 +28,18 @@ const PublicProfile = ({ id }) => {
 		})
 	}, [dispatch])
 
-	const handleLike = () => {
-		console.log('like')
+	const handleLike = async () => {
+		await dispatch(profileLike({ from: id, to: profileId }))
 	}
 
-	const handleReport = () => {
+	const handleReport = async () => {
+		await dispatch(profileReport({ from: id, to: profileId }))
 		setDialog(null)
-		console.log('report')
 	}
 
-	const handleBlock = () => {
+	const handleBlock = async () => {
+		await dispatch(profileBlock({ from: id, to: profileId }))
 		setDialog(null)
-		console.log('block')
 	}
 
 	if (!profile) {

@@ -81,7 +81,7 @@ const App = () => {
 							loggedIn
 								? userComplete
 									? foundUser
-										? <PublicProfile id={foundUser} />
+										? <PublicProfile profileId={foundUser} />
 										: <Redirect to='/browse' />
 									: <ProfileForm />
 								: <Redirect to='/' />

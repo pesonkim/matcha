@@ -69,7 +69,7 @@ const ProfilePage = () => {
 			}
 		}
 
-		console.log(data)
+		// console.log(data)
 		await dispatch(update(data, id))
 		await dispatch(updateTags(tags))
 
@@ -169,7 +169,7 @@ const ProfilePage = () => {
 				</Togglable>
 				<hr className='my-4' />
 
-				<Togglable text='History'>
+				<Togglable text='Activity log'>
 					View history would go here
 				</Togglable>
 				<hr className='my-4' />
