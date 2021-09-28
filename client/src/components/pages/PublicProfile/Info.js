@@ -34,10 +34,33 @@ const Info = ({ name, fame, age, lat, lng, gender, orientation, bio, tags, onlin
 					<strong className='text-xl'>{age}</strong>
 				</section>
 				<section className="flex justify-between items-center mt-2 mb-4">
-					<section className="flex" data-tip={lat + ', ' + lng}>
+					<section className="flex" data-tip data-for='hoverImage'>
 						<LocationMarkerIcon className='h-6 w-6 mr-1' />
 						{distance()}
-						<ReactTooltip />
+						<ReactTooltip id='hoverImage'>
+							<div
+								style={{
+									height: '100%',
+									maxHeight: '400px',
+									width: 'auto',
+									display: 'flex',
+									justifyContent: 'center',
+									overflow: 'hidden',
+								}}
+							>
+								<img
+									src={`https://maps.googleapis.com/maps/api/staticmap?size=500x400&zoom=4&markers=size:normal%7C${lat},${lng}&key=${process.env.REACT_APP_API_KEY}`}
+									style={{
+										objectFit: 'contain',
+										height: 'auto',
+										width: '100%',
+										maxHeight: '100%',
+										maxWidth: '100%',
+										margin: 'auto',
+									}}
+								/>
+							</div>
+						</ReactTooltip>
 					</section>
 					<section className="flex ">
 						<FireIcon className='h-6 w-6 mr-1' />

@@ -1,11 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
+import { GoogleMap, LoadScript, Marker, Circle } from '@react-google-maps/api'
 import { update } from '../../../reducers/userReducer'
 import parse from '../../../utils/parse'
 
 const UserLocation = () => {
 	const { latitude, longitude } = useSelector(state => state.user)
 	const { id, orientation, gender, bio, tags } = useSelector(state => state.user)
+	const { users } = useSelector(state => state.public)
 	const dispatch = useDispatch()
 
 	const style = {
@@ -59,6 +60,26 @@ const UserLocation = () => {
 					draggable={true}
 					onDragEnd={(e) => handleDrag(e)}
 				/>
+				{users
+					? users.length
+						? users.map(user => {
+							return <Circle
+								key={user.id}
+								center={{ lat: user.latitude, lng: user.longitude }}
+								radius={10000}
+								options={{
+									strokeColor: '#FF0000',
+									strokeOpacity: 0.5,
+									strokeWeight: 2,
+									fillColor: '#FF0000',
+									fillOpacity: 0.35,
+								}}
+							/>
+						})
+						: null
+					: null
+				}
+
 			</GoogleMap>
 		</LoadScript>
 	)
