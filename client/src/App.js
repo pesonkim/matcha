@@ -46,7 +46,7 @@ const App = () => {
 			})
 		}
 		dispatch(lookup())
-		console.log(auth.config())
+		// console.log(auth.config())
 	}, [dispatch])
 
 	useEffect(() => {
@@ -59,8 +59,13 @@ const App = () => {
 	useEffect(async () => {
 		if (userComplete) {
 			await dispatch(getHistory())
+		} else if (loggedIn && !userComplete) {
+			dispatch({
+				type: 'LOADINGAPP',
+				data: false
+			})
 		}
-	}, [userComplete])
+	}, [userComplete, loggedIn])
 
 	useEffect(async () => {
 		if (blocks) {

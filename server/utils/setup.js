@@ -227,7 +227,69 @@ const setupDb = async () => {
 				'${Math.floor(Math.random() * (500 - 50) + 50)}',
 				CURRENT_TIMESTAMP - INTERVAL FLOOR(RAND() * 14) DAY
 			)`)
-		if (i < 499) {
+		if (i < 500) {
+			dummy = dummy.concat(',')
+		}
+	}
+
+	for (let i = 0; i < 300; i++) {
+		let month = Math.ceil(Math.random() * 12)
+		let day = Math.ceil(Math.random() * 28)
+		let year = Math.floor(Math.random() * (2005 - 1971) + 1971)
+		let birthdate = `${year}-${month}-${day}`
+		let randomPoint = randomLocation.randomCirclePoint(P, 1000000)
+		faker.locale = locale[Math.floor(Math.random() * locale.length)]
+		// console.log(faker.locale)
+		dummy = dummy.concat(`(
+				'${faker.name.firstName().replace('\'', '')}',
+				'${faker.name.lastName().replace('\'', '')}',
+				'${faker.unique(faker.internet.userName)}',
+				'${faker.unique(faker.internet.email)}',
+				'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe',
+				1,
+				'${faker.internet.avatar()}',
+				'${gender[Math.floor(Math.random() * gender.length)]}',
+				'${orientation[Math.floor(Math.random() * orientation.length)]}',
+				'${'#' + interests[Math.floor(Math.random() * interests.length)].toLowerCase()}',
+				'${khaled({ count: 3, units: 'words' })}',
+				'${randomPoint.latitude}',
+				'${randomPoint.longitude}',
+				'${birthdate}',
+				'${Math.floor(Math.random() * (500 - 50) + 50)}',
+				CURRENT_TIMESTAMP - INTERVAL FLOOR(RAND() * 14) DAY
+			)`)
+		if (i < 300) {
+			dummy = dummy.concat(',')
+		}
+	}
+
+	for (let i = 0; i < 200; i++) {
+		let month = Math.ceil(Math.random() * 12)
+		let day = Math.ceil(Math.random() * 28)
+		let year = Math.floor(Math.random() * (2005 - 1971) + 1971)
+		let birthdate = `${year}-${month}-${day}`
+		let randomPoint = randomLocation.randomCirclePoint(P, 2000000)
+		faker.locale = locale[Math.floor(Math.random() * locale.length)]
+		// console.log(faker.locale)
+		dummy = dummy.concat(`(
+				'${faker.name.firstName().replace('\'', '')}',
+				'${faker.name.lastName().replace('\'', '')}',
+				'${faker.unique(faker.internet.userName)}',
+				'${faker.unique(faker.internet.email)}',
+				'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe',
+				1,
+				'${faker.internet.avatar()}',
+				'${gender[Math.floor(Math.random() * gender.length)]}',
+				'${orientation[Math.floor(Math.random() * orientation.length)]}',
+				'${'#' + interests[Math.floor(Math.random() * interests.length)].toLowerCase()}',
+				'${khaled({ count: 3, units: 'words' })}',
+				'${randomPoint.latitude}',
+				'${randomPoint.longitude}',
+				'${birthdate}',
+				'${Math.floor(Math.random() * (500 - 50) + 50)}',
+				CURRENT_TIMESTAMP - INTERVAL FLOOR(RAND() * 14) DAY
+			)`)
+		if (i < 199) {
 			dummy = dummy.concat(',')
 		}
 	}

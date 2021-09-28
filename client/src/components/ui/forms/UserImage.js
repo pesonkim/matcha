@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { TrashIcon } from '@heroicons/react/outline'
+import imageCompression from 'browser-image-compression'
 
 const UserImage = () => {
 	const { photoStr } = useSelector(state => state.form)
@@ -29,35 +30,58 @@ const UserImage = () => {
 		margin: 'auto',
 	}
 
-	const handleImage = (event) => {
+	const handleImage = async (event) => {
 		event.preventDefault()
 
-		const reader = new FileReader()
-		const file = event.target.files[0]
+		const imageFile = event.target.files[0]
 
-		if (!file) {
+		const options = {
+			maxSizeMB: 0.5,
+			maxWidthOrHeight: 1920,
+			useWebWorker: true
+		}
+
+		if (!imageFile) {
 			return
-		} else if (file.size > 1000000) {
+		} else if (imageFile.size > 1000000) {
 			dispatch({
 				type: 'ERROR',
 				data: 'Max file size is 1Mb'
 			})
+			event.target.value = null
 			return
 		}
 
-		reader.readAsDataURL(file)
-		reader.onloadend = () => {
+		try {
+			const compressedFile = await imageCompression(imageFile, options)
+			const objectURL = URL.createObjectURL(compressedFile)
 			dispatch({
 				type: 'PREVIEW',
-				data: reader.result
+				data: objectURL
 			})
+			dispatch({
+				type: 'CLEAR',
+			})
+		} catch (error) {
+			if (error.target instanceof HTMLElement) {
+				dispatch({
+					type: 'ERROR',
+					data: 'Not a valid image file'
+				})
+			} else {
+				dispatch({
+					type: 'ERROR',
+					data: 'Image upload failed'
+				})
+			}
+			event.target.value = null
 		}
 	}
 
 	return (
 		<>
 			<div className='mb-4 mx-auto'>
-				{photoStr && <img src={photoStr} style={imgStyle}/>}
+				{photoStr && <img src={photoStr} style={imgStyle} />}
 			</div>
 			<label>Profile picture</label>
 			<input name='photo' type='file' style={baseStyle} onChange={handleImage} accept=".png, .jpg .jpeg" />

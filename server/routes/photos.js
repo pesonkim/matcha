@@ -7,7 +7,7 @@ const tokenSecret = require('../utils/config').TOKEN_SECRET
 //const fs = require('fs')
 
 photosRouter.post('/', (req, res) => {
-	console.log(req.body)
+	// console.log(req.body)
 	const user = jwt.verify(req.token, tokenSecret)
 
 	if (!user) {

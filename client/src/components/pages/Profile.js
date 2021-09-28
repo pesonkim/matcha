@@ -19,6 +19,7 @@ import validate from '../../utils/validate'
 import UserLocation from '../ui/forms/UserLocation'
 import TimeAgo from 'react-timeago'
 import { Link } from 'react-router-dom'
+import imageCompression from 'browser-image-compression'
 
 const ProfilePage = () => {
 	const { id } = useSelector(state => state.user)
@@ -93,23 +94,35 @@ const ProfilePage = () => {
 			event.target.email.placeholder = data.email
 		}
 
+		const imageFile = event.target.photo.files[0]
 		const reader = new FileReader()
-		const file = event.target.photo.files[0]
 
-		if (!file) {
+		const options = {
+			maxSizeMB: 0.5,
+			maxWidthOrHeight: 1920,
+			useWebWorker: true
+		}
+
+		if (!imageFile) {
 			return
-		} else if (file.size > 1000000) {
+		} else if (imageFile.size > 1000000) {
 			dispatch({
 				type: 'ERROR',
 				data: 'Max file size is 1Mb'
 			})
+			event.target.value = null
 			return
 		}
 
-		reader.readAsDataURL(file)
-		reader.onloadend = () => {
-			dispatch(avatar({ blob: reader.result }))
+		try {
+			const compressedFile = await imageCompression(imageFile, options)
+			reader.readAsDataURL(compressedFile)
+			reader.onloadend = () => {
+				dispatch(avatar({ blob: reader.result }))
+			}
 			event.target.photo.value = null
+		} catch (error) {
+			console.log(error)
 		}
 	}
 

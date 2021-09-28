@@ -2,7 +2,6 @@ import Wrapper from '../ui/Wrapper'
 import Heading from '../ui/forms/Heading'
 import FilterTags from '../ui/forms/FilterTags'
 import UserSort from '../ui/forms/UserSort'
-import ResultSort from '../ui/forms/ResultSort'
 import SliderFilter from '../ui/forms/Slider'
 import { useState } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline'
@@ -38,8 +37,6 @@ const Filters = () => {
 	return (
 		<Wrapper>
 			<Heading title='View users' />
-			{/* <ResultSort />
-			<hr className='my-2' /> */}
 			<UserSort />
 			<hr className='my-2' />
 			<Togglable text='User filters'>

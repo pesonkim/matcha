@@ -52,7 +52,7 @@ const SignupPage = () => {
 		const errors = validate(userData)
 		setErrors(errors)
 
-		console.log(errors)
+		// console.log(errors)
 		if (Object.keys(errors).length === 0) {
 			userService
 				.createUser(userData)
@@ -77,7 +77,7 @@ const SignupPage = () => {
 
 		const error = validate({ [name]: value })
 		if (error[name]) {
-			console.log({ [name]: error[name], })
+			// console.log({ [name]: error[name], })
 			setErrors({ ...errors, [name]: error[name], })
 		} else {
 			setErrors({ ...errors, [name]: '', })
