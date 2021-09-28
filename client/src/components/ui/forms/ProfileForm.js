@@ -33,13 +33,6 @@ const ProfileForm = () => {
 		await dispatch(update(data, id))
 		await dispatch(updateTags(tags))
 
-		//const file = event.target.photo.files[0]
-
-		//const formData = new FormData()
-		//formData.append('file', file)
-		//console.log(formData)
-
-		// const reader = new FileReader()
 		const imageFile = event.target.photo.files[0]
 		const reader = new FileReader()
 
@@ -49,26 +42,16 @@ const ProfileForm = () => {
 			useWebWorker: true
 		}
 
-		if (!imageFile) {
-			return
-		} else if (imageFile.size > 1000000) {
-			dispatch({
-				type: 'ERROR',
-				data: 'Max file size is 1Mb'
-			})
-			event.target.value = null
-			return
-		}
-
-		try {
-			const compressedFile = await imageCompression(imageFile, options)
-			reader.readAsDataURL(compressedFile)
-			reader.onloadend = () => {
-				dispatch(avatar({ blob: reader.result }))
+		if (imageFile && imageFile.size <= 1000000) {
+			try {
+				const compressedFile = await imageCompression(imageFile, options)
+				reader.readAsDataURL(compressedFile)
+				reader.onloadend = async () => {
+					dispatch(avatar({ blob: reader.result }))
+				}
+			} catch (error) {
+				event.target.photo.value = null
 			}
-		} catch (error) {
-			event.target.photo.value = null
-			console.log(error)
 		}
 	}
 

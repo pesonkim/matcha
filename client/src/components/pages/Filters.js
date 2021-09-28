@@ -5,7 +5,6 @@ import UserSort from '../ui/forms/UserSort'
 import SliderFilter from '../ui/forms/Slider'
 import { useState } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline'
-import ResetButton from '../ui/forms/ResetButton'
 
 const Togglable = (props) => {
 	const [visible, setVisible] = useState(false)
@@ -42,7 +41,6 @@ const Filters = () => {
 			<Togglable text='User filters'>
 				<FilterTags />
 				<SliderFilter />
-				<ResetButton />
 			</Togglable>
 		</Wrapper>
 	)

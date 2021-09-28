@@ -15,7 +15,6 @@ const initialState = {
 	orientation: null,
 	bio: null,
 	tags: null,
-	photoSrc: null,
 	photoStr: null,
 }
 
@@ -97,17 +96,6 @@ export const populate = (id) => {
 				type: 'POPULATE',
 				data
 			})
-			/*
-				const reader = new FileReader()
-				const file = data.avatar
-
-				reader.readAsDataURL(file)
-				reader.onloadend = () => {
-					dispatch({
-						type: 'PREVIEW',
-						data: reader.result
-					})
-				}*/
 		} catch (error) {
 			if (error.response && error.response.data) {
 				data = error.response.data.error
@@ -129,6 +117,8 @@ export const avatar = (blob) => {
 			//console.log(blob)
 			data = await photosService.addPhoto(blob)
 			//console.log(data)
+			const user = JSON.parse(window.localStorage.getItem('user'))
+			window.localStorage.setItem('user', JSON.stringify({ ...user, avatar: data.blob }))
 			dispatch({
 				type: 'PHOTO',
 				data

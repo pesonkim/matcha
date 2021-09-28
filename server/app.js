@@ -1,6 +1,5 @@
 const express = require('express')
 require('express-async-errors')
-//const fileUpload = require('express-fileupload')
 const app = express()
 const cors = require('cors')
 const setupDb = require('./utils/setup')
@@ -24,10 +23,8 @@ setupDb()
 
 app.use(cors())
 //app.use(express.static('build'))
-app.use(express.static('public'))
 app.use(express.json({ limit: '10mb', extended: true }))
 app.use(express.urlencoded({ limit: '10mb', extended: true }))
-//app.use(fileUpload())
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 
