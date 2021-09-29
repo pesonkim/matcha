@@ -29,29 +29,44 @@ likesRouter.get('/', (req, res) => {
 })
 
 likesRouter.post('/', (req, res) => {
-	console.log(req.token)
 	const user = jwt.verify(req.token, tokenSecret)
+	const { from, to } = req.body
 
 	if (!user) {
 		return res.status(401).send({ error: 'Invalid token or unauthorized' })
 	}
 
-	const sql = 'INSERT INTO likes (sender, receiver, created_at) VALUES (?,?,CURRENT_TIMESTAMP)'
-	const values = [
-		req.body.from,
-		req.body.to,
-	]
-	const prepared = mysql.format(sql, values)
+	let sql = 'INSERT INTO likes (sender, receiver, created_at) VALUES (?,?,CURRENT_TIMESTAMP)'
+	let prepared = mysql.format(sql, [from, to])
 	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
-			pool.query(`UPDATE users SET fame = fame + 5 WHERE id = ${req.body.to}`)
 			console.log('New profile like:', result.insertId)
-			res.status(200).end()
+			pool.query(`UPDATE users SET fame = fame + 5 WHERE id = ${to}`)
+			sql = 'SELECT * FROM likes WHERE (sender=? AND receiver=?) OR (sender=? AND receiver=?)'
+			prepared = mysql.format(sql, [from, to, to, from])
+			// console.log(prepared)
+			pool.query(prepared, (error, result) => {
+				if (result) {
+					if (result.length === 2) {
+						console.log('New match between ids:', to, from)
+						pool.query(`UPDATE likes SET is_match = 1 WHERE id = ${result[0].id} OR id = ${result[1].id}`, (error, result) => {
+							if (result) {
+								return res.status(200).end()
+							} else if (error) {
+								return res.status(500).send(error)
+							}
+						})
+					} else if (error) {
+						return res.status(500).send(error)
+					}
+					return res.status(200).end()
+				} else if (error) {
+					return res.status(500).send(error)
+				}
+			})
 		} else if (error) {
-			res.status(500).send(error)
-		} else {
-			res.status(500).send({ error: 'Database error' })
+			return res.status(500).send(error)
 		}
 	})
 })

@@ -198,8 +198,9 @@ const setupDb = async () => {
 		longitude: 24.958202
 	}
 
-	dummy = dummy.concat('(\'firstname\', \'lastname\', \'admin\', \'admin@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, null, \'male\', \'f\', \'#coding#techno\', \'asd\', 60.1686, 24.9456, \'2000-01-01\', 100, null),')
-	dummy = dummy.concat('(\'firstname\', \'lastname\', \'dummy\', \'dummy@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, null, null, null, null, null, null, null, \'2000-01-01\', 100, null),')
+	dummy = dummy.concat('(\'firstname\', \'lastname\', \'admin\', \'admin@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, \'https://muropaketti.com/wp-content/uploads/2015/11/riskibisnes_tomcruise.jpg\', \'male\', \'f\', \'#coding#techno\', \'asd\', 60.1686, 24.9456, \'2000-01-01\', 100, null),')
+	dummy = dummy.concat('(\'firstname\', \'lastname\', \'dummy\', \'dummy@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, \'https://muropaketti.com/wp-content/uploads/2015/11/riskibisnes_tomcruise.jpg\', \'female\', \'m\', \'#coding#techno\', \'asd\', 60.1686, 24.9456, \'2000-01-01\', 100, null),')
+	// dummy = dummy.concat('(\'firstname\', \'lastname\', \'dummy\', \'dummy@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, null, null, null, null, null, null, null, \'2000-01-01\', 100, null),')
 
 	for (let i = 0; i < 500; i++) {
 		let month = Math.ceil(Math.random() * 12)

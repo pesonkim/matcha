@@ -46,7 +46,7 @@ const Preview = ({ user }) => {
 	}
 
 	return (
-		<div className='flex flex-col  justify-center p-4 bg-white rounded ui-shadow'>
+		<div className='flex flex-col  justify-center p-4 bg-white rounded ui-shadow slideDown'>
 			<section className="flex items-center mb-2">
 				{user.online
 					? <span className='text-green-500'>●&nbsp;</span>

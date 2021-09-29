@@ -21,7 +21,7 @@ const Confirm = ({ dialog, setDialog }) => {
 			? null
 			: (<div className={dialog ? 'block' : 'hidden'}>
 				<div className="fixed z-0 inset-0 bg-black opacity-30"></div>
-				<div className='fixed inset-0 flex items-center justify-center' id='confirmContainer'>
+				<div className='fixed inset-0 flex items-center justify-center slideDown' id='confirmContainer'>
 					<Wrapper>
 						<Heading title={dialog.type === 'report' ? 'Report' : 'Block'} />
 						{dialog.type === 'block' && <p className='mb-4'>Blocked users will not appear in any of your search results.</p>}

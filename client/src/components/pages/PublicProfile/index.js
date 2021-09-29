@@ -15,8 +15,10 @@ const PublicProfile = ({ profileId }) => {
 	const dispatch = useDispatch()
 	const { profile } = useSelector(state => state.public)
 	const { id } = useSelector(state => state.user)
+	const { likes } = useSelector(state => state.match)
 	const [modal, setModal] = useState(null)
 	const [dialog, setDialog] = useState(null)
+	const [wait, setWait] = useState(false)
 
 	useEffect(async () => {
 		await dispatch(profileView({ from: id, to: profileId }))
@@ -28,10 +30,25 @@ const PublicProfile = ({ profileId }) => {
 		})
 	}, [dispatch])
 
+	useEffect(() => {
+		if (wait) {
+			const like = likes.find(like => like.receiver === profileId)
+			if (like.is_match === 1) {
+				setModal({ type: 'match', user: profile })
+			}
+			setWait(false)
+		}
+	}, [wait])
+
 	const handleLike = async ({ type, likeid }) => {
 		await dispatch(profileLike({ from: id, to: profileId, type: type, id: likeid }))
-		setModal(null)
+		if (type === 'remove') {
+			setModal(null)
+		}
 		await dispatch(getUserById(profileId))
+		if (type === 'new') {
+			setWait(true)
+		}
 	}
 
 	const handleReport = async () => {
@@ -55,7 +72,7 @@ const PublicProfile = ({ profileId }) => {
 		)
 	} else {
 		return (
-			<div className='max-w-screen-sm mx-auto px-2 '>
+			<div className='max-w-screen-sm mx-auto px-2 slideDown'>
 				<div className='flex flex-col justify-center my-4 bg-white rounded ui-shadow'>
 					<TopBar
 						firstname={profile.firstname}
@@ -79,7 +96,7 @@ const PublicProfile = ({ profileId }) => {
 						login={profile.last_login}
 					/>
 					<Actions
-						user={profile.firstname}
+						user={profile}
 						handleLike={handleLike}
 						askConfirm={setDialog}
 						setModal={setModal}

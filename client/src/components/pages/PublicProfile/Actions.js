@@ -30,9 +30,9 @@ const BlockButton = ({ user, onClick, action }) => (
 	</div>
 )
 
-const UnlikeButton = ({ user, handleLike, setModal, id }) => (
+const UnlikeButton = ({ user, action, setModal, id }) => (
 	<div className='flex-1 w-1/3'>
-		<div className='flex flex-row items-center justify-center p-4 select-none cursor-pointer hover:underline text-pink-500 ' onClick={() => setModal({ user, handleLike, likeid: id })}>
+		<div className='flex flex-row items-center justify-center p-4 select-none cursor-pointer hover:underline text-pink-500 ' onClick={() => setModal({ type: 'unlike', user, action, likeid: id })}>
 			<HeartIcon className=' h-8 w-8 mr-2' />
 			<span>Unlike</span>
 		</div>
@@ -75,15 +75,15 @@ const Actions = ({ user, handleLike, askConfirm, setModal, handleReport, handleB
 		<div className="w-full flex sm:px-4" style={divStyle}>
 			{avatar
 				? liked
-					? <UnlikeButton user={user} handleLike={handleLike} setModal={setModal} id={liked.id}/>
+					? <UnlikeButton user={user} action={handleLike} setModal={setModal} id={liked.id}/>
 					: <LikeButton onClick={handleLike} />
 				: <CantLikeButton />
 			}
 			{reported
 				? <CantReportButton />
-				: <ReportButton user={user} onClick={askConfirm} action={handleReport} />
+				: <ReportButton user={user.firstname} onClick={askConfirm} action={handleReport} />
 			}
-			<BlockButton user={user} onClick={askConfirm} action={handleBlock} />
+			<BlockButton user={user.firstname} onClick={askConfirm} action={handleBlock} />
 		</div>
 	)
 }
