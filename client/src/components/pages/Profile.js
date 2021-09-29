@@ -118,7 +118,7 @@ const ProfilePage = () => {
 
 	const handleUnblock = async (event) => {
 		event.preventDefault()
-		await dispatch(profileBlock({ id: event.target.id, type: 'remove' }))
+		await dispatch(profileBlock({ id: event.target.id, to: event.target.name, type: 'remove' }))
 		dispatch({
 			type: 'NOTIF',
 			data: 'Profile updated'
@@ -229,6 +229,7 @@ const ProfilePage = () => {
 										<span>{v.firstname}</span>
 										<button
 											id={v.id}
+											name={v.receiver}
 											className='rounded bg-green-500 hover:bg-green-600 text-white ml-2 p-1'
 											onClick={handleUnblock}
 										>

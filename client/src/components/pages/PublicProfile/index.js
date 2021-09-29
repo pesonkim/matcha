@@ -9,7 +9,7 @@ import { getUserById } from '../../../reducers/publicReducer'
 import { profileView, profileLike, profileReport, profileBlock } from '../../../reducers/matchReducer'
 
 import Confirm from '../../ui/Confirm'
-import Modal from '../../ui/Modal'
+import MatchModal from '../../ui/MatchModal'
 
 const PublicProfile = ({ profileId }) => {
 	const dispatch = useDispatch()
@@ -19,8 +19,8 @@ const PublicProfile = ({ profileId }) => {
 	const [dialog, setDialog] = useState(null)
 
 	useEffect(async () => {
-		await dispatch(getUserById(profileId))
 		await dispatch(profileView({ from: id, to: profileId }))
+		await dispatch(getUserById(profileId))
 		window.scroll({
 			top: 0,
 			left: 0,
@@ -28,13 +28,16 @@ const PublicProfile = ({ profileId }) => {
 		})
 	}, [dispatch])
 
-	const handleLike = async () => {
-		await dispatch(profileLike({ from: id, to: profileId }))
+	const handleLike = async ({ type, likeid }) => {
+		await dispatch(profileLike({ from: id, to: profileId, type: type, id: likeid }))
+		setModal(null)
+		await dispatch(getUserById(profileId))
 	}
 
 	const handleReport = async () => {
 		await dispatch(profileReport({ from: id, to: profileId }))
 		setDialog(null)
+		await dispatch(getUserById(profileId))
 	}
 
 	const handleBlock = async () => {
@@ -79,10 +82,12 @@ const PublicProfile = ({ profileId }) => {
 						user={profile.firstname}
 						handleLike={handleLike}
 						askConfirm={setDialog}
+						setModal={setModal}
 						handleReport={handleReport}
 						handleBlock={handleBlock}
 					/>
 					<Confirm dialog={dialog} setDialog={setDialog} />
+					<MatchModal modal={modal} setModal={setModal}/>
 				</div>
 			</div>
 		)

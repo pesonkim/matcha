@@ -144,7 +144,11 @@ export const profileLike = (like) => {
 	return async dispatch => {
 		let data
 		try {
-			await likeService.addLike(like)
+			if (like.type === 'new') {
+				await likeService.addLike(like)
+			} else if (like.type === 'remove') {
+				await likeService.removeLike(like)
+			}
 			data = await likeService.getLikes()
 			dispatch({
 				type: 'SETLIKES',
@@ -192,10 +196,11 @@ export const profileBlock = (block) => {
 	return async dispatch => {
 		let data
 		try {
+			// console.log(block)
 			if (block.type === 'new') {
 				await blockService.addBlock(block)
 			} else if (block.type === 'remove') {
-				await blockService.removeBlock(block.id)
+				await blockService.removeBlock(block)
 			}
 			data = await blockService.getBlocks()
 			dispatch({

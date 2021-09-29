@@ -29,6 +29,7 @@ likesRouter.get('/', (req, res) => {
 })
 
 likesRouter.post('/', (req, res) => {
+	console.log(req.token)
 	const user = jwt.verify(req.token, tokenSecret)
 
 	if (!user) {
@@ -55,12 +56,24 @@ likesRouter.post('/', (req, res) => {
 	})
 })
 
-likesRouter.delete('/', (req, res) => {
+likesRouter.delete('/:id', (req, res) => {
+	// console.log(req.body)
 	const user = jwt.verify(req.token, tokenSecret)
 
 	if (!user) {
 		return res.status(401).send({ error: 'Invalid token or unauthorized' })
 	}
+
+	pool.query('DELETE FROM likes where id=?', req.params.id, (error, result) => {
+		if (result) {
+			pool.query(`UPDATE users SET fame = fame - 5 WHERE id = ${req.body.to}`)
+			res.status(200).end()
+		} else if (error) {
+			res.status(500).send(error)
+		} else {
+			res.status(500).send({ error: 'Database error' })
+		}
+	})
 })
 
 module.exports = likesRouter

@@ -82,7 +82,7 @@ const App = () => {
 					</div>
 				</Wrapper>
 				: <Switch>
-					<Route path='/browse/:id' render={({ match }) => {
+					<Route path='/browse/:id' exact render={({ match }) => {
 						const id = parseInt(match.params.id)
 						const foundUser = ids.find(user => user === id)
 						return (

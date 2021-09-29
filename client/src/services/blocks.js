@@ -15,8 +15,9 @@ const addBlock = async (newBlock) => {
 	return response.data
 }
 
-const removeBlock = async (id) => {
-	const response = await axios.delete(`${baseUrl}/${id}`, auth.config())
+const removeBlock = async (block) => {
+	const headers = auth.config()
+	const response = await axios.delete(`${baseUrl}/${block.id}`, { headers: headers.headers, data: block })
 	// console.log(response)
 	return response.data
 }

@@ -64,6 +64,7 @@ blocksRouter.delete('/:id', (req, res) => {
 
 	pool.query('DELETE FROM blocks where id=?', req.params.id, (error, result) => {
 		if (result) {
+			pool.query(`UPDATE users SET fame = fame + 5 WHERE id = ${req.body.to}`)
 			res.status(200).end()
 		} else if (error) {
 			res.status(500).send(error)

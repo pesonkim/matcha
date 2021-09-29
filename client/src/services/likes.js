@@ -15,8 +15,9 @@ const addLike = async (newLike) => {
 	return response.data
 }
 
-const removeLike = async (id) => {
-	const response = await axios.delete(`${baseUrl}/${id}`, auth.config())
+const removeLike = async (like) => {
+	const headers = auth.config()
+	const response = await axios.delete(`${baseUrl}/${like.id}`, { headers: headers.headers, data: like })
 	// console.log(response)
 	return response.data
 }
