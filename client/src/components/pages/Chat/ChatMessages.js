@@ -1,7 +1,7 @@
 import Message from './Message'
 import { useEffect, useRef } from 'react'
 
-const ChatMessages = ({ messages, name }) => {
+const ChatMessages = ({ messages }) => {
 	const divStyle = {
 		height: '60vh',
 		overflow: 'auto',
@@ -19,7 +19,7 @@ const ChatMessages = ({ messages, name }) => {
 
 	return (
 		<div className="py-4" style={divStyle}>
-			{messages.map((message, i) => <Message key={i} message={message} name={name} />)}
+			{messages.map((message) => <Message key={message.id} message={message} />)}
 			<div ref={messagesEndRef} />
 		</div>
 	)

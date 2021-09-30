@@ -126,6 +126,19 @@ const App = () => {
 							: <ProfileForm />
 						: <Redirect to='/' />
 					} />
+					<Route path='/chat/:id' exact render={({ match }) => {
+						const id = parseInt(match.params.id)
+						const foundUser = matches.find(user => user.id === id)
+						return (
+							loggedIn
+								? userComplete
+									? foundUser
+										? <ChatPage profile={foundUser} />
+										: <Redirect to='/matches' />
+									: <ProfileForm />
+								: <Redirect to='/' />
+						)
+					}} />
 					<Route path='/chat' component={ChatPage} />
 					<Route path='/login' render={() => !loggedIn
 						? <LoginPage />

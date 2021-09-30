@@ -1,10 +1,20 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getMatches } from '../../reducers/matchReducer'
 import { Link } from 'react-router-dom'
+import ReactEmoji from 'react-emoji'
 
 const MatchPreview = ({ user }) => {
 	const { id } = useSelector(state => state.user)
+	const { chats } = useSelector(state => state.match)
+	const [message, setMessage] = useState(null)
+
+	useEffect(() => {
+		if (chats && chats.length) {
+			let last = chats.filter(i => i.sender === id && i.receiver === user.id || i.sender === user.id && i.receiver === id)
+			last ? setMessage(last[last.length - 1]) : setMessage('Say hi to your new match 👋')
+		}
+	}, [chats])
 
 	const divideStyle = {
 		marginTop: '-1px',
@@ -27,9 +37,9 @@ const MatchPreview = ({ user }) => {
 					</div>
 				</Link>
 			</div>
-			<Link to={`/chat?name=${id}&room=test`} className='flex flex-col w-full h-16 sm:h-20 pl-4 justify-center overflow-hidden'>
+			<Link to={`/chat/${user.id}`} className='flex flex-col w-full h-16 sm:h-20 pl-4 justify-center overflow-hidden'>
 				<span className='text-xl sm:text-2xl'>{user.firstname}</span>
-				<span className='truncate text-sm sm:text-base'>asdreasdreasdreasdreasdreasdreasdreasdreasdreasdreasdreasdre</span>
+				<span className='truncate text-sm sm:text-base'>{message ? message.message : 'Say hi to your new match 👋'}</span>
 				<div className='bg-gradient-to-r from-transparent to-white absolute right-0 w-1/4 h-full rounded'></div>
 			</Link>
 			<div className='absolute right-0 top-0 w-3/4 sm:w-4/5 mx-4' style={divideStyle}></div>

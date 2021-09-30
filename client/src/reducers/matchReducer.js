@@ -12,6 +12,7 @@ const initialState = {
 	views: [],
 	likes: [],
 	matches: [],
+	chats: [],
 	reports: [],
 	blocks: null,
 	log: [],
@@ -33,6 +34,11 @@ const matchReducer = (state = initialState, action) => {
 		return {
 			...state,
 			matches: action.data
+		}
+	case 'SETCHATS':
+		return {
+			...state,
+			chats: action.data
 		}
 	case 'SETREPORTS':
 		return {
@@ -76,6 +82,11 @@ export const getHistory = () => {
 			data = await blockService.getBlocks()
 			dispatch({
 				type: 'SETBLOCKS',
+				data
+			})
+			data = await messageService.getMessages()
+			dispatch({
+				type: 'SETCHATS',
 				data
 			})
 		} catch (error) {
@@ -262,5 +273,31 @@ export const profileBlock = (block) => {
 		}
 	}
 }
+
+export const newMessage = (message) => {
+	return async dispatch => {
+		let data
+		try {
+			// console.log(message)
+			await messageService.addMessage(message)
+			data = await messageService.getMessages()
+			dispatch({
+				type: 'SETCHATS',
+				data
+			})
+		} catch (error) {
+			if (error.response && error.response.data) {
+				data = error.response.data.error
+			} else {
+				data = 'Database error'
+			}
+			dispatch({
+				type: 'ERROR',
+				data,
+			})
+		}
+	}
+}
+
 
 export default matchReducer

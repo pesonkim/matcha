@@ -1,6 +1,9 @@
 import ReactEmoji from 'react-emoji'
+import { useSelector } from 'react-redux'
 
-const Message = ({ message: { user, text }, name }) => {
+const Message = ({ message: { sender, message } }) => {
+	const { id } = useSelector(state => state.user)
+
 	const messageStyle = {
 		display: 'block',
 		borderColor: '#dae4e9',
@@ -20,30 +23,20 @@ const Message = ({ message: { user, text }, name }) => {
 		color: '#FFF',
 	}
 
-	let isSender = false
-
-	const trimmedName = name.trim().toLowerCase()
-
-	if(user === trimmedName) {
-		isSender = true
-	}
-
 	return (
-		isSender
+		sender === id
 			? (
 				<div className='flex justify-end px-4 mt-1 items-center'>
-					<p style={{ color: '#828282' }} className='pr-2'>{trimmedName}</p>
 					<div style={senderStyle}>
-						<p>{ReactEmoji.emojify(text)}</p>
+						<p>{ReactEmoji.emojify(message)}</p>
 					</div>
 				</div>
 			)
 			: (
 				<div className='flex justify-start px-4 mt-1 items-center'>
 					<div style={messageStyle}>
-						<p>{ReactEmoji.emojify(text)}</p>
+						<p>{ReactEmoji.emojify(message)}</p>
 					</div>
-					<p style={{ color: '#828282' }} className='pl-2'>{user}</p>
 				</div>
 			)
 	)

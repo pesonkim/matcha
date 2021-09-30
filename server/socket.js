@@ -22,8 +22,6 @@ module.exports = (server) => {
 		return { user }
 	}
 
-	const getUser = (id) => users.find(user => user.id === id)
-
 	const removeUser = (id) => {
 		const index = users.findIndex(user => user.socket === id)
 
@@ -45,6 +43,25 @@ module.exports = (server) => {
 
 			callback()
 		})
+
+		// socket.on('sendMessage', (messageData, callback) => {
+		// 	const { sender, receiver, message } = messageData
+
+		// 	const sql = 'INSERT INTO messages (sender, receiver, message, created_at) VALUES (?,?,?,CURRENT_TIMESTAMP)'
+		// 	const prepared = mysql.format(sql, [sender, receiver, message])
+		// 	console.log(prepared)
+		// 	pool.query(prepared, (error, result) => {
+		// 		if (result) {
+
+		// 		} else if (error) {
+		// 			return callback(error)
+		// 		}
+		// 	})
+		// 	io.to(user.room).emit('message', { user: user.name, text: message })
+		// 	io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) })
+
+		// 	callback()
+		// })
 		// socket.on('join', ({ name, room }, callback) => {
 		// 	//console.log('join')
 		// 	const { error, user } = addUser({ id: socket.id, name, room })
