@@ -87,19 +87,16 @@ export const getUsers = (filter, sliders, sort, tags, latitude, longitude, block
 	return async dispatch => {
 		let data
 		try {
-			// console.log(sliders)
 			data = await userService.getUsers()
-			// console.log('here', data.length)
-			// console.log(blocks)
+			//filter blocked users
 			if (blocks.length) {
 				data = data.filter(i => !blocks.map(b => b.receiver).includes(i.id))
 			}
-			// console.log('now', data.length)
+			//parse user fields
 			data.map(user => {
 				user.orientation = parse.oFromDb(user.orientation)
 				user.tags = parse.parseTags(user.tags)
 			})
-			// console.log(data)
 			//filter by tags
 			if (filter.length) {
 				data = data.filter(user => filter.every(tag => user.tags.includes(tag)))
@@ -113,7 +110,6 @@ export const getUsers = (filter, sliders, sort, tags, latitude, longitude, block
 							{ latitude: latitude, longitude: longitude }
 						)
 						user.distance = Math.ceil(convertDistance(user.distance, 'km'))
-						// console.log(user.distance, sliders.distance)
 						return (
 							(user.distance <= sliders.distance)
 						)

@@ -17,12 +17,15 @@ import MatchProfile from './components/pages/MatchProfile'
 import ResetPage from './components/pages/Reset'
 import ProfilePage from './components/pages/Profile'
 import MatchPage from './components/pages/Matches'
+import ChatPage from './components/pages/Chat'
 import NotificationPage from './components/pages/Notifications'
 import ProfileForm from './components/ui/forms/ProfileForm'
 import Wrapper from './components/ui/Wrapper'
 
-import Chat from './components/pages/Chat'
-import Join from './components/pages/Join'
+import io from 'socket.io-client'
+const endpoint = process.env.REACT_APP_ENDPOINT
+const socket = io(endpoint)
+console.log(socket)
 
 const App = () => {
 	const { loggedIn, userComplete } = useSelector(state => state.user)
@@ -54,6 +57,12 @@ const App = () => {
 	}, [dispatch])
 
 	useEffect(() => {
+		return () => {
+			socket.close()
+		}
+	}, [])
+
+	useEffect(() => {
 		if (errorMessage === 'token expired') {
 			window.localStorage.clear()
 			window.location.href = '/expired'
@@ -70,6 +79,17 @@ const App = () => {
 			})
 		}
 	}, [userComplete, loggedIn])
+
+	useEffect(() => {
+		if (loggedIn) {
+			const user = JSON.parse(window.localStorage.getItem('user'))
+			socket.emit('login', { data: user }, (error) => {
+				if (error) {
+					console.log(error)
+				}
+			})
+		}
+	}, [loggedIn])
 
 	useEffect(async () => {
 		if (blocks) {
@@ -106,8 +126,7 @@ const App = () => {
 							: <ProfileForm />
 						: <Redirect to='/' />
 					} />
-					<Route path='/chat' component={Chat} />
-					<Route path='/join' component={Join} />
+					<Route path='/chat' component={ChatPage} />
 					<Route path='/login' render={() => !loggedIn
 						? <LoginPage />
 						: <Redirect to='/' />
@@ -139,7 +158,6 @@ const App = () => {
 					<Route path='/matches/:id' exact render={({ match }) => {
 						const id = parseInt(match.params.id)
 						const foundUser = matches.find(user => user.id === id)
-						// console.log(foundUser)
 						return (
 							loggedIn
 								? userComplete

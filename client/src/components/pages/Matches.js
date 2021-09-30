@@ -4,17 +4,19 @@ import { getMatches } from '../../reducers/matchReducer'
 import { Link } from 'react-router-dom'
 
 const MatchPreview = ({ user }) => {
+	const { id } = useSelector(state => state.user)
+
 	const divideStyle = {
 		marginTop: '-1px',
-		borderTopWidth: '1px',
+		borderBottomWidth: '1px',
 		borderColor: '#dae4e9',
 	}
 
 	return (
 		<div className='w-full flex items-center p-2 relative'>
 			<div className='w-16 sm:w-20'>
-				<div className='w-16 h-16 sm:w-20 sm:h-20 relative'>
-					<Link to={`/matches/${user.id}`}>
+				<Link to={`/matches/${user.id}`}>
+					<div className='w-16 h-16 sm:w-20 sm:h-20 relative'>
 						<img src={user.avatar} className='h-full w-full rounded-full object-cover shadow' />
 						<div className='absolute top-1/2 left-full transform -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-full shadow '>
 							{user.online
@@ -22,14 +24,14 @@ const MatchPreview = ({ user }) => {
 								: <div className='bg-red-500 h-4 w-4 rounded-full'></div>
 							}
 						</div>
-					</Link>
-				</div>
+					</div>
+				</Link>
 			</div>
-			<div className='flex flex-col w-full h-16 sm:h-20 pl-4 justify-center overflow-hidden'>
+			<Link to={`/chat?name=${id}&room=test`} className='flex flex-col w-full h-16 sm:h-20 pl-4 justify-center overflow-hidden'>
 				<span className='text-xl sm:text-2xl'>{user.firstname}</span>
 				<span className='truncate text-sm sm:text-base'>asdreasdreasdreasdreasdreasdreasdreasdreasdreasdreasdreasdre</span>
-			</div>
-			<div className='bg-gradient-to-r from-transparent to-white absolute right-0 w-1/4 h-full rounded'></div>
+				<div className='bg-gradient-to-r from-transparent to-white absolute right-0 w-1/4 h-full rounded'></div>
+			</Link>
 			<div className='absolute right-0 top-0 w-3/4 sm:w-4/5 mx-4' style={divideStyle}></div>
 		</div>
 	)
@@ -59,7 +61,7 @@ const Matches = () => {
 					Matches
 				</h1>
 				{matches.length
-					? <div className="pb-2" style={fieldStyle}>
+					? <div className="" style={fieldStyle}>
 						{matches.map(user => <MatchPreview key={user.id} user={user} />)}
 					</div>
 					: <div className="flex justify-center items-center p-4" style={fieldStyle}>
