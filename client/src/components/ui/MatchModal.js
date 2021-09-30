@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const MatchModal = ({ modal, setModal }) => {
-	const { likes } = useSelector(state => state.match)
+	const { matches } = useSelector(state => state.match)
 
 	const handler = (event) => {
 		if (event.target.id === 'modalContainer') {
@@ -31,7 +31,7 @@ const MatchModal = ({ modal, setModal }) => {
 					{modal.type === 'unlike' &&
 						<Wrapper>
 							<Heading title='Unlike' />
-							{likes.find(like => like.receiver === modal.user.id) && likes.find(like => like.receiver === modal.user.id).is_match === 1
+							{matches.find(match => match.id === modal.user.id)
 								? <>
 									<p className='mb-4'>Are you sure you want to unlike {modal.user.firstname}?</p>
 									<p className='mb-4'>This will also remove them from your matches.</p>

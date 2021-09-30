@@ -6,6 +6,7 @@ import matchService from '../services/matches'
 import messageService from '../services/messages'
 import notifService from '../services/notifications'
 import userService from '../services/users'
+import parse from '../utils/parse'
 
 const initialState = {
 	views: [],
@@ -96,7 +97,17 @@ export const getMatches = () => {
 		let data
 		try {
 			data = await matchService.getMatches()
-			console.log(data)
+			data.map(i => {
+				i.orientation = parse.oFromDb(i.orientation)
+				i.tags = parse.parseTags(i.tags)
+			})
+			// console.log(data)
+			const blocks = await blockService.getBlocks()
+			// console.log('blocks', blocks)
+			if (blocks && blocks.length) {
+				data = data.filter(i => !blocks.map(b => b.receiver).includes(i.id))
+			}
+			// console.log(data)
 			dispatch({
 				type: 'SETMATCHES',
 				data

@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { lookup } from './reducers/userReducer'
 import { getUserIds } from './reducers/publicReducer'
-import { getHistory } from './reducers/matchReducer'
+import { getHistory, getMatches } from './reducers/matchReducer'
 import auth from './utils/auth'
 
 import LoginPage from './components/pages/Login'
@@ -13,6 +13,7 @@ import SignupPage from './components/pages/Signup'
 import ForgotPage from './components/pages/Forgot'
 import BrowsePage from './components/pages/Browse'
 import PublicProfile from './components/pages/PublicProfile'
+import MatchProfile from './components/pages/MatchProfile'
 import ResetPage from './components/pages/Reset'
 import ProfilePage from './components/pages/Profile'
 import MatchPage from './components/pages/Matches'
@@ -27,6 +28,7 @@ const App = () => {
 	const { loggedIn, userComplete } = useSelector(state => state.user)
 	const { errorMessage } = useSelector(state => state.form)
 	const { ids, loadingApp } = useSelector(state => state.public)
+	const { matches, likes } = useSelector(state => state.match)
 	const { orientation } = useSelector(state => state.user)
 	const { blocks } = useSelector(state => state.match)
 	const dispatch = useDispatch()
@@ -71,9 +73,10 @@ const App = () => {
 
 	useEffect(async () => {
 		if (blocks) {
+			await dispatch(getMatches())
 			await dispatch(getUserIds(blocks))
 		}
-	}, [blocks, orientation])
+	}, [blocks, orientation, likes])
 
 	return (
 		<Layout>
@@ -133,6 +136,20 @@ const App = () => {
 						? <ProfilePage />
 						: <Redirect to='/' />
 					} />
+					<Route path='/matches/:id' exact render={({ match }) => {
+						const id = parseInt(match.params.id)
+						const foundUser = matches.find(user => user.id === id)
+						// console.log(foundUser)
+						return (
+							loggedIn
+								? userComplete
+									? foundUser
+										? <MatchProfile profile={foundUser} />
+										: <Redirect to='/matches' />
+									: <ProfileForm />
+								: <Redirect to='/' />
+						)
+					}} />
 					<Route path='/matches' render={() => loggedIn
 						? <MatchPage />
 						: <Redirect to='/' />

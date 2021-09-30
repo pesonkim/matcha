@@ -5,61 +5,40 @@ import Image from './Image'
 import Info from './Info'
 import Actions from './Actions'
 import { useEffect, useState } from 'react'
-import { getUserById } from '../../../reducers/publicReducer'
-import { profileView, profileLike, profileReport, profileBlock } from '../../../reducers/matchReducer'
+import { profileLike, profileReport, profileBlock } from '../../../reducers/matchReducer'
 
 import Confirm from '../../ui/Confirm'
 import MatchModal from '../../ui/MatchModal'
 
-const PublicProfile = ({ profileId }) => {
+const PublicProfile = ({ profile }) => {
 	const dispatch = useDispatch()
-	const { profile } = useSelector(state => state.public)
 	const { id } = useSelector(state => state.user)
-	const { matches } = useSelector(state => state.match)
 	const [modal, setModal] = useState(null)
 	const [dialog, setDialog] = useState(null)
-	const [wait, setWait] = useState(false)
 
 	useEffect(async () => {
-		await dispatch(profileView({ from: id, to: profileId }))
-		await dispatch(getUserById(profileId))
 		window.scroll({
 			top: 0,
 			left: 0,
 			behavior: 'smooth',
 		})
-	}, [dispatch])
-
-	useEffect(() => {
-		if (wait) {
-			// console.log('here', matches)
-			if (matches.find(match => match.id === profileId)) {
-				setModal({ type: 'match', user: profile })
-			}
-			setWait(false)
-		}
-	}, [matches])
+	}, [])
 
 	const handleLike = async ({ type, likeid }) => {
-		await dispatch(profileLike({ from: id, to: profileId, type: type, id: likeid }))
+		await dispatch(profileLike({ from: id, to: profile.id, type: type, id: likeid }))
 		if (type === 'remove') {
 			setModal(null)
-		}
-		await dispatch(getUserById(profileId))
-		if (type === 'new') {
-			setWait(true)
 		}
 	}
 
 	const handleReport = async () => {
-		await dispatch(profileReport({ from: id, to: profileId }))
+		await dispatch(profileReport({ from: id, to: profile.id }))
 		setDialog(null)
-		await dispatch(getUserById(profileId))
 	}
 
 	const handleBlock = async () => {
-		await dispatch(profileBlock({ from: id, to: profileId, type: 'new' }))
-		// setDialog(null)
+		await dispatch(profileBlock({ from: id, to: profile.id, type: 'new' }))
+		setDialog(null)
 	}
 
 	if (!profile) {
