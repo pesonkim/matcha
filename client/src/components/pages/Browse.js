@@ -99,7 +99,7 @@ const BrowsePage = () => {
 					? null
 					: <Wrapper>
 						<div className='text-center'>
-							No users match current filters
+							No users match current filters or location
 						</div>
 					</Wrapper>
 			}

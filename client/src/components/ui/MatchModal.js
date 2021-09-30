@@ -59,7 +59,7 @@ const MatchModal = ({ modal, setModal }) => {
 							<Heading title='You got a match!' />
 							<p className='mb-4 text-center'>You can now chat with {modal.user.firstname}!</p>
 							<div className='flex flex-row justify-between'>
-								<Link to='/join' className=' w-1/2'>
+								<Link to='/matches' className=' w-1/2'>
 									<button
 										className='rounded bg-green-500 hover:bg-green-600 text-white mr-4 p-4 w-full h-full'
 										onClick={() => setModal(null)}

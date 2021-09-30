@@ -40,8 +40,8 @@ const Filters = () => {
 	return (
 		<Wrapper>
 			<div data-tip data-for='results' >
-				<h1 className='text-3xl text-center mb-4' >
-					View users
+				<h1 className='text-2xl sm:text-3xl text-center mb-4' >
+					{`View users: ${users.length}`}
 				</h1>
 				<ReactTooltip id='results'>
 					{`total: ${users.length}, blocks: ${blocks ? blocks.length : null}`}

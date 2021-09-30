@@ -9,14 +9,6 @@ const port = require('../utils/config').PORT
 const tokenSecret = require('../utils/config').TOKEN_SECRET
 const moment = require('moment')
 
-//async await routes
-
-//get
-//get id
-//post
-//patch id
-//delete id
-
 userRouter.post('/', async (req, res) => {
 	const { firstname, lastname, username, birthdate, email, password, token } = req.body
 

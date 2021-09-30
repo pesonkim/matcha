@@ -1,6 +1,6 @@
 const Heading = ({ title }) => {
 	return (
-		<h1 className='text-3xl text-center mb-4'>
+		<h1 className='text-2xl sm:text-3xl text-center mb-4'>
 			{title}
 		</h1>
 	)

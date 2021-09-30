@@ -1,15 +1,30 @@
 import { Link } from 'react-router-dom'
 import { HeartIcon, LogoutIcon, LoginIcon } from '@heroicons/react/outline'
-import { UserCircleIcon, ChatIcon, BellIcon, UserAddIcon } from '@heroicons/react/solid'
+import { UserCircleIcon, ChatIcon, UserAddIcon, BellIcon } from '@heroicons/react/solid'
 import { useSelector } from 'react-redux'
 import loginService from '../../services/login'
 
 const Header = () => {
-	const { loggedIn } = useSelector(state => state.user)
+	const { loggedIn, avatar } = useSelector(state => state.user)
 
 	const blur = {
 		backgroundColor: 'rgba(255, 255, 255, 0.5)',
 		backdropFilter: 'blur(5px)',
+	}
+
+	const divStyle = {
+		height: '32px',
+		width: '32px',
+		padding: '1px',
+	}
+
+	const imgStyle = {
+		height: '100%',
+		width: '100%',
+		borderRadius: '50%',
+		objectFit: 'cover',
+		borderWidth: '1px',
+		borderColor: '#dae4e9',
 	}
 
 	return (
@@ -27,11 +42,17 @@ const Header = () => {
 							<BellIcon className=' h-8 w-8' />
 							<p className='hidden sm:block'>notifications</p>
 						</Link>
-						<Link to='/join' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50 select-none'>
+						<Link to='/matches' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50 select-none'>
 							<ChatIcon className=' h-8 w-8' />
 							<p className='hidden sm:block'>matches</p>
 						</Link>
 						<Link to='/profile' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50 select-none'>
+							{/* {avatar
+								? (<div style={divStyle} >
+									<img src={avatar} style={imgStyle} />
+								</div>)
+								: <UserCircleIcon className=' h-8 w-8' />
+							} */}
 							<UserCircleIcon className=' h-8 w-8' />
 							<p className='hidden sm:block'>profile</p>
 						</Link>

@@ -1,5 +1,5 @@
 import { HeartIcon, FlagIcon, BanIcon } from '@heroicons/react/solid'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 
 const ReportButton = ({ user, onClick, action }) => (
@@ -63,16 +63,11 @@ const Actions = ({ user, handleLike, askConfirm, setModal, handleReport, handleB
 	const { profile } = useSelector(state => state.public)
 	const { reports, likes } = useSelector(state => state.match)
 
-	const divStyle = {
-		borderBottomWidth: '2px',
-		borderColor: '#dae4e9',
-	}
-
 	const reported = reports.find(r => r.receiver === profile.id) ? true : false
 	const liked = likes.find(r => r.receiver === profile.id)
 
 	return (
-		<div className="w-full flex sm:px-4" style={divStyle}>
+		<div className="w-full flex sm:px-4" >
 			{avatar
 				? liked
 					? <UnlikeButton user={user} action={handleLike} setModal={setModal} id={liked.id}/>

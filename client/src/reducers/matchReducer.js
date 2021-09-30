@@ -2,6 +2,7 @@ import viewService from '../services/views'
 import likeService from '../services/likes'
 import reportService from '../services/reports'
 import blockService from '../services/blocks'
+import matchService from '../services/matches'
 import messageService from '../services/messages'
 import notifService from '../services/notifications'
 import userService from '../services/users'
@@ -9,6 +10,7 @@ import userService from '../services/users'
 const initialState = {
 	views: [],
 	likes: [],
+	matches: [],
 	reports: [],
 	blocks: null,
 	log: [],
@@ -25,6 +27,11 @@ const matchReducer = (state = initialState, action) => {
 		return {
 			...state,
 			likes: action.data
+		}
+	case 'SETMATCHES':
+		return {
+			...state,
+			matches: action.data
 		}
 	case 'SETREPORTS':
 		return {
@@ -68,6 +75,30 @@ export const getHistory = () => {
 			data = await blockService.getBlocks()
 			dispatch({
 				type: 'SETBLOCKS',
+				data
+			})
+		} catch (error) {
+			if (error.response && error.response.data) {
+				data = error.response.data.error
+			} else {
+				data = 'Database error'
+			}
+			dispatch({
+				type: 'ERROR',
+				data,
+			})
+		}
+	}
+}
+
+export const getMatches = () => {
+	return async dispatch => {
+		let data
+		try {
+			data = await matchService.getMatches()
+			console.log(data)
+			dispatch({
+				type: 'SETMATCHES',
 				data
 			})
 		} catch (error) {

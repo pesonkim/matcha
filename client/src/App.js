@@ -15,6 +15,8 @@ import BrowsePage from './components/pages/Browse'
 import PublicProfile from './components/pages/PublicProfile'
 import ResetPage from './components/pages/Reset'
 import ProfilePage from './components/pages/Profile'
+import MatchPage from './components/pages/Matches'
+import NotificationPage from './components/pages/Notifications'
 import ProfileForm from './components/ui/forms/ProfileForm'
 import Wrapper from './components/ui/Wrapper'
 
@@ -132,11 +134,11 @@ const App = () => {
 						: <Redirect to='/' />
 					} />
 					<Route path='/matches' render={() => loggedIn
-						? <BrowsePage />
+						? <MatchPage />
 						: <Redirect to='/' />
 					} />
 					<Route path='/notif' render={() => loggedIn
-						? <BrowsePage />
+						? <NotificationPage />
 						: <Redirect to='/' />
 					} />
 					<Route path='/' render={() => loggedIn
