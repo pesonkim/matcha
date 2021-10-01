@@ -1,19 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useState } from 'react'
-import { getMatches } from '../../reducers/matchReducer'
 import { Link } from 'react-router-dom'
 
 const MatchPreview = ({ user }) => {
 	const { id } = useSelector(state => state.user)
-	const { chats } = useSelector(state => state.match)
-	const [message, setMessage] = useState(null)
-
-	useEffect(() => {
-		if (chats && chats.length) {
-			let last = chats.filter(i => i.sender === id && i.receiver === user.id || i.sender === user.id && i.receiver === id)
-			last ? setMessage(last[last.length - 1]) : null
-		}
-	}, [chats])
 
 	const divideStyle = {
 		marginTop: '-1px',
@@ -39,14 +28,14 @@ const MatchPreview = ({ user }) => {
 			<Link to={`/chat/${user.id}`} className='flex flex-col w-full h-16 sm:h-20 pl-4 justify-center overflow-hidden'>
 				<span className='text-xl sm:text-2xl'>{user.firstname}</span>
 				<span className='truncate text-sm sm:text-base text-gray-500 flex flex-row flex-nowrap'>
-					{message
-						? message.sender === id
+					{user.chat.length
+						? user.chat[user.chat.length - 1].sender === id
 							? (<div className="flex text-center items-center">
 								<svg className="h-4 w-4 text-gray-500 mr-2 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M8.309 189.836L184.313 37.851C199.719 24.546 224 35.347 224 56.015v80.053c160.629 1.839 288 34.032 288 186.258 0 61.441-39.581 122.309-83.333 154.132-13.653 9.931-33.111-2.533-28.077-18.631 45.344-145.012-21.507-183.51-176.59-185.742V360c0 20.7-24.3 31.453-39.687 18.164l-176.004-152c-11.071-9.562-11.086-26.753 0-36.328z"></path></svg>
-								{message.message}
+								{user.chat[user.chat.length - 1].message}
 							</div>
 							)
-							: message.message
+							: user.chat[user.chat.length - 1].message
 
 						: 'Say hi to your new match 👋'}
 				</span>
@@ -57,10 +46,6 @@ const MatchPreview = ({ user }) => {
 	)
 }
 
-{/* <Link key={profile.id} to={`/browse/${profile.id}`}>
-<Preview user={profile} />
-</Link> */}
-
 const Matches = () => {
 	const dispatch = useDispatch()
 	const { matches } = useSelector(state => state.match)
@@ -69,10 +54,6 @@ const Matches = () => {
 		borderTopWidth: '1px',
 		borderColor: '#dae4e9',
 	}
-
-	useEffect(async () => {
-		await dispatch(getMatches())
-	}, [dispatch])
 
 	return (
 		<div className='max-w-screen-sm mx-auto px-2 slideDown'>

@@ -2,7 +2,6 @@ const express = require('express')
 require('express-async-errors')
 const app = express()
 const cors = require('cors')
-const setupDb = require('./utils/setup')
 
 const userRouter = require('./routes/users')
 const loginRouter = require('./routes/login')
@@ -19,8 +18,6 @@ const messagesRouter = require('./routes/messages')
 const notifRouter = require('./routes/notifications')
 
 const middleware = require('./utils/middleware')
-
-setupDb()
 
 app.use(cors())
 //app.use(express.static('build'))

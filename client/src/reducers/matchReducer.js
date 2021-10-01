@@ -12,7 +12,6 @@ const initialState = {
 	views: [],
 	likes: [],
 	matches: [],
-	chats: [],
 	reports: [],
 	blocks: null,
 	log: [],
@@ -34,11 +33,6 @@ const matchReducer = (state = initialState, action) => {
 		return {
 			...state,
 			matches: action.data
-		}
-	case 'SETCHATS':
-		return {
-			...state,
-			chats: action.data
 		}
 	case 'SETREPORTS':
 		return {
@@ -84,11 +78,6 @@ export const getHistory = () => {
 				type: 'SETBLOCKS',
 				data
 			})
-			data = await messageService.getMessages()
-			dispatch({
-				type: 'SETCHATS',
-				data
-			})
 		} catch (error) {
 			if (error.response && error.response.data) {
 				data = error.response.data.error
@@ -118,6 +107,19 @@ export const getMatches = () => {
 			if (blocks && blocks.length) {
 				data = data.filter(i => !blocks.map(b => b.receiver).includes(i.id))
 			}
+			// console.log(data)
+			const chat = await messageService.getMessages()
+			data.map(i => {
+				i.chat = chat.filter(m => m.sender === i.id || m.receiver === i.id)
+			})
+			// console.log(data)
+			data = data.sort((a,b) => {
+				a.latest = a.chat.length ? a.chat[a.chat.length - 1].created_at : a.created_at
+				b.latest = b.chat.length ? b.chat[b.chat.length - 1].created_at : b.created_at
+				return (
+					new Date(b.latest) - new Date(a.latest)
+				)
+			})
 			// console.log(data)
 			dispatch({
 				type: 'SETMATCHES',
@@ -280,11 +282,7 @@ export const newMessage = (message) => {
 		try {
 			// console.log(message)
 			await messageService.addMessage(message)
-			data = await messageService.getMessages()
-			dispatch({
-				type: 'SETCHATS',
-				data
-			})
+			dispatch(getMatches())
 		} catch (error) {
 			if (error.response && error.response.data) {
 				data = error.response.data.error

@@ -12,7 +12,6 @@ console.log(socket)
 
 const Chat = ({ profile }) => {
 	const { id } = useSelector(state => state.user)
-	const { chats } = useSelector(state => state.match)
 	const [message, setMessage] = useState([])
 	const [messages, setMessages] = useState([])
 	const ENDPOINT = 'localhost:3001'
@@ -50,17 +49,10 @@ const Chat = ({ profile }) => {
 	// }, [])
 
 	useEffect(() => {
-		if (chats && chats.length) {
-			const conversation = chats.filter(i => i.sender === id && i.receiver === profile.id || i.sender === profile.id && i.receiver === id)
-			console.log(conversation)
-			setMessages(conversation)
-			// chats.map(i => {
-			// 	if (i.sender === id && i.receiver === profile.id || i.sender === profile.id && i.receiver === id) {
-			// 		setMessages(messages => [...messages, i.message])
-			// 	}
-			// })
+		if (profile.chat.length) {
+			setMessages(profile.chat)
 		}
-	}, [chats])
+	}, [profile])
 
 	const sendMessage = (event) => {
 		event.preventDefault()

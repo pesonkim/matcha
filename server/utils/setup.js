@@ -10,7 +10,7 @@ const setupDb = async () => {
 		host: config.DB_HOST,
 		user: config.DB_USER,
 		password: config.DB_PW,
-		charset : 'utf8mb4',
+		charset: 'utf8mb4',
 		multipleStatements: true,
 	})
 
@@ -199,8 +199,8 @@ const setupDb = async () => {
 		longitude: 24.958202
 	}
 
-	dummy = dummy.concat('(\'firstname\', \'lastname\', \'admin\', \'admin@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, \'https://muropaketti.com/wp-content/uploads/2015/11/riskibisnes_tomcruise.jpg\', \'male\', \'f\', \'#coding#techno\', \'asd\', 60.1686, 24.9456, \'2000-01-01\', 100, CURRENT_TIMESTAMP),')
-	dummy = dummy.concat('(\'firstname\', \'lastname\', \'dummy\', \'dummy@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, \'https://muropaketti.com/wp-content/uploads/2015/11/riskibisnes_tomcruise.jpg\', \'female\', \'m\', \'#coding#techno\', \'asd\', 60.1686, 24.9456, \'2000-01-01\', 100, CURRENT_TIMESTAMP),')
+	dummy = dummy.concat('(\'super\', \'user\', \'admin\', \'admin@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, \'https://muropaketti.com/wp-content/uploads/2015/11/riskibisnes_tomcruise.jpg\', \'male\', \'f\', \'#coding#techno\', \'asd\', 60.1686, 24.9456, \'2000-01-01\', 100, CURRENT_TIMESTAMP),')
+	dummy = dummy.concat('(\'dummy\', \'user\', \'dummy\', \'dummy@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, \'https://muropaketti.com/wp-content/uploads/2015/11/riskibisnes_tomcruise.jpg\', \'female\', \'m\', \'#coding#techno\', \'asd\', 60.1686, 24.9456, \'2000-01-01\', 100, CURRENT_TIMESTAMP),')
 	// dummy = dummy.concat('(\'firstname\', \'lastname\', \'dummy\', \'dummy@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, null, null, null, null, null, null, null, \'2000-01-01\', 100, null),')
 
 	for (let i = 0; i < 500; i++) {
@@ -308,8 +308,16 @@ const setupDb = async () => {
 		logger.info('Created dummy users')
 	})
 
-	//test like
-	await connection.query('INSERT INTO likes (sender, receiver, created_at) VALUES (2,1,CURRENT_TIMESTAMP)', (error) => {
+	//test likes
+	let testlikes = 'INSERT INTO likes (sender, receiver, created_at) VALUES'
+	for (let i = 2; i < 1003; i++) {
+		testlikes = testlikes.concat(`(${i}, 1, CURRENT_TIMESTAMP)`)
+		if (i < 1002) {
+			testlikes = testlikes.concat(',')
+		}
+	}
+
+	await connection.query(testlikes, (error) => {
 		if (error) {
 			// console.log(error)
 			logger.error('Error creating test likes', error.message)
@@ -340,4 +348,4 @@ const setupDb = async () => {
 	})
 }
 
-module.exports = setupDb
+module.exports = { setupDb }

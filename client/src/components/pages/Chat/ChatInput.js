@@ -1,10 +1,26 @@
 import { EmojiHappyIcon } from '@heroicons/react/outline'
 import { Picker } from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const ChatInput = ({ message, setMessage, sendMessage }) => {
 	const [showEmojis, setShowEmojis] = useState(false)
+
+	const handler = (event) => {
+		const parent = document.getElementById('emojipicker')
+		if (!parent.contains(event.target)) {
+			setShowEmojis(false)
+		}
+	}
+
+	useEffect(() => {
+		if (showEmojis) {
+			window.addEventListener('click', handler)
+			return () => {
+				window.removeEventListener('click', handler)
+			}
+		}
+	}, [showEmojis])
 
 	const divStyle = {
 		borderTopWidth: '2px',
@@ -46,7 +62,7 @@ const ChatInput = ({ message, setMessage, sendMessage }) => {
 				onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null}
 			/>
 			{showEmojis && (
-				<div className='absolute bottom-3/4 right-20 mx-auto mb-1 ml-4'>
+				<div className='absolute bottom-3/4 right-20 mx-auto mb-1 ml-4' id='emojipicker'>
 					<Picker
 						onSelect={e => setMessage(message + e.native)}
 						style={{ width: '100%' }}

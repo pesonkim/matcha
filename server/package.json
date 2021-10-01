@@ -6,6 +6,7 @@
 	"scripts": {
 		"start": "node index.js",
 		"dev": "nodemon index.js",
+		"init": "run-func ./utils/setup.js setupDb",
 		"build:ui": "rm -rf build && cd ../client/ && npm run build --prod && cp -r build ../server/",
 		"lint": "eslint . --fix"
 	},
@@ -26,6 +27,7 @@
 		"nodemailer": "^6.6.3",
 		"path": "^0.12.7",
 		"random-location": "^1.1.3",
+		"run-func": "^1.0.5",
 		"socket.io": "^4.2.0"
 	},
 	"devDependencies": {
