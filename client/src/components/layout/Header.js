@@ -3,9 +3,29 @@ import { HeartIcon, LogoutIcon, LoginIcon } from '@heroicons/react/outline'
 import { UserCircleIcon, ChatIcon, UserAddIcon, BellIcon } from '@heroicons/react/solid'
 import { useSelector } from 'react-redux'
 import loginService from '../../services/login'
+import { useEffect, useState } from 'react'
 
 const Header = () => {
-	const { loggedIn, avatar } = useSelector(state => state.user)
+	const { loggedIn, avatar, id } = useSelector(state => state.user)
+	const { matches } = useSelector(state => state.match)
+	const [unreadMessages, setUnreadMessages] = useState(null)
+
+	useEffect(() => {
+		if (matches) {
+			// console.log('header')
+			let count = 0
+			matches.map(i => {
+				if (i.chat.length) {
+					i.chat.map(message => message.receiver === id && message.status === 0 ? count++ : null)
+				}
+			})
+			if (count) {
+				count < 99 ? setUnreadMessages(count) : setUnreadMessages(99)
+			} else {
+				setUnreadMessages(null)
+			}
+		}
+	}, [matches])
 
 	const blur = {
 		backgroundColor: 'rgba(255, 255, 255, 0.5)',
@@ -38,13 +58,35 @@ const Header = () => {
 				</section>
 				{loggedIn
 					? <section className="flex items-center">
-						<Link to='/notif' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50 select-none'>
+						<Link to='/notif' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50 select-none relative'>
 							<BellIcon className=' h-8 w-8' />
 							<p className='hidden sm:block'>notifications</p>
+							{false &&
+								<div
+									className='absolute w-6 h-6 top-1/2 sm:top-1/3 left-full sm:left-2/3 transform -translate-x-1/2 -translate-y-1/2 rounded-full inline-block text-white bg-red-500 text-center'
+									style={{ lineHeight: '1.5rem' }}
+								>
+									<span className='z-10 relative'>
+										{1}
+									</span>
+									<span className='z-0 absolute bg-red-500 animate-ping w-6 h-6 top-0 left-0 rounded-full'></span>
+								</div>
+							}
 						</Link>
-						<Link to='/matches' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50 select-none'>
+						<Link to='/matches' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50 select-none relative'>
 							<ChatIcon className=' h-8 w-8' />
-							<p className='hidden sm:block'>matches</p>
+							<p className='hidden sm:block'>messages</p>
+							{unreadMessages &&
+								<div
+									className='absolute w-6 h-6 top-1/2 sm:top-1/3 left-full sm:left-2/3 sm:ml-2 transform -translate-x-1/2 -translate-y-1/2 rounded-full inline-block text-white bg-red-500 text-center'
+									style={{ lineHeight: '1.5rem' }}
+								>
+									<span className='z-10 relative'>
+										{unreadMessages}
+									</span>
+									<span className='z-0 absolute bg-red-500 animate-ping w-6 h-6 top-0 left-0 rounded-full'></span>
+								</div>
+							}
 						</Link>
 						<Link to='/profile' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50 select-none'>
 							{/* {avatar

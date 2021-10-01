@@ -276,12 +276,16 @@ export const profileBlock = (block) => {
 	}
 }
 
-export const newMessage = (message) => {
+export const chatMessage = (message) => {
 	return async dispatch => {
 		let data
 		try {
-			// console.log(message)
-			await messageService.addMessage(message)
+			// console.log(message.type, message)
+			if (message.type === 'new') {
+				await messageService.addMessage(message)
+			} else if (message.type === 'read') {
+				await messageService.updateMessages(message)
+			}
 			dispatch(getMatches())
 		} catch (error) {
 			if (error.response && error.response.data) {

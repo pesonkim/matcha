@@ -1,14 +1,34 @@
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const MatchPreview = ({ user }) => {
 	const { id } = useSelector(state => state.user)
+	const { matches } = useSelector(state => state.match)
+	const [unreadMessages, setUnreadMessages] = useState(null)
 
 	const divideStyle = {
 		marginTop: '-1px',
 		borderBottomWidth: '1px',
 		borderColor: '#dae4e9',
 	}
+
+	useEffect(() => {
+		if (matches) {
+			// console.log('header')
+			let count = 0
+			matches.map(i => {
+				if (i.chat.length) {
+					i.chat.map(message => message.sender === user.id && message.status === 0 ? count++ : null)
+				}
+			})
+			if (count) {
+				count < 99 ? setUnreadMessages(count) : setUnreadMessages(99)
+			} else {
+				setUnreadMessages(null)
+			}
+		}
+	}, [matches])
 
 	return (
 		<div className='w-full flex items-center p-2 relative'>
@@ -25,7 +45,7 @@ const MatchPreview = ({ user }) => {
 					</div>
 				</Link>
 			</div>
-			<Link to={`/chat/${user.id}`} className='flex flex-col w-full h-16 sm:h-20 pl-4 justify-center overflow-hidden'>
+			<Link to={`/chat/${user.id}`} className='flex flex-col w-full h-16 sm:h-20 pl-4 justify-center overflow-hidden relative'>
 				<span className='text-xl sm:text-2xl'>{user.firstname}</span>
 				<span className='truncate text-sm sm:text-base text-gray-500 flex flex-row flex-nowrap'>
 					{user.chat.length
@@ -39,7 +59,20 @@ const MatchPreview = ({ user }) => {
 
 						: 'Say hi to your new match 👋'}
 				</span>
-				<div className='bg-gradient-to-r from-transparent to-white absolute right-0 w-1/4 h-full rounded'></div>
+				<div className='absolute right-0 bg-white w-10 sm:w-12 h-full rounded'></div>
+				<div className='bg-gradient-to-r from-transparent to-white absolute right-0 w-1/2 mr-10 h-full rounded'></div>
+				{unreadMessages &&
+					<div
+						className='absolute w-6 h-6 top-1/2 right-3 transform -translate-y-1/2 rounded-full inline-block text-white bg-red-500 text-center'
+						style={{ lineHeight: '1.5rem' }}
+					>
+						<span className='z-10 relative'>
+							{unreadMessages}
+						</span>
+						<span className='z-0 absolute bg-red-500 animate-ping w-6 h-6 top-0 left-0 rounded-full overflow-visible'>
+						</span>
+					</div>
+				}
 			</Link>
 			<div className='absolute right-0 top-0 w-3/4 sm:w-4/5 mx-4' style={divideStyle}></div>
 		</div>
@@ -59,7 +92,7 @@ const Matches = () => {
 		<div className='max-w-screen-sm mx-auto px-2 slideDown'>
 			<div className='flex flex-col justify-center my-4 bg-white rounded ui-shadow'>
 				<h1 className='text-2xl sm:text-3xl text-center p-4'>
-					Matches
+					Messages
 				</h1>
 				{matches.length
 					? <div className="" style={fieldStyle}>

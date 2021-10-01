@@ -49,12 +49,27 @@ messagesRouter.post('/', (req, res) => {
 	})
 })
 
-messagesRouter.put('/', (req, res) => {
+messagesRouter.put('/:id', (req, res) => {
 	const user = jwt.verify(req.token, tokenSecret)
 
-	if (!user) {
+	if (!user || user.id !== Number(req.params.id)) {
 		return res.status(401).send({ error: 'Invalid token or unauthorized' })
 	}
+
+	const sql = 'UPDATE messages SET status=1 WHERE receiver=? AND sender=?'
+	const values = [
+		user.id,
+		req.body.sender
+	]
+	const prepared = mysql.format(sql, values)
+	// console.log(prepared)
+	pool.query(prepared, (error, result) => {
+		if (result) {
+			return res.status(200).send(result)
+		} else if (error) {
+			return res.status(500).send(error)
+		}
+	})
 })
 
 module.exports = messagesRouter

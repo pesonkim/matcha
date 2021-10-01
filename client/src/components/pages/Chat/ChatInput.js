@@ -8,7 +8,7 @@ const ChatInput = ({ message, setMessage, sendMessage }) => {
 
 	const handler = (event) => {
 		const parent = document.getElementById('emojipicker')
-		if (!parent.contains(event.target)) {
+		if (parent && !parent.contains(event.target)) {
 			setShowEmojis(false)
 		}
 	}

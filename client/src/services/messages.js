@@ -15,10 +15,10 @@ const addMessage = async (newMessage) => {
 	return response.data
 }
 
-const updateMessage = async (id, message) => {
-	const response = await axios.put(`${baseUrl}/${id}`, message, auth.config())
+const updateMessages = async (message) => {
+	const response = await axios.put(`${baseUrl}/${message.receiver}`, message, auth.config())
 	// console.log(response)
 	return response.data
 }
 
-export default { getMessages, addMessage, updateMessage }
+export default { getMessages, addMessage, updateMessages }

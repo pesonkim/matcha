@@ -98,6 +98,12 @@ const App = () => {
 		}
 	}, [blocks, orientation, likes])
 
+	useEffect(() => {
+		socket.on('message', () => {
+			dispatch(getMatches())
+		})
+	}, [])
+
 	return (
 		<Layout>
 			{loadingApp
