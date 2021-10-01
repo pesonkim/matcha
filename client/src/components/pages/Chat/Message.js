@@ -1,4 +1,3 @@
-import ReactEmoji from 'react-emoji'
 import { useSelector } from 'react-redux'
 
 const Message = ({ message: { sender, message } }) => {
@@ -26,16 +25,16 @@ const Message = ({ message: { sender, message } }) => {
 	return (
 		sender === id
 			? (
-				<div className='flex justify-end px-4 mt-1 items-center'>
+				<div className='flex justify-end px-4 mt-1 items-center overflow-ellipsis overflow-hidden break-words'>
 					<div style={senderStyle}>
-						<p>{ReactEmoji.emojify(message)}</p>
+						<p>{message}</p>
 					</div>
 				</div>
 			)
 			: (
-				<div className='flex justify-start px-4 mt-1 items-center'>
+				<div className='flex justify-start px-4 mt-1 items-center overflow-ellipsis overflow-hidden break-words'>
 					<div style={messageStyle}>
-						<p>{ReactEmoji.emojify(message)}</p>
+						<p>{message}</p>
 					</div>
 				</div>
 			)

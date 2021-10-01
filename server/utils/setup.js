@@ -10,7 +10,8 @@ const setupDb = async () => {
 		host: config.DB_HOST,
 		user: config.DB_USER,
 		password: config.DB_PW,
-		multipleStatements: true
+		charset : 'utf8mb4',
+		multipleStatements: true,
 	})
 
 	//creating empty database
@@ -47,7 +48,7 @@ const setupDb = async () => {
         gender varchar(255) DEFAULT NULL,
         orientation varchar(255) DEFAULT NULL,
 		tags varchar(255),
-        bio text,
+        bio varchar(5000),
         latitude float DEFAULT NULL,
         longitude float DEFAULT NULL,
         birthdate date NOT NULL,
@@ -101,7 +102,7 @@ const setupDb = async () => {
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
         sender int NOT NULL,
         receiver int NOT NULL,
-        message text,
+        message varchar(5000),
         created_at datetime NOT NULL,
         status tinyint(1) NOT NULL DEFAULT 0,
         FOREIGN KEY (sender) REFERENCES users(id),
@@ -112,7 +113,7 @@ const setupDb = async () => {
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
         sender int NOT NULL,
         receiver int NOT NULL,
-        message text,
+        message varchar(5000),
         created_at datetime NOT NULL,
         status tinyint(1) NOT NULL DEFAULT 0,
         user int NOT NULL,

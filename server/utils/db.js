@@ -7,7 +7,8 @@ const pool = mysql.createPool({
 	user: config.DB_USER,
 	password: config.DB_PW,
 	database: config.DB_NAME,
-	connectionLimit: 10
+	charset : 'utf8mb4',
+	connectionLimit: 10,
 })
 
 pool.getConnection((err) => {

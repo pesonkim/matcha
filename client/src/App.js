@@ -25,7 +25,7 @@ import Wrapper from './components/ui/Wrapper'
 import io from 'socket.io-client'
 const endpoint = process.env.REACT_APP_ENDPOINT
 const socket = io(endpoint)
-console.log(socket)
+// console.log(socket)
 
 const App = () => {
 	const { loggedIn, userComplete } = useSelector(state => state.user)
@@ -139,7 +139,6 @@ const App = () => {
 								: <Redirect to='/' />
 						)
 					}} />
-					<Route path='/chat' component={ChatPage} />
 					<Route path='/login' render={() => !loggedIn
 						? <LoginPage />
 						: <Redirect to='/' />
