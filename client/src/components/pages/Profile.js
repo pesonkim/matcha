@@ -24,13 +24,19 @@ import imageCompression from 'browser-image-compression'
 const ProfilePage = () => {
 	const { id } = useSelector(state => state.user)
 	const { firstname, lastname, username, email, orientation, gender, bio, tags, errorMessage, notification } = useSelector(state => state.form)
-	const { blocks, log, views, likes, reports } = useSelector(state => state.match)
+	const { blocks, log } = useSelector(state => state.match)
 	const dispatch = useDispatch()
 
 	useEffect(async () => {
 		await dispatch(populate(id))
-		await dispatch(getLog(views, likes, reports))
+		await dispatch(getLog(id))
 	}, [])
+
+	useEffect(async () => {
+		if (blocks) {
+			await dispatch(getLog(id))
+		}
+	}, [blocks])
 
 	const handleSubmit = async (event) => {
 		event.preventDefault()
@@ -118,7 +124,7 @@ const ProfilePage = () => {
 
 	const handleUnblock = async (event) => {
 		event.preventDefault()
-		await dispatch(profileBlock({ id: event.target.id, to: event.target.name, type: 'remove' }))
+		await dispatch(profileBlock({ id: event.target.id, from: id, to: event.target.name, type: 'remove' }))
 		dispatch({
 			type: 'NOTIF',
 			data: 'Profile updated'
@@ -163,18 +169,18 @@ const ProfilePage = () => {
 					<div className='flex mb-4'>
 						<div className='inline-block mr-2 w-1/2'>
 							<label>First name</label>
-							<input name='firstname' type='text' style={inputStyle} placeholder={firstname} />
+							<input name='firstname' type='text' style={inputStyle} placeholder={firstname} maxLength='50'/>
 						</div>
 						<div className='inline-block ml-2 w-1/2'>
 							<label>Last name</label>
-							<input name='lastname' type='text' style={inputStyle} placeholder={lastname} />
+							<input name='lastname' type='text' style={inputStyle} placeholder={lastname} maxLength='50'/>
 						</div>
 					</div>
 					<label>Username</label>
-					<input name='username' type='text' style={inputStyle} placeholder={username} className='mb-4' />
+					<input name='username' type='text' style={inputStyle} placeholder={username} className='mb-4' maxLength='50'/>
 
 					<label>Email</label>
-					<input name='email' type='text' style={inputStyle} placeholder={email} className='mb-4' />
+					<input name='email' type='text' style={inputStyle} placeholder={email} className='mb-4' maxLength='255'/>
 
 					<label>Password</label>
 					<PasswordField />
@@ -201,14 +207,14 @@ const ProfilePage = () => {
 				<Togglable text='Activity log'>
 					<div style={logStyle}>
 						{log.length
-							? (log.map((v, i) => {
+							? (log.map((i) => {
 								return (
-									<div key={i + v.date} className='' style={entryStyle}>
-										<span>{v.type} </span>
-										<Link to={`/browse/${v.target.id}`}>
-											<span style={{ color: '#3490dc' }}>{v.target.firstname} </span>
+									<div key={i.id} className='' style={entryStyle}>
+										<span>{i.action} </span>
+										<Link to={`/browse/${i.receiver}`}>
+											<span style={{ color: '#3490dc' }}>{i.receivername} </span>
 										</Link>
-										<span><TimeAgo date={v.date} live={false} /></span>
+										<span><TimeAgo date={i.created_at} live={false} /></span>
 									</div>
 								)
 							}))

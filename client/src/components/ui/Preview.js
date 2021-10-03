@@ -52,7 +52,7 @@ const Preview = ({ user }) => {
 					? <span className='text-green-500'>●&nbsp;</span>
 					: <span className='text-red-500'>●&nbsp;</span>
 				}
-				<span className=' text-xl'>{user.firstname}</span>
+				<span className='truncate text-xl'>{user.firstname}</span>
 				,
 				<span className='ml-2 text-xl'>{user.age}</span>
 			</section>

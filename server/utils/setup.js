@@ -39,7 +39,7 @@ const setupDb = async () => {
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
         firstname varchar(50) NOT NULL,
         lastname varchar(50) NOT NULL,
-        username varchar(50) UNIQUE NOT NULL,
+        username varchar(255) UNIQUE NOT NULL,
         email varchar(255) UNIQUE NOT NULL,
         password varchar(255) NOT NULL,
         token varchar(255) NOT NULL DEFAULT 0,
@@ -113,10 +113,9 @@ const setupDb = async () => {
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
         sender int NOT NULL,
         receiver int NOT NULL,
-        message varchar(5000),
+        action varchar(255),
         created_at datetime NOT NULL,
         status tinyint(1) NOT NULL DEFAULT 0,
-        user int NOT NULL,
         FOREIGN KEY (sender) REFERENCES users(id),
         FOREIGN KEY (receiver) REFERENCES users(id)
     )`

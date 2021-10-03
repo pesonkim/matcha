@@ -4,7 +4,7 @@ const baseUrl = 'http://localhost:3001/reset'
 const resetUrl = 'http://localhost:3001/reset/new'
 
 const forgot = async (email) => {
-	console.log(email)
+	// console.log(email)
 	const response = await axios.post(baseUrl, email)
 	return response.data
 }

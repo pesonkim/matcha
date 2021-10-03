@@ -32,7 +32,7 @@ const PasswordField = (props) => {
 		<div>
 			{props.errors && <label className='text-red-500'> *</label>}
 			<div className='relative'>
-				<input name='password' type={show ? 'text' : 'password'} style={style} onBlur={props.onBlur}/>
+				<input name='password' type={show ? 'text' : 'password'} style={style} onBlur={props.onBlur} maxLength='255'/>
 				<button tabIndex={-1} style={button} onClick={toggle}>{show ? 'Hide' : 'Show'}</button>
 			</div>
 			<div className='text-red-500 mb-4'>{error}</div>

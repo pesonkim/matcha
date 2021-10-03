@@ -5,9 +5,6 @@ import InfoBar from './InfoBar'
 import ChatMessages from './ChatMessages'
 import ChatInput from './ChatInput'
 
-import io from 'socket.io-client'
-const endpoint = process.env.REACT_APP_ENDPOINT
-const socket = io(endpoint)
 // console.log(socket)
 
 const Chat = ({ profile }) => {
@@ -15,23 +12,6 @@ const Chat = ({ profile }) => {
 	const [message, setMessage] = useState([])
 	const [messages, setMessages] = useState([])
 	const dispatch = useDispatch()
-
-	useEffect(() => {
-		socket.emit('join', { id, room: profile.id }, (error) => {
-			if (error) {
-				console.log(error)
-			}
-		})
-
-		socket.on('')
-		return () => {
-			socket.emit('leave', { id, room: profile.id }, (error) => {
-				if (error) {
-					console.log(error)
-				}
-			})
-		}
-	}, [])
 
 	useEffect(() => {
 		if (profile.chat.length) {
@@ -48,8 +28,7 @@ const Chat = ({ profile }) => {
 
 		if (message) {
 			dispatch(chatMessage({ type: 'new', message: message, sender: id, receiver: profile.id }))
-			socket.emit('sendMessage', { message: message, sender: id, receiver: profile.id }, () => setMessage(''))
-			// setMessage('')
+			setMessage('')
 		}
 	}
 

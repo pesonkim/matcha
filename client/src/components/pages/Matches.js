@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const MatchPreview = ({ user }) => {
@@ -46,7 +46,7 @@ const MatchPreview = ({ user }) => {
 				</Link>
 			</div>
 			<Link to={`/chat/${user.id}`} className='flex flex-col w-full h-16 sm:h-20 pl-4 justify-center overflow-hidden relative'>
-				<span className='text-xl sm:text-2xl'>{user.firstname}</span>
+				<span className='truncate text-xl sm:text-2xl'>{user.firstname}</span>
 				<span className='truncate text-sm sm:text-base text-gray-500 flex flex-row flex-nowrap'>
 					{user.chat.length
 						? user.chat[user.chat.length - 1].sender === id
@@ -59,8 +59,8 @@ const MatchPreview = ({ user }) => {
 
 						: 'Say hi to your new match 👋'}
 				</span>
-				<div className='absolute right-0 bg-white w-10 sm:w-12 h-full rounded'></div>
-				<div className='bg-gradient-to-r from-transparent to-white absolute right-0 w-16 mr-10 h-full rounded'></div>
+				<div className='absolute right-0 bg-white w-6 h-full rounded'></div>
+				<div className='bg-gradient-to-r from-transparent to-white absolute right-0 w-12 mr-6 h-full rounded'></div>
 				{unreadMessages &&
 					<div
 						className='absolute w-6 h-6 top-1/2 right-3 transform -translate-y-1/2 rounded-full inline-block text-white bg-red-500 text-center'
@@ -80,7 +80,6 @@ const MatchPreview = ({ user }) => {
 }
 
 const Matches = () => {
-	const dispatch = useDispatch()
 	const { matches } = useSelector(state => state.match)
 
 	const fieldStyle = {

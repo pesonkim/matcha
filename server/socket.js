@@ -44,12 +44,22 @@ module.exports = (server) => {
 			callback()
 		})
 
-		socket.on('sendMessage', ({ message, sender, receiver }, callback) => {
-			console.log(message, sender, receiver)
+		socket.on('sendMessage', ({ message: { message, sender, receiver } }, callback) => {
+			// console.log(message, sender, receiver)
 			const isOnline = users.find(i => i.id === receiver)
 			console.log('is online', isOnline)
 			if (isOnline) {
 				io.to(isOnline.socket).emit('message')
+			}
+			callback()
+		})
+
+		socket.on('sendNotification', ({ action, sender, receiver }, callback) => {
+			// console.log(action, sender, receiver)
+			const isOnline = users.find(i => i.id === receiver)
+			console.log('is online', isOnline)
+			if (isOnline) {
+				io.to(isOnline.socket).emit('notification')
 			}
 			callback()
 		})

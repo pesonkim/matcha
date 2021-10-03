@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import Wrapper from '../ui/Wrapper'
 import Preview from '../ui/Preview'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { getUsers } from '../../reducers/publicReducer'

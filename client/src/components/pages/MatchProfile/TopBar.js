@@ -5,7 +5,7 @@ const TopBar = ({ online, firstname, age }) => {
 	let history = useHistory()
 
 	return (
-		<div className="w-full flex items-center justify-between p-4" >
+		<div className="w-full flex items-center justify-between p-4 overflow-hidden" >
 			{/* <section className="flex items-center">
 				<UserIcon className=' h-6 w-6' />
 				<p>Username</p>
@@ -14,12 +14,12 @@ const TopBar = ({ online, firstname, age }) => {
 				<FireIcon className=' h-6 w-6' />
 				<p>100</p>
 			</section> */}
-			<section className="flex items-center">
+			<section className="flex items-center overflow-hidden w-2/3">
 				{online
 					? <span className='text-green-500'>●&nbsp;</span>
 					: <span className='text-red-500'>●&nbsp;</span>
 				}
-				<span className=' text-2xl'>{firstname}</span>
+				<span className='truncate text-2xl'>{firstname}</span>
 				,
 				<span className='ml-2 text-2xl'>{age}</span>
 			</section>

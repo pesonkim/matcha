@@ -3,6 +3,7 @@ import { FireIcon, LocationMarkerIcon } from '@heroicons/react/outline'
 import { useSelector } from 'react-redux'
 import { getDistance, convertDistance } from 'geolib'
 import ReactTooltip from 'react-tooltip'
+import moment from 'moment-twitter'
 
 const Info = ({ name, fame, age, lat, lng, gender, orientation, bio, tags, online, login }) => {
 	const { latitude, longitude } = useSelector(state => state.user)

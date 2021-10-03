@@ -17,7 +17,7 @@ const InputField = (props) => {
 		<>
 			<label>{props.name.charAt(0).toUpperCase() + props.name.slice(1)}</label>
 			{props.errors && <label className='text-red-500'> *</label>}
-			<input name={props.name} type={props.type} style={style} onBlur={props.onBlur}/>
+			<input name={props.name} type={props.type} style={style} onBlur={props.onBlur} maxLength='255'/>
 			<div className='text-red-500 mb-4'>{error}</div>
 		</>
 	)

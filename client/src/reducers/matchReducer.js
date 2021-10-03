@@ -8,31 +8,25 @@ import notifService from '../services/notifications'
 import userService from '../services/users'
 import parse from '../utils/parse'
 
+import io from 'socket.io-client'
+const endpoint = process.env.REACT_APP_ENDPOINT
+const socket = io(endpoint)
+
 const initialState = {
-	views: [],
 	likes: [],
-	matches: [],
 	reports: [],
 	blocks: null,
 	log: [],
+	notif: [],
+	matches: [],
 }
 
 const matchReducer = (state = initialState, action) => {
 	switch (action.type) {
-	case 'SETVIEWS':
-		return {
-			...state,
-			views: action.data
-		}
 	case 'SETLIKES':
 		return {
 			...state,
 			likes: action.data
-		}
-	case 'SETMATCHES':
-		return {
-			...state,
-			matches: action.data
 		}
 	case 'SETREPORTS':
 		return {
@@ -49,6 +43,16 @@ const matchReducer = (state = initialState, action) => {
 			...state,
 			log: action.data
 		}
+	case 'SETNOTIF':
+		return {
+			...state,
+			notif: action.data
+		}
+	case 'SETMATCHES':
+		return {
+			...state,
+			matches: action.data
+		}
 	default:
 		return state
 	}
@@ -58,11 +62,6 @@ export const getHistory = () => {
 	return async dispatch => {
 		let data
 		try {
-			data = await viewService.getViews()
-			dispatch({
-				type: 'SETVIEWS',
-				data
-			})
 			data = await likeService.getLikes()
 			dispatch({
 				type: 'SETLIKES',
@@ -139,22 +138,77 @@ export const getMatches = () => {
 	}
 }
 
-export const getLog = (views, likes, reports) => {
+export const getNotif = (id) => {
 	return async dispatch => {
-		let log
 		let data
 		try {
-			data = await userService.getUsers()
-			log = views.map(v => ({ type: 'Viewed', target: data.find(user => user.id === v.receiver), date: v.created_at }))
-			log = log.concat(likes.map(v => ({ type: 'Liked', target: data.find(user => user.id === v.receiver), date: v.created_at })))
-			log = log.concat(reports.map(v => ({ type: 'Reported', target: data.find(user => user.id === v.receiver), date: v.created_at })))
-			// console.log(log)
-			log = log.sort((a,b) => (new Date(b.date) - new Date(a.date)))
-			log = log.filter(i => typeof i.target === 'object' && i.target !== null)
-			// console.log(log)
+			data = await notifService.getNotif()
+			data = data.filter(i => i.receiver === id)
+			data.map(i => {
+				switch(i.action) {
+				case 'view':
+					return i.action = 'Viewed'
+				case 'like':
+					return i.action = 'Liked'
+				case 'unlike':
+					return i.action = 'Unliked'
+				case 'report':
+					return i.action = 'Reported'
+				case 'block':
+					return i.action = 'Blocked'
+				case 'unblock':
+					return i.action = 'Unblocked'
+				}
+			})
+			data = data.reverse()
+			// console.log(data)
+			dispatch({
+				type: 'SETNOTIF',
+				data
+			})
+		} catch (error) {
+			if (error.response && error.response.data) {
+				data = error.response.data.error
+			} else {
+				data = 'Database error'
+			}
+			dispatch({
+				type: 'ERROR',
+				data,
+			})
+		}
+	}
+}
+
+export const getLog = (id) => {
+	return async dispatch => {
+		let data
+		try {
+			data = await notifService.getNotif()
+			// console.log('before',data)
+			// console.log(id)
+			data = data.filter(i => i.sender === id)
+			data.map(i => {
+				switch(i.action) {
+				case 'view':
+					return i.action = 'Viewed'
+				case 'like':
+					return i.action = 'Liked'
+				case 'unlike':
+					return i.action = 'Unliked'
+				case 'report':
+					return i.action = 'Reported'
+				case 'block':
+					return i.action = 'Blocked'
+				case 'unblock':
+					return i.action = 'Unblocked'
+				}
+			})
+			data = data.reverse()
+			// console.log('here',data)
 			dispatch({
 				type: 'SETLOG',
-				data: log
+				data
 			})
 		} catch (error) {
 			if (error.response && error.response.data) {
@@ -176,6 +230,12 @@ export const profileView = (view) => {
 		try {
 			// console.log(`${view.from} viewed user ${view.to}`)
 			await viewService.addView(view)
+			await notifService.addNotif({ action: 'view', sender: view.from, receiver: view.to })
+			socket.emit('sendNotification', { action: 'view', sender: view.from, receiver: view.to }, (error) => {
+				if (error) {
+					console.log(error)
+				}
+			})
 			data = await viewService.getViews()
 			dispatch({
 				type: 'SETVIEWS',
@@ -201,8 +261,20 @@ export const profileLike = (like) => {
 		try {
 			if (like.type === 'new') {
 				await likeService.addLike(like)
+				await notifService.addNotif({ action: 'like', sender: like.from, receiver: like.to })
+				socket.emit('sendNotification', { action: 'like', sender: like.from, receiver: like.to }, (error) => {
+					if (error) {
+						console.log(error)
+					}
+				})
 			} else if (like.type === 'remove') {
 				await likeService.removeLike(like)
+				await notifService.addNotif({ action: 'unlike', sender: like.from, receiver: like.to })
+				socket.emit('sendNotification', { action: 'unlike', sender: like.from, receiver: like.to }, (error) => {
+					if (error) {
+						console.log(error)
+					}
+				})
 			}
 			data = await likeService.getLikes()
 			dispatch({
@@ -228,6 +300,7 @@ export const profileReport = (report) => {
 		let data
 		try {
 			await reportService.addReport(report)
+			await notifService.addNotif({ action: 'report', sender: report.from, receiver: report.to })
 			data = await reportService.getReports()
 			dispatch({
 				type: 'SETREPORTS',
@@ -254,8 +327,10 @@ export const profileBlock = (block) => {
 			// console.log(block)
 			if (block.type === 'new') {
 				await blockService.addBlock(block)
+				await notifService.addNotif({ action: 'block', sender: block.from, receiver: block.to })
 			} else if (block.type === 'remove') {
 				await blockService.removeBlock(block)
+				await notifService.addNotif({ action: 'unblock', sender: block.from, receiver: block.to })
 			}
 			data = await blockService.getBlocks()
 			dispatch({
@@ -283,6 +358,11 @@ export const chatMessage = (message) => {
 			// console.log(message.type, message)
 			if (message.type === 'new') {
 				await messageService.addMessage(message)
+				socket.emit('sendMessage', { message }, (error) => {
+					if (error) {
+						console.log(error)
+					}
+				})
 			} else if (message.type === 'read') {
 				await messageService.updateMessages(message)
 			}
@@ -301,5 +381,25 @@ export const chatMessage = (message) => {
 	}
 }
 
+export const readNotif = (notif, id) => {
+	return async dispatch => {
+		let data
+		try {
+			// console.log(notif, id)
+			await notifService.updateNotif(notif, id)
+			await dispatch(getNotif(id))
+		} catch (error) {
+			if (error.response && error.response.data) {
+				data = error.response.data.error
+			} else {
+				data = 'Database error'
+			}
+			dispatch({
+				type: 'ERROR',
+				data,
+			})
+		}
+	}
+}
 
 export default matchReducer

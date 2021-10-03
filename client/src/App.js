@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { lookup } from './reducers/userReducer'
 import { getUserIds } from './reducers/publicReducer'
-import { getHistory, getMatches } from './reducers/matchReducer'
+import { getHistory, getMatches, getNotif } from './reducers/matchReducer'
 import auth from './utils/auth'
 
 import LoginPage from './components/pages/Login'
@@ -28,7 +28,7 @@ const socket = io(endpoint)
 // console.log(socket)
 
 const App = () => {
-	const { loggedIn, userComplete } = useSelector(state => state.user)
+	const { id, loggedIn, userComplete } = useSelector(state => state.user)
 	const { errorMessage } = useSelector(state => state.form)
 	const { ids, loadingApp } = useSelector(state => state.public)
 	const { matches, likes } = useSelector(state => state.match)
@@ -92,17 +92,23 @@ const App = () => {
 	}, [loggedIn])
 
 	useEffect(async () => {
-		if (blocks) {
+		if (id && blocks) {
+			await dispatch(getNotif(id))
 			await dispatch(getMatches())
 			await dispatch(getUserIds(blocks))
 		}
-	}, [blocks, orientation, likes])
+	}, [id, blocks, orientation, likes])
 
 	useEffect(() => {
-		socket.on('message', () => {
-			dispatch(getMatches())
-		})
-	}, [])
+		if (id) {
+			socket.on('message', () => {
+				dispatch(getMatches())
+			})
+			socket.on('notification', () => {
+				dispatch(getNotif(id))
+			})
+		}
+	}, [id])
 
 	return (
 		<Layout>

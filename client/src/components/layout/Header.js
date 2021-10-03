@@ -7,8 +7,9 @@ import { useEffect, useState } from 'react'
 
 const Header = () => {
 	const { loggedIn, avatar, id } = useSelector(state => state.user)
-	const { matches } = useSelector(state => state.match)
+	const { matches, notif } = useSelector(state => state.match)
 	const [unreadMessages, setUnreadMessages] = useState(null)
+	const [unreadNotif, setUnreadNotif] = useState(null)
 
 	useEffect(() => {
 		if (matches) {
@@ -26,6 +27,19 @@ const Header = () => {
 			}
 		}
 	}, [matches])
+
+	useEffect(() => {
+		if (notif) {
+			// console.log('header')
+			let count = 0
+			notif.map(i => i.status === 0 ? count++ : null)
+			if (count) {
+				count < 99 ? setUnreadNotif(count) : setUnreadNotif(99)
+			} else {
+				setUnreadNotif(null)
+			}
+		}
+	}, [notif])
 
 	const blur = {
 		backgroundColor: 'rgba(255, 255, 255, 0.5)',
@@ -61,13 +75,13 @@ const Header = () => {
 						<Link to='/notif' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50 select-none relative'>
 							<BellIcon className=' h-8 w-8' />
 							<p className='hidden sm:block'>notifications</p>
-							{false &&
+							{unreadNotif &&
 								<div
 									className='absolute w-6 h-6 top-1/2 sm:top-1/3 left-full sm:left-2/3 transform -translate-x-1/2 -translate-y-1/2 rounded-full inline-block text-white bg-red-500 text-center'
 									style={{ lineHeight: '1.5rem' }}
 								>
 									<span className='z-10 relative'>
-										{1}
+										{unreadNotif}
 									</span>
 									<span className='z-0 absolute bg-red-500 animate-ping w-6 h-6 top-0 left-0 rounded-full'></span>
 								</div>
