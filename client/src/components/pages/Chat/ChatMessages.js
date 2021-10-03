@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 
 const ChatMessages = ({ messages }) => {
 	const divStyle = {
-		height: '60vh',
+		height: '100%',
 		overflow: 'auto',
 	}
 
@@ -18,7 +18,7 @@ const ChatMessages = ({ messages }) => {
 	}, [messages])
 
 	return (
-		<div className="py-4" style={divStyle}>
+		<div className="py-2 sm:py-4" style={divStyle}>
 			{messages.map((message) => <Message key={message.id} message={message} />)}
 			<div ref={messagesEndRef} />
 		</div>

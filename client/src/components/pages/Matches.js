@@ -60,7 +60,7 @@ const MatchPreview = ({ user }) => {
 						: 'Say hi to your new match 👋'}
 				</span>
 				<div className='absolute right-0 bg-white w-10 sm:w-12 h-full rounded'></div>
-				<div className='bg-gradient-to-r from-transparent to-white absolute right-0 w-1/2 mr-10 h-full rounded'></div>
+				<div className='bg-gradient-to-r from-transparent to-white absolute right-0 w-16 mr-10 h-full rounded'></div>
 				{unreadMessages &&
 					<div
 						className='absolute w-6 h-6 top-1/2 right-3 transform -translate-y-1/2 rounded-full inline-block text-white bg-red-500 text-center'
@@ -90,8 +90,8 @@ const Matches = () => {
 
 	return (
 		<div className='max-w-screen-sm mx-auto px-2 slideDown'>
-			<div className='flex flex-col justify-center my-4 bg-white rounded ui-shadow'>
-				<h1 className='text-2xl sm:text-3xl text-center p-4'>
+			<div className='flex flex-col justify-center bg-white rounded ui-shadow'>
+				<h1 className='text-2xl sm:text-3xl text-center p-2 sm:p-4'>
 					Messages
 				</h1>
 				{matches.length
