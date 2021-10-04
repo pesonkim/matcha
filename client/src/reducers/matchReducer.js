@@ -91,6 +91,29 @@ export const getHistory = () => {
 	}
 }
 
+export const getLikes = () => {
+	return async dispatch => {
+		let data
+		try {
+			data = await likeService.getLikes()
+			dispatch({
+				type: 'SETLIKES',
+				data
+			})
+		} catch (error) {
+			if (error.response && error.response.data) {
+				data = error.response.data.error
+			} else {
+				data = 'Database error'
+			}
+			dispatch({
+				type: 'ERROR',
+				data,
+			})
+		}
+	}
+}
+
 export const getMatches = () => {
 	return async dispatch => {
 		let data
@@ -143,23 +166,12 @@ export const getNotif = (id) => {
 		let data
 		try {
 			data = await notifService.getNotif()
+			const blocks = await blockService.getBlocks()
+			if (blocks && blocks.length) {
+				data = data.filter(i => !blocks.map(b => b.receiver).includes(i.sender))
+			}
 			data = data.filter(i => i.receiver === id)
-			data.map(i => {
-				switch(i.action) {
-				case 'view':
-					return i.action = 'Viewed'
-				case 'like':
-					return i.action = 'Liked'
-				case 'unlike':
-					return i.action = 'Unliked'
-				case 'report':
-					return i.action = 'Reported'
-				case 'block':
-					return i.action = 'Blocked'
-				case 'unblock':
-					return i.action = 'Unblocked'
-				}
-			})
+			data = data.filter(i => i.action === 'view' || i.action === 'like' || i.action === 'unlike' )
 			data = data.reverse()
 			// console.log(data)
 			dispatch({
@@ -337,6 +349,11 @@ export const profileBlock = (block) => {
 				type: 'SETBLOCKS',
 				data
 			})
+			const likes = await likeService.getLikes()
+			const isLiked = likes.find(i => i.receiver === block.to)
+			if (isLiked) {
+				await dispatch(profileLike({ from: isLiked.sender, to: isLiked.receiver, type: 'remove', id: isLiked.id }))
+			}
 		} catch (error) {
 			if (error.response && error.response.data) {
 				data = error.response.data.error

@@ -24,7 +24,7 @@ const Confirm = ({ dialog, setDialog }) => {
 				<div className='fixed inset-0 flex items-center justify-center slideDown' id='confirmContainer'>
 					<Wrapper>
 						<Heading title={dialog.type === 'report' ? 'Report' : 'Block'} />
-						{dialog.type === 'block' && <p className='mb-4'>Blocked users will not appear in any of your search results.</p>}
+						{dialog.type === 'block' && <p className='mb-4'>Blocked users will not appear in any of your search results or notifications.</p>}
 						<p className='mb-4'>Are you sure you want to {dialog.type} user {dialog.user}?</p>
 						<div className='flex flex-row justify-between'>
 							<button

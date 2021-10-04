@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { MailOpenIcon } from '@heroicons/react/outline'
-import { useState } from 'react'
+import { HeartIcon } from '@heroicons/react/outline'
+import { HeartIcon as MatchIcon } from '@heroicons/react/solid'
 import { Link } from 'react-router-dom'
 import moment from 'moment-twitter'
 import { readNotif } from '../../reducers/matchReducer'
@@ -21,9 +22,7 @@ const MarkAsRead = ({ readAll }) => (
 )
 
 const Notification = ({ notif, readOne }) => {
-	const { id } = useSelector(state => state.user)
-	const { matches } = useSelector(state => state.match)
-	const [unreadMessages, setUnreadMessages] = useState(null)
+	const { likes, matches } = useSelector(state => state.match)
 
 	const divideStyle = {
 		marginTop: '-1px',
@@ -37,16 +36,27 @@ const Notification = ({ notif, readOne }) => {
 		}
 	}
 
+	const isLiked = likes.find(i => i.receiver === notif.sender)
+	const isMatch = matches.find(i => i.id === notif.sender)
+
 	return (
 		<div
 			className='w-full flex items-center p-2 relative'
 			onClick={handleClick}
-			style={ notif.status === 0 ? { cursor: 'pointer', backgroundColor: 'rgba(248,247,251,255)' } : null }
+			style={notif.status === 0 ? { cursor: 'pointer', backgroundColor: 'rgba(248,247,251,255)' } : null}
 		>
-			<div className='w-12 sm:w-14' style={notif.status === 0 ? { marginLeft: '1.5rem' } : { marginLeft: '0.5rem' } }>
+			<div className='w-12 sm:w-14' style={notif.status === 0 ? { marginLeft: '1.5rem' } : { marginLeft: '0.5rem' }}>
 				<Link to={`/browse/${notif.sender}`}>
 					<div className='w-10 h-10 sm:w-14 sm:h-14 relative'>
 						<img src={notif.avatar} className='h-full w-full rounded-full object-cover shadow' />
+						<div className='absolute top-1/2 left-full transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full shadow '>
+							{isMatch
+								? <MatchIcon className='h-6 w-6 text-red-500' />
+								: isLiked
+									? <HeartIcon className='h-6 w-6 text-red-500' />
+									: null
+							}
+						</div>
 					</div>
 				</Link>
 				{notif.status === 0 &&
@@ -59,12 +69,16 @@ const Notification = ({ notif, readOne }) => {
 					</div>
 				}
 			</div>
-			<div className='flex flex-row justify-between w-full overflow-hidden'>
+			<div className='flex flex-row justify-between w-full overflow-hidden' style={isLiked ? { marginLeft: '0.5rem' } : null}>
 				<div className='flex flex-col h-12 sm:h-14 pl-2 justify-center overflow-hidden relative'>
 					<Link to={`/browse/${notif.sender}`} >
 						<span className='truncate text-lg'>{notif.sendername}</span>
 					</Link>
 					<span className='truncate text-sm sm:text-base text-gray-500 flex flex-row flex-nowrap select-none'>
+						{/* {isMatch
+							? `${notif.action} your profile. It's a match!`
+							: `${notif.action} your profile`
+						} */}
 						{notif.action} your profile
 					</span>
 				</div>
@@ -114,14 +128,14 @@ const Notifications = () => {
 				{notif.length
 					? <>
 						<div className="" style={fieldStyle}>
-							{notif.map(i => <Notification key={i.id} notif={i} readOne={readOne}/>)}
+							{notif.map(i => <Notification key={i.id} notif={i} readOne={readOne} />)}
 						</div>
 					</>
 					: <div className="flex justify-center items-center p-4" style={fieldStyle}>
 						You have no notifications
 					</div>
 				}
-				<MarkAsRead readAll={readAll}/>
+				<MarkAsRead readAll={readAll} />
 			</div>
 		</div>
 	)

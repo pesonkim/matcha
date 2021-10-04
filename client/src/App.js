@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { lookup } from './reducers/userReducer'
 import { getUserIds } from './reducers/publicReducer'
-import { getHistory, getMatches, getNotif } from './reducers/matchReducer'
+import { getHistory, getMatches, getNotif, getLikes } from './reducers/matchReducer'
 import auth from './utils/auth'
 
 import LoginPage from './components/pages/Login'
@@ -28,12 +28,10 @@ const socket = io(endpoint)
 // console.log(socket)
 
 const App = () => {
-	const { id, loggedIn, userComplete } = useSelector(state => state.user)
+	const { id, loggedIn, userComplete, orientation } = useSelector(state => state.user)
 	const { errorMessage } = useSelector(state => state.form)
 	const { ids, loadingApp } = useSelector(state => state.public)
-	const { matches, likes } = useSelector(state => state.match)
-	const { orientation } = useSelector(state => state.user)
-	const { blocks } = useSelector(state => state.match)
+	const { matches, likes, blocks } = useSelector(state => state.match)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -100,15 +98,24 @@ const App = () => {
 	}, [id, blocks, orientation, likes])
 
 	useEffect(() => {
-		if (id) {
+		if (id && blocks) {
 			socket.on('message', () => {
 				dispatch(getMatches())
 			})
-			socket.on('notification', () => {
-				dispatch(getNotif(id))
+			socket.on('notification', (sender) => {
+				const isBlocked = blocks.find(i => i.receiver === sender)
+				if (!isBlocked) {
+					dispatch(getNotif(id))
+				}
+			})
+			socket.on('like', (sender) => {
+				const isBlocked = blocks.find(i => i.receiver === sender)
+				if (!isBlocked) {
+					dispatch(getLikes())
+				}
 			})
 		}
-	}, [id])
+	}, [id, blocks])
 
 	return (
 		<Layout>
