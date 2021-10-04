@@ -5,6 +5,8 @@ import { HeartIcon as MatchIcon } from '@heroicons/react/solid'
 import { Link } from 'react-router-dom'
 import moment from 'moment-twitter'
 import { readNotif } from '../../reducers/matchReducer'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { useEffect, useRef, useState } from 'react'
 
 const MarkAsRead = ({ readAll }) => (
 	<div
@@ -38,6 +40,17 @@ const Notification = ({ notif, readOne }) => {
 
 	const isLiked = likes.find(i => i.receiver === notif.sender)
 	const isMatch = matches.find(i => i.id === notif.sender)
+
+	const notifMessage = () => {
+		switch (notif.action) {
+		case 'view':
+			return 'Viewed your profile'
+		case 'like':
+			return isLiked ? 'Matched with you' : 'Liked you'
+		case 'unlike':
+			return isLiked ? 'Unmatched with you' : 'Unliked you'
+		}
+	}
 
 	return (
 		<div
@@ -75,11 +88,7 @@ const Notification = ({ notif, readOne }) => {
 						<span className='truncate text-lg'>{notif.sendername}</span>
 					</Link>
 					<span className='truncate text-sm sm:text-base text-gray-500 flex flex-row flex-nowrap select-none'>
-						{/* {isMatch
-							? `${notif.action} your profile. It's a match!`
-							: `${notif.action} your profile`
-						} */}
-						{notif.action} your profile
+						{notifMessage()}
 					</span>
 				</div>
 				<div className='flex flex-col justify-center mr-2'>
@@ -98,6 +107,8 @@ const Notification = ({ notif, readOne }) => {
 const Notifications = () => {
 	const { id } = useSelector(state => state.user)
 	const { notif } = useSelector(state => state.match)
+	const [items, setItems] = useState([])
+	const hasMore = useRef(true)
 	const dispatch = useDispatch()
 
 	const fieldStyle = {
@@ -119,22 +130,63 @@ const Notifications = () => {
 		dispatch(readNotif(unread, id))
 	}
 
+	const fetchMoreItems = () => {
+		if (items.length >= notif.length) {
+			hasMore.current = false
+			return
+		}
+		setItems(items.concat(notif.slice(items.length, items.length + 50)))
+	}
+
+	useEffect(() => {
+		if (notif) {
+			const initial = notif.slice(0, 50)
+			if (initial.length >= notif.length) {
+				hasMore.current = false
+			}
+			setItems(initial.slice(0, 10))
+		}
+	}, [notif])
+
 	return (
 		<div className='max-w-screen-sm mx-auto px-2 slideDown'>
 			<div className='flex flex-col justify-center bg-white rounded ui-shadow' style={{ height: 'calc(100vh - (80px + 64px))', maxHeight: '800px' }}>
 				<h1 className='text-2xl sm:text-3xl text-center p-2 sm:p-4'>
 					Notifications
 				</h1>
-				{notif.length
+				{/* {items.length
 					? <>
 						<div className="" style={fieldStyle}>
-							{notif.map(i => <Notification key={i.id} notif={i} readOne={readOne} />)}
+							{items.map(i => <Notification key={i.id} notif={i} readOne={readOne} />)}
 						</div>
 					</>
 					: <div className="flex justify-center items-center p-4" style={fieldStyle}>
 						You have no notifications
 					</div>
-				}
+				} */}
+				<div id='scrollContainer' style={{ height: '100%', overflow: 'auto' }}>
+					<InfiniteScroll
+						dataLength={items.length}
+						next={fetchMoreItems}
+						hasMore={hasMore.current}
+						scrollableTarget='scrollContainer'
+						loader={
+							<div className="flex justify-center items-center p-4" style={fieldStyle}>
+								Loading...
+							</div>
+						}
+						endMessage={null}
+					>
+						{items.length
+							? <div style={fieldStyle}>
+								{items.map(i => <Notification key={i.id} notif={i} readOne={readOne} />)}
+							</div>
+							: <div className="flex justify-center items-center p-4" style={fieldStyle}>
+								You have no notifications
+							</div>
+						}
+					</InfiniteScroll>
+				</div>
 				<MarkAsRead readAll={readAll} />
 			</div>
 		</div>

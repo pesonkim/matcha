@@ -325,6 +325,24 @@ const setupDb = async () => {
 		logger.info('Created test likes')
 	})
 
+	//test like notifications
+	testlikes = 'INSERT INTO notif (sender, receiver, action, created_at) VALUES'
+	for (let i = 2; i < 1003; i++) {
+		testlikes = testlikes.concat(`(${i}, 1, 'like', CURRENT_TIMESTAMP)`)
+		if (i < 1002) {
+			testlikes = testlikes.concat(',')
+		}
+	}
+
+	await connection.query(testlikes, (error) => {
+		if (error) {
+			// console.log(error)
+			logger.error('Error creating test likes', error.message)
+			return
+		}
+		logger.info('Created test likes')
+	})
+
 	await connection.query('SELECT tags FROM users', (error, result) => {
 		if (error) {
 			logger.error('Error generating dummy user tags:', error.message)

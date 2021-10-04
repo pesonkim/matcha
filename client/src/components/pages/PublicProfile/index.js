@@ -73,7 +73,7 @@ const PublicProfile = ({ profileId }) => {
 	} else {
 		return (
 			<div className='max-w-screen-sm mx-auto px-2 slideDown'>
-				<div className='flex flex-col justify-center sm:my-4 bg-white rounded ui-shadow'>
+				<div className='flex flex-col justify-center bg-white rounded ui-shadow'>
 					<TopBar
 						firstname={profile.firstname}
 						age={profile.age}
