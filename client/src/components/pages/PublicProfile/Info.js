@@ -31,7 +31,7 @@ const Info = ({ name, fame, age, lat, lng, gender, orientation, bio, tags, onlin
 		<>
 			<div className="w-full flex flex-col p-4" style={fieldStyle}>
 				<section className="flex justify-between items-center">
-					<strong className='text-xl'>{name}</strong>
+					<strong className='break-words overflow-hidden text-xl'>{name}</strong>
 					<strong className='text-xl'>{age}</strong>
 				</section>
 				<section className="flex justify-between items-center mt-2 mb-4">
@@ -68,7 +68,7 @@ const Info = ({ name, fame, age, lat, lng, gender, orientation, bio, tags, onlin
 						<span className='text-lg text-gray-600'>{fame}</span>
 					</section>
 				</section>
-				<p className=''>{bio}</p>
+				<p className='break-words'>{bio}</p>
 			</div>
 			<div className="w-full flex items-center p-4" style={fieldStyle}>
 				<p>{gender} looking for {orientation.join(', ')}</p>

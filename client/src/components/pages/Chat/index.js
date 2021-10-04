@@ -10,7 +10,7 @@ import ChatInput from './ChatInput'
 const Chat = ({ profile }) => {
 	const { id } = useSelector(state => state.user)
 	const { likes } = useSelector(state => state.match)
-	const [message, setMessage] = useState([])
+	const [message, setMessage] = useState('')
 	const [messages, setMessages] = useState([])
 	const dispatch = useDispatch()
 
@@ -33,7 +33,7 @@ const Chat = ({ profile }) => {
 	const sendMessage = (event) => {
 		event.preventDefault()
 
-		if (message) {
+		if (message && message !== '') {
 			dispatch(chatMessage({ type: 'new', message: message, sender: id, receiver: profile.id }))
 			setMessage('')
 		}
