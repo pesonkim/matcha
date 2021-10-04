@@ -287,6 +287,8 @@ export const profileLike = (like) => {
 						console.log(error)
 					}
 				})
+			} else if (like.type === 'read') {
+				await likeService.updateRead(like)
 			}
 			data = await likeService.getLikes()
 			dispatch({

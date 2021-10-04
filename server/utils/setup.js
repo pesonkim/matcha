@@ -66,6 +66,7 @@ const setupDb = async () => {
         sender int NOT NULL,
         receiver int NOT NULL,
         is_match tinyint(1) NOT NULL DEFAULT 0,
+        is_seen tinyint(1) NOT NULL DEFAULT 0,
         created_at datetime NOT NULL,
         FOREIGN KEY (sender) REFERENCES users(id),
         FOREIGN KEY (receiver) REFERENCES users(id)

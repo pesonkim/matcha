@@ -7,17 +7,25 @@ import { useEffect, useState } from 'react'
 
 const Header = () => {
 	const { loggedIn, avatar, id } = useSelector(state => state.user)
-	const { matches, notif } = useSelector(state => state.match)
+	const { matches, notif, likes } = useSelector(state => state.match)
 	const [unreadMessages, setUnreadMessages] = useState(null)
 	const [unreadNotif, setUnreadNotif] = useState(null)
 
 	useEffect(() => {
-		if (matches) {
+		if (matches && likes) {
 			// console.log('header')
 			let count = 0
 			matches.map(i => {
+				const like = likes.find(l => l.receiver === i.id)
 				if (i.chat.length) {
-					i.chat.map(message => message.receiver === id && message.status === 0 ? count++ : null)
+					const len = i.chat.filter(message => message.receiver === id && message.status === 0)
+					if (len && len.length) {
+						count += len.length
+					} else if (like && like.is_seen === 0) {
+						count++
+					}
+				} else if (like && like.is_seen === 0) {
+					count++
 				}
 			})
 			if (count) {
@@ -26,7 +34,7 @@ const Header = () => {
 				setUnreadMessages(null)
 			}
 		}
-	}, [matches])
+	}, [matches, likes])
 
 	useEffect(() => {
 		if (notif) {
@@ -89,7 +97,7 @@ const Header = () => {
 						</Link>
 						<Link to='/matches' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50 select-none relative'>
 							<ChatIcon className=' h-8 w-8' />
-							<p className='hidden sm:block'>messages</p>
+							<p className='hidden sm:block'>matches</p>
 							{unreadMessages &&
 								<div
 									className='absolute w-6 h-6 top-1/2 sm:top-1/3 left-full sm:left-2/3 sm:ml-2 transform -translate-x-1/2 -translate-y-1/2 rounded-full inline-block text-white bg-red-500 text-center'

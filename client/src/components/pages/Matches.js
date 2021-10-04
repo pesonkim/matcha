@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const MatchPreview = ({ user }) => {
 	const { id } = useSelector(state => state.user)
-	const { matches } = useSelector(state => state.match)
+	const { matches, likes } = useSelector(state => state.match)
 	const [unreadMessages, setUnreadMessages] = useState(null)
 
 	const divideStyle = {
@@ -12,6 +12,8 @@ const MatchPreview = ({ user }) => {
 		borderBottomWidth: '1px',
 		borderColor: '#dae4e9',
 	}
+
+	const isSeen = likes.find(i => i.receiver === user.id)
 
 	useEffect(() => {
 		if (matches) {
@@ -24,6 +26,8 @@ const MatchPreview = ({ user }) => {
 			})
 			if (count) {
 				count < 99 ? setUnreadMessages(count) : setUnreadMessages(99)
+			} else if (isSeen.is_seen === 0) {
+				setUnreadMessages(1)
 			} else {
 				setUnreadMessages(null)
 			}
@@ -91,7 +95,7 @@ const Matches = () => {
 		<div className='max-w-screen-sm mx-auto px-2 slideDown'>
 			<div className='flex flex-col justify-center bg-white rounded ui-shadow'>
 				<h1 className='text-2xl sm:text-3xl text-center p-2 sm:p-4'>
-					Messages
+					Matches
 				</h1>
 				{matches.length
 					? <div className="" style={fieldStyle}>

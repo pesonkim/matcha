@@ -15,6 +15,12 @@ const addLike = async (newLike) => {
 	return response.data
 }
 
+const updateRead = async (like) => {
+	const response = await axios.put(`${baseUrl}/${like.from}`, like, auth.config())
+	// console.log(response)
+	return response.data
+}
+
 const removeLike = async (like) => {
 	const headers = auth.config()
 	const response = await axios.delete(`${baseUrl}/${like.id}`, { headers: headers.headers, data: like })
@@ -22,4 +28,4 @@ const removeLike = async (like) => {
 	return response.data
 }
 
-export default { getLikes, addLike, removeLike }
+export default { getLikes, addLike, updateRead, removeLike }

@@ -71,6 +71,30 @@ likesRouter.post('/', (req, res) => {
 	})
 })
 
+likesRouter.put('/:id', (req, res) => {
+	const user = jwt.verify(req.token, tokenSecret)
+
+	if (!user || user.id !== Number(req.params.id)) {
+		return res.status(401).send({ error: 'Invalid token or unauthorized' })
+	}
+
+	const sql = 'UPDATE likes SET is_seen=1 WHERE sender=? AND receiver=? AND id=?'
+	const values = [
+		user.id,
+		req.body.to,
+		req.body.id,
+	]
+	const prepared = mysql.format(sql, values)
+	console.log(prepared)
+	pool.query(prepared, (error, result) => {
+		if (result) {
+			return res.status(200).send(result)
+		} else if (error) {
+			return res.status(500).send(error)
+		}
+	})
+})
+
 likesRouter.delete('/:id', (req, res) => {
 	// console.log(req.body)
 	const user = jwt.verify(req.token, tokenSecret)

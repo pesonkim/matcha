@@ -1,4 +1,4 @@
-import { chatMessage } from '../../../reducers/matchReducer'
+import { chatMessage, profileLike } from '../../../reducers/matchReducer'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import InfoBar from './InfoBar'
@@ -9,9 +9,12 @@ import ChatInput from './ChatInput'
 
 const Chat = ({ profile }) => {
 	const { id } = useSelector(state => state.user)
+	const { likes } = useSelector(state => state.match)
 	const [message, setMessage] = useState([])
 	const [messages, setMessages] = useState([])
 	const dispatch = useDispatch()
+
+	const isSeen = likes.find(i => i.receiver === profile.id)
 
 	useEffect(() => {
 		if (profile.chat.length) {
@@ -20,6 +23,10 @@ const Chat = ({ profile }) => {
 				// console.log('read')
 				dispatch(chatMessage({ type: 'read', sender: profile.id, receiver: id }))
 			}
+		}
+		if (isSeen.is_seen === 0) {
+			// console.log('seen')
+			dispatch(profileLike({ from: id, to: profile.id, type: 'read', id: isSeen.id }))
 		}
 	}, [profile])
 
