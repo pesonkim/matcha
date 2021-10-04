@@ -46,7 +46,7 @@ module.exports = (server) => {
 		socket.on('sendMessage', ({ message: { receiver } }, callback) => {
 			// console.log(message, sender, receiver)
 			const isOnline = users.find(i => i.id === receiver)
-			console.log('is online', isOnline)
+			// console.log('is online', isOnline)
 			if (isOnline) {
 				io.to(isOnline.socket).emit('message')
 			}
@@ -56,13 +56,13 @@ module.exports = (server) => {
 		socket.on('sendNotification', ({ action, sender, receiver }, callback) => {
 			// console.log(action, sender, receiver)
 			const isOnline = users.find(i => i.id === receiver)
-			console.log('is online', isOnline)
+			// console.log('is online', isOnline)
 			if (isOnline) {
 				if (action === 'like' || action === 'unlike') {
-					console.log('sender', sender)
+					// console.log('sender', sender)
 					io.to(isOnline.socket).emit('like', sender)
 				} else {
-					console.log('sender', sender)
+					// console.log('sender', sender)
 					io.to(isOnline.socket).emit('notification', sender)
 				}
 			}

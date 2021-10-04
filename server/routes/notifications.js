@@ -52,7 +52,7 @@ notifRouter.post('/', (req, res) => {
 		req.body.action,
 	]
 	const prepared = mysql.format(sql, values)
-	console.log(prepared)
+	//console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			return res.status(200).end()

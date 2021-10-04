@@ -47,7 +47,7 @@ http://localhost:3000/reset/${token}`
 			return res.status(401).send({ error: 'No account registered with this email' })
 		}
 		if (result[0].verified === 1) {
-			console.log(result[0])
+			// console.log(result[0])
 			resetEmail(email, result[0].token)
 			return res.status(200).send({ message: 'Link to reset form sent, please check you email' })
 		}

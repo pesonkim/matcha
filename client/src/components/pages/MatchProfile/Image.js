@@ -20,7 +20,7 @@ const Image = ({ image }) => {
 
 	return (
 		<div style={divStyle} >
-			<img src={image ? image : 'https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png'} style={imgStyle} />
+			<img src={image ? image : 'https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png'} alt='avatar' style={imgStyle} />
 		</div>
 	)
 }

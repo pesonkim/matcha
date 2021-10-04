@@ -39,7 +39,7 @@ const MatchPreview = ({ user }) => {
 			<div className='w-16 sm:w-20'>
 				<Link to={`/matches/${user.id}`}>
 					<div className='w-16 h-16 sm:w-20 sm:h-20 relative'>
-						<img src={user.avatar} className='h-full w-full rounded-full object-cover shadow' />
+						<img src={user.avatar} alt='avatar' className='h-full w-full rounded-full object-cover shadow' />
 						<div className='absolute top-1/2 left-full transform -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-full shadow '>
 							{user.online
 								? <div className='bg-green-500 h-4 w-4 rounded-full'></div>

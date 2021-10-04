@@ -61,7 +61,7 @@ const Notification = ({ notif, readOne }) => {
 			<div className='w-12 sm:w-14' style={notif.status === 0 ? { marginLeft: '1.5rem' } : { marginLeft: '0.5rem' }}>
 				<Link to={`/browse/${notif.sender}`}>
 					<div className='w-10 h-10 sm:w-14 sm:h-14 relative'>
-						<img src={notif.avatar} className='h-full w-full rounded-full object-cover shadow' />
+						<img src={notif.avatar} alt='avatar' className='h-full w-full rounded-full object-cover shadow' />
 						<div className='absolute top-1/2 left-full transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full shadow '>
 							{isMatch
 								? <MatchIcon className='h-6 w-6 text-red-500' />

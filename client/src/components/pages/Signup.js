@@ -95,12 +95,12 @@ const SignupPage = () => {
 						<div className='inline-block mr-2 w-1/2'>
 							<label>First name</label>
 							{errors.firstname && <label className='text-red-500'> *</label>}
-							<input name='firstname' type='text' style={inputStyle} onBlur={onBlur} />
+							<input name='firstname' type='text' style={inputStyle} onBlur={onBlur} maxLength='50'/>
 						</div>
 						<div className='inline-block ml-2 w-1/2'>
 							<label>Last name</label>
 							{errors.lastname && <label className='text-red-500'> *</label>}
-							<input name='lastname' type='text' style={inputStyle} onBlur={onBlur} />
+							<input name='lastname' type='text' style={inputStyle} onBlur={onBlur} maxLength='50'/>
 						</div>
 					</div>
 					<InputField type='text' name='username' errors={errors.username} onBlur={onBlur} />

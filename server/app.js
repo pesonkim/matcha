@@ -20,7 +20,7 @@ const notifRouter = require('./routes/notifications')
 const middleware = require('./utils/middleware')
 
 app.use(cors())
-//app.use(express.static('build'))
+app.use(express.static('build'))
 app.use(express.json({ limit: '10mb', extended: true }))
 app.use(express.urlencoded({ limit: '10mb', extended: true }))
 app.use(middleware.requestLogger)

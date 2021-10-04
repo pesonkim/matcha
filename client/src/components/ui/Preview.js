@@ -24,11 +24,6 @@ const Preview = ({ user }) => {
 		margin: 'auto',
 	}
 
-	const fieldStyle = {
-		borderBottomWidth: '1px',
-		borderColor: '#dae4e9',
-	}
-
 	const distance = () => {
 		const lat = user.latitude
 		const lng = user.longitude
@@ -57,7 +52,7 @@ const Preview = ({ user }) => {
 				<span className='ml-2 text-xl'>{user.age}</span>
 			</section>
 			<div style={imgDivStyle} >
-				<img src={user.avatar ? user.avatar : 'https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png'} style={imgStyle} />
+				<img src={user.avatar ? user.avatar : 'https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png'} alt='avatar' style={imgStyle} />
 			</div>
 			<section className="flex justify-between items-center mt-2 mb-2">
 				<section className="flex">

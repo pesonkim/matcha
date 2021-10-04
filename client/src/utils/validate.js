@@ -17,7 +17,7 @@ const validate = (values) => {
 	if (!values.username) {
 		errors.username = 'Username is required'
 	} else if (values.username.length < 3 || values.username.length > 20) {
-		errors.username = 'Username must have between 3 and 20 characters long'
+		errors.username = 'Username must be between 3 and 20 characters long'
 	}
 	//birthdate
 	if (values.birthdate) {

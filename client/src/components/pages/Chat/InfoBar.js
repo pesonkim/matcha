@@ -12,10 +12,10 @@ const InfoBar = ({ user }) => {
 
 	return (
 		<div className="w-full flex justify-between items-center p-2 relative" style={style}>
-			<section className='flex items-center '>
+			<section className='flex items-center overflow-hidden'>
 				<Link to={`/matches/${user.id}`}>
 					<div className='w-10 h-10 sm:w-12 sm:h-12 relative'>
-						<img src={user.avatar} className='h-full w-full rounded-full object-cover shadow' />
+						<img src={user.avatar} alt='avatar' className='h-full w-full rounded-full object-cover shadow' />
 						<div className='absolute top-1/2 left-full transform -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-full shadow '>
 							{user.online
 								? <div className='bg-green-500 h-4 w-4 rounded-full'></div>

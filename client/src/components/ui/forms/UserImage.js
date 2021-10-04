@@ -1,5 +1,4 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { TrashIcon } from '@heroicons/react/outline'
 import imageCompression from 'browser-image-compression'
 
 const UserImage = () => {
@@ -14,12 +13,6 @@ const UserImage = () => {
 		width: '100%',
 		padding: '.75rem',
 		marginBottom: '1rem',
-	}
-
-	const icon = {
-		position: 'absolute',
-		top: 15,
-		right: 15,
 	}
 
 	const imgStyle = {
@@ -81,7 +74,7 @@ const UserImage = () => {
 	return (
 		<>
 			<div className='mb-4 mx-auto'>
-				{photoStr && <img src={photoStr} style={imgStyle} />}
+				{photoStr && <img src={photoStr} alt='avatar' style={imgStyle} />}
 			</div>
 			<label>Profile picture</label>
 			<input name='photo' type='file' style={baseStyle} onChange={handleImage} accept=".png, .jpg .jpeg" />

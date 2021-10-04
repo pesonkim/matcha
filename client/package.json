@@ -4,7 +4,6 @@
 	"private": true,
 	"dependencies": {
 		"@craco/craco": "^6.2.0",
-		"@headlessui/react": "^1.4.1",
 		"@heroicons/react": "^1.0.4",
 		"@react-google-maps/api": "^2.2.0",
 		"@testing-library/jest-dom": "^5.14.1",
@@ -39,7 +38,7 @@
 		"build": "craco build",
 		"test": "craco test",
 		"eject": "react-scripts eject",
-		"lint": "eslint . --fix"
+		"lint": "eslint ."
 	},
 	"proxy": "http://localhost:3001",
 	"eslintConfig": {

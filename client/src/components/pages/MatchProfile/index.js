@@ -16,7 +16,7 @@ const PublicProfile = ({ profile }) => {
 	const [modal, setModal] = useState(null)
 	const [dialog, setDialog] = useState(null)
 
-	useEffect(async () => {
+	useEffect(() => {
 		window.scroll({
 			top: 0,
 			left: 0,
