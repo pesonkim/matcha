@@ -35,7 +35,7 @@ userRouter.post('/', async (req, res) => {
 			text: `Welcome to Matcha!
 
 Before you can log in, we ask that you visit the following link to verify your account email:
-http://localhost:${port}/verify?token=${token}`
+http://localhost:${port}/api/verify?token=${token}`
 		}
 
 		transporter.sendMail(mailConfig, (error, info) => {

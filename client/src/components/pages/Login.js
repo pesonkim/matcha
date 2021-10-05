@@ -16,9 +16,9 @@ const LoginPage = () => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		if (window.location.pathname === '/verify') {
+		if (window.location.pathname === '/verify/') {
 			dispatch(setNotif('Account verified. You can now access Matcha'))
-		} else if (window.location.pathname === '/expired') {
+		} else if (window.location.pathname === '/expired/') {
 			dispatch(setError('Your session has expired, please login again'))
 		}
 		else {

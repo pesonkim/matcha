@@ -1,7 +1,7 @@
 import axios from 'axios'
 import auth from '../utils/auth'
 
-const baseUrl = 'http://localhost:3001/users'
+const baseUrl = 'http://localhost:3001/api/users'
 
 const getUsers = async () => {
 	const response = await axios.get(baseUrl, auth.config())

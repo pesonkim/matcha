@@ -4,6 +4,7 @@ const pool = require('../utils/db')
 const mysql = require('mysql')
 const nodemailer = require('nodemailer')
 const mailInfo = require('../utils/config').INFO_EMAIL
+const port = require('../utils/config').PORT
 const getToken = require('../utils/token')
 
 resetRouter.post('/', (req, res) => {
@@ -25,7 +26,7 @@ resetRouter.post('/', (req, res) => {
 			text: `Your Matcha account recently requested a password change.
 
 Please visit the following link to register a new password for your account:
-http://localhost:3000/reset/${token}`
+http://localhost:${port}/reset/${token}`
 		}
 
 		transporter.sendMail(mailConfig, (error, info) => {

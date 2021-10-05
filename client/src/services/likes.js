@@ -1,7 +1,7 @@
 import axios from 'axios'
 import auth from '../utils/auth'
 
-const baseUrl = 'http://localhost:3001/likes'
+const baseUrl = 'http://localhost:3001/api/likes'
 
 const getLikes = async () => {
 	const response = await axios.get(baseUrl, auth.config())

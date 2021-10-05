@@ -39,8 +39,8 @@ const setupDb = async () => {
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
         firstname varchar(50) NOT NULL,
         lastname varchar(50) NOT NULL,
-        username varchar(255) UNIQUE NOT NULL,
-        email varchar(255) UNIQUE NOT NULL,
+        username varchar(255) NOT NULL,
+        email varchar(255) NOT NULL,
         password varchar(255) NOT NULL,
         token varchar(255) NOT NULL DEFAULT 0,
         verified tinyint(1) NOT NULL DEFAULT 0,
@@ -297,7 +297,7 @@ const setupDb = async () => {
 	}
 
 	const prepared = mysql.format(dummy)
-	//console.log(prepared)
+	// console.log(prepared)
 
 	await connection.query(prepared, (error) => {
 		if (error) {
@@ -306,6 +306,18 @@ const setupDb = async () => {
 			return
 		}
 		logger.info('Created dummy users')
+	})
+
+	//unique constraint after dummy data
+	const alter = 'ALTER TABLE users MODIFY username varchar(255) UNIQUE NOT NULL, MODIFY email varchar(255) UNIQUE NOT NULL'
+
+	await connection.query(alter, (error) => {
+		if (error) {
+			// console.log(error)
+			logger.error('Error adding unique constraints', error.message)
+			return
+		}
+		logger.info('Added unique constraints')
 	})
 
 	//test likes
@@ -341,7 +353,7 @@ const setupDb = async () => {
 			logger.error('Error creating test likes', error.message)
 			return
 		}
-		logger.info('Created test likes')
+		logger.info('Created test notifications')
 	})
 
 	await connection.query('SELECT tags FROM users', (error, result) => {

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import auth from '../utils/auth'
 
-const baseUrl = 'http://localhost:3001/photos'
+const baseUrl = 'http://localhost:3001/api/photos'
 
 const addPhoto = async (blob) => {
 	//console.log(blob)
