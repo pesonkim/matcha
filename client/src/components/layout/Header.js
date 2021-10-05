@@ -6,14 +6,13 @@ import loginService from '../../services/login'
 import { useEffect, useState } from 'react'
 
 const Header = () => {
-	const { loggedIn, avatar, id } = useSelector(state => state.user)
+	const { loggedIn, id } = useSelector(state => state.user)
 	const { matches, notif, likes } = useSelector(state => state.match)
 	const [unreadMessages, setUnreadMessages] = useState(null)
 	const [unreadNotif, setUnreadNotif] = useState(null)
 
 	useEffect(() => {
 		if (matches && likes) {
-			// console.log('header')
 			let count = 0
 			matches.map(i => {
 				const like = likes.find(l => l.receiver === i.id)
@@ -38,7 +37,6 @@ const Header = () => {
 
 	useEffect(() => {
 		if (notif) {
-			// console.log('header')
 			let count = 0
 			notif.map(i => i.status === 0 ? count++ : null)
 			if (count) {
@@ -111,12 +109,6 @@ const Header = () => {
 							}
 						</Link>
 						<Link to='/profile' className='flex flex-col items-center mx-2 xs:mx-4 hover:opacity-50 select-none'>
-							{/* {avatar
-								? (<div style={divStyle} >
-									<img src={avatar} style={imgStyle} />
-								</div>)
-								: <UserCircleIcon className=' h-8 w-8' />
-							} */}
 							<UserCircleIcon className=' h-8 w-8' />
 							<p className='hidden sm:block'>profile</p>
 						</Link>

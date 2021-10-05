@@ -25,7 +25,6 @@ const UserLocation = () => {
 	const [map, setMap] = useState(null)
 
 	const onLoad = useCallback((map) => {
-		// console.log('mount')
 		const extendedZoomAccuracy = 0.007
 		const bounds = new window.google.maps.LatLngBounds()
 		bounds.extend(center)
@@ -43,7 +42,6 @@ const UserLocation = () => {
 	})
 
 	const onUnmount = useCallback((map) => {
-		// console.log('unmount')
 		setMap(null)
 	})
 

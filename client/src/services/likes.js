@@ -5,26 +5,22 @@ const baseUrl = 'http://localhost:3001/api/likes'
 
 const getLikes = async () => {
 	const response = await axios.get(baseUrl, auth.config())
-	// console.log(response)
 	return response.data
 }
 
 const addLike = async (newLike) => {
 	const response = await axios.post(baseUrl, newLike, auth.config())
-	// console.log(response)
 	return response.data
 }
 
 const updateRead = async (like) => {
 	const response = await axios.put(`${baseUrl}/${like.from}`, like, auth.config())
-	// console.log(response)
 	return response.data
 }
 
 const removeLike = async (like) => {
 	const headers = auth.config()
 	const response = await axios.delete(`${baseUrl}/${like.id}`, { headers: headers.headers, data: like })
-	// console.log(response)
 	return response.data
 }
 

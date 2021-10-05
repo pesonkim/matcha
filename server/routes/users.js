@@ -88,7 +88,6 @@ userRouter.get('/', async (req, res) => {
 			return res.status(500).send({ error: 'Database error' })
 		}
 		if (result) {
-			//console.log(result[0].orientation)
 			sql = 'SELECT id, firstname, lastname, username, avatar, gender, orientation, tags, bio, latitude, longitude,\
 				TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age, fame, last_login, online from users WHERE ('
 			let parameters = []
@@ -113,7 +112,6 @@ userRouter.get('/', async (req, res) => {
 			}
 			sql = sql.concat(`) AND id != ? AND orientation LIKE '%${result[0].gender.slice(0,1)}%'`)
 			const prepared = mysql.format(sql, [user.id])
-			// console.log(prepared)
 			pool.query(prepared, (error, result) => {
 				if (result) {
 					return res.status(200).send(result)
@@ -159,7 +157,6 @@ userRouter.get('/:id', (req, res) => {
 })
 
 userRouter.put('/:id', async (req, res) => {
-	//console.log(req.token)
 	const user = jwt.verify(req.token, tokenSecret)
 
 	if (!user || user.id !== Number(req.params.id)) {
@@ -178,8 +175,6 @@ userRouter.put('/:id', async (req, res) => {
 		const sql = 'SELECT password FROM users WHERE id = ?'
 		const check = mysql.format(sql, [user.id])
 		pool.query(check, async (error, result) => {
-			//console.log(check)
-			//console.log(result)
 			if (result.length === 0) {
 				return res.status(401).send({ error: 'Not authorized' })
 			}
@@ -190,7 +185,6 @@ userRouter.put('/:id', async (req, res) => {
 
 			const sql = 'UPDATE users SET password=? WHERE id=?'
 			const prepared = mysql.format(sql, [newHash, user.id])
-			//console.log(prepared)
 			pool.query(prepared, (error, result) => {
 				if (result) {
 					console.log('Updated password, affected rows:', result.affectedRows)
@@ -215,10 +209,7 @@ userRouter.put('/:id', async (req, res) => {
 	query = query.slice(0, -2)
 	query = query.concat(` WHERE id = ${user.id}`)
 
-	//console.log(query)
-
 	const prepared = mysql.format(query, parameters)
-	//console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result && result.affectedRows) {
 			pool.query('SELECT * from users WHERE id = ?', user.id, (error, result) => {

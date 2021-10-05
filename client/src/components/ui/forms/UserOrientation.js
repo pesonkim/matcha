@@ -15,7 +15,6 @@ const UserOrientation = () => {
 
 	const handleChange = (option) => {
 		const current = Array.isArray(option) ? option.map(i => i.value) : []
-		//console.log(current)
 		dispatch({
 			type: 'ORIENTATION',
 			data: {

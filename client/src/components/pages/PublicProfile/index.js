@@ -15,10 +15,14 @@ const PublicProfile = ({ profileId }) => {
 	const dispatch = useDispatch()
 	const { profile } = useSelector(state => state.public)
 	const { id } = useSelector(state => state.user)
-	const { matches } = useSelector(state => state.match)
+	const { publicLikes, matches, likes } = useSelector(state => state.match)
 	const [modal, setModal] = useState(null)
 	const [dialog, setDialog] = useState(null)
 	const [wait, setWait] = useState(false)
+
+	const hasLiked = publicLikes.find(i => i.sender === profileId)
+	const isLiked = likes.find(i => i.receiver === profileId)
+	const isMatch = matches.find(i => i.id === profileId)
 
 	useEffect(async () => {
 		await dispatch(profileView({ from: id, to: profileId }))
@@ -32,7 +36,6 @@ const PublicProfile = ({ profileId }) => {
 
 	useEffect(() => {
 		if (wait) {
-			// console.log('here', matches)
 			if (matches.find(match => match.id === profileId)) {
 				setModal({ type: 'match', user: profile })
 			}
@@ -59,7 +62,6 @@ const PublicProfile = ({ profileId }) => {
 
 	const handleBlock = async () => {
 		await dispatch(profileBlock({ from: id, to: profileId, type: 'new' }))
-		// setDialog(null)
 	}
 
 	if (!profile) {
@@ -81,6 +83,15 @@ const PublicProfile = ({ profileId }) => {
 					/>
 					<Image
 						image={profile.avatar}
+						status={
+							isMatch
+								? 'match'
+								:	isLiked
+									? 'liked'
+									: hasLiked
+										? 'likes you'
+										: null
+						}
 					/>
 					<Info
 						name={profile.firstname + ' ' + profile.lastname}
@@ -104,7 +115,7 @@ const PublicProfile = ({ profileId }) => {
 						handleBlock={handleBlock}
 					/>
 					<Confirm dialog={dialog} setDialog={setDialog} />
-					<MatchModal modal={modal} setModal={setModal}/>
+					<MatchModal modal={modal} setModal={setModal} />
 				</div>
 			</div>
 		)

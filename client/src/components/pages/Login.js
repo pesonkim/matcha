@@ -33,7 +33,6 @@ const LoginPage = () => {
 			password: event.target.password.value,
 			ip: ip,
 		}
-		//console.log(data)
 		dispatch(login(data))
 	}
 

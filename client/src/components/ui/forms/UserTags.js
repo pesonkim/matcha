@@ -17,7 +17,6 @@ const UserTags = () => {
 
 	const handleChange = (option) => {
 		const current = Array.isArray(option) ? option.map(i => (i.value.substr(0, 1) !== '#' ? '#' : '') + i.value) : []
-		//console.log(current)
 		dispatch({
 			type: 'TAGS',
 			data: {

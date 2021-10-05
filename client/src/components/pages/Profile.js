@@ -22,21 +22,23 @@ import { Link } from 'react-router-dom'
 import imageCompression from 'browser-image-compression'
 
 const ProfilePage = () => {
-	const { id } = useSelector(state => state.user)
+	const { id, token } = useSelector(state => state.user)
 	const { firstname, lastname, username, email, orientation, gender, bio, tags, errorMessage, notification } = useSelector(state => state.form)
 	const { blocks, log } = useSelector(state => state.match)
 	const dispatch = useDispatch()
 
 	useEffect(async () => {
-		await dispatch(populate(id))
-		await dispatch(getLog(id))
-	}, [])
-
-	useEffect(async () => {
-		if (blocks) {
+		if (token && blocks && id) {
+			await dispatch(populate(id))
 			await dispatch(getLog(id))
 		}
-	}, [blocks])
+	}, [token, blocks, id])
+
+	useEffect(() => {
+		return () => {
+			dispatch(clear())
+		}
+	}, [])
 
 	const handleSubmit = async (event) => {
 		event.preventDefault()
@@ -79,25 +81,23 @@ const ProfilePage = () => {
 			}
 		}
 
-		// console.log(data)
 		await dispatch(update(data, id))
 		await dispatch(updateTags(tags))
 
 		if (data.firstname) {
 			event.target.firstname.value = ''
-			event.target.firstname.placeholder = data.firstname
 		}
 		if (data.lastname) {
 			event.target.lastname.value = ''
-			event.target.lastname.placeholder = data.lastname
 		}
 		if (data.username && !errorMessage) {
 			event.target.username.value = ''
-			event.target.username.placeholder = data.username
 		}
 		if (data.email && !errorMessage) {
 			event.target.email.value = ''
-			event.target.email.placeholder = data.email
+		}
+		if (data.password && !errorMessage) {
+			event.target.password.value = ''
 		}
 
 		const imageFile = event.target.photo.files[0]

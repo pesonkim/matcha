@@ -201,7 +201,6 @@ const setupDb = async () => {
 
 	dummy = dummy.concat('(\'super\', \'user\', \'admin\', \'admin@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, \'https://muropaketti.com/wp-content/uploads/2015/11/riskibisnes_tomcruise.jpg\', \'male\', \'f\', \'#coding#techno\', \'asd\', 60.1686, 24.9456, \'2000-01-01\', 100, CURRENT_TIMESTAMP),')
 	dummy = dummy.concat('(\'dummy\', \'user\', \'dummy\', \'dummy@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, \'https://muropaketti.com/wp-content/uploads/2015/11/riskibisnes_tomcruise.jpg\', \'female\', \'m\', \'#coding#techno\', \'asd\', 60.1686, 24.9456, \'2000-01-01\', 100, CURRENT_TIMESTAMP),')
-	// dummy = dummy.concat('(\'firstname\', \'lastname\', \'dummy\', \'dummy@example.com\', \'$2b$10$9rqOW.CL691TYklrt6mBM.nvrD9XRbKddQZRNjFB2vyaKnmz61gpe\', 1, null, null, null, null, null, null, null, \'2000-01-01\', 100, null),')
 
 	for (let i = 0; i < 500; i++) {
 		let month = Math.ceil(Math.random() * 12)
@@ -210,7 +209,6 @@ const setupDb = async () => {
 		let birthdate = `${year}-${month}-${day}`
 		let randomPoint = randomLocation.randomCirclePoint(P, 500000)
 		faker.locale = locale[Math.floor(Math.random() * locale.length)]
-		// console.log(faker.locale)
 		dummy = dummy.concat(`(
 				'${faker.name.firstName().replace('\'', '')}',
 				'${faker.name.lastName().replace('\'', '')}',
@@ -241,7 +239,6 @@ const setupDb = async () => {
 		let birthdate = `${year}-${month}-${day}`
 		let randomPoint = randomLocation.randomCirclePoint(P, 1000000)
 		faker.locale = locale[Math.floor(Math.random() * locale.length)]
-		// console.log(faker.locale)
 		dummy = dummy.concat(`(
 				'${faker.name.firstName().replace('\'', '')}',
 				'${faker.name.lastName().replace('\'', '')}',
@@ -272,7 +269,6 @@ const setupDb = async () => {
 		let birthdate = `${year}-${month}-${day}`
 		let randomPoint = randomLocation.randomCirclePoint(P, 2000000)
 		faker.locale = locale[Math.floor(Math.random() * locale.length)]
-		// console.log(faker.locale)
 		dummy = dummy.concat(`(
 				'${faker.name.firstName().replace('\'', '')}',
 				'${faker.name.lastName().replace('\'', '')}',
@@ -297,11 +293,9 @@ const setupDb = async () => {
 	}
 
 	const prepared = mysql.format(dummy)
-	// console.log(prepared)
 
 	await connection.query(prepared, (error) => {
 		if (error) {
-			// console.log(error)
 			logger.error('Error creating dummy users', error.message)
 			return
 		}
@@ -349,7 +343,6 @@ const setupDb = async () => {
 
 	await connection.query(testlikes, (error) => {
 		if (error) {
-			// console.log(error)
 			logger.error('Error creating test likes', error.message)
 			return
 		}
@@ -364,7 +357,6 @@ const setupDb = async () => {
 		let tagsStr = []
 		result.map(i => tagsStr.push(i.tags))
 		const filteredTags = Array.from(new Set(tagsStr))
-		// console.log(filteredTags)
 		tagsStr = filteredTags.map(t => t).join('')
 		connection.query(`INSERT INTO tags (tags) VALUES ('${tagsStr}')`, (error) => {
 			if (error) {

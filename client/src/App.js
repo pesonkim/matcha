@@ -25,7 +25,6 @@ import Wrapper from './components/ui/Wrapper'
 import io from 'socket.io-client'
 const endpoint = process.env.REACT_APP_ENDPOINT
 const socket = io(endpoint)
-// console.log(socket)
 
 const App = () => {
 	const { id, loggedIn, userComplete, orientation } = useSelector(state => state.user)
@@ -51,7 +50,6 @@ const App = () => {
 			})
 		}
 		dispatch(lookup())
-		// console.log(auth.config())
 	}, [dispatch])
 
 	useEffect(() => {

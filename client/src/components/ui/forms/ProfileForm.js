@@ -21,7 +21,6 @@ const ProfileForm = () => {
 	const handleSubmit = async (event) => {
 		event.preventDefault()
 
-		//console.log(event.target.photo.files[0])
 		const data = {
 			gender: gender,
 			orientation: parse.oToDb(orientation),
@@ -29,7 +28,6 @@ const ProfileForm = () => {
 			bio: bio,
 		}
 
-		//console.log(data)
 		await dispatch(update(data, id))
 		await dispatch(updateTags(tags))
 
@@ -75,13 +73,3 @@ const ProfileForm = () => {
 }
 
 export default ProfileForm
-
-//avatar
-//gender
-//orientation
-//bio
-//tags
-
-//redux magix to get states
-//image upload form
-//tag creation

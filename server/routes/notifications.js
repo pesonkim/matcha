@@ -26,7 +26,6 @@ notifRouter.get('/', (req, res) => {
 		user.id,
 	]
 	const prepared = mysql.format(sql, values)
-	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			return res.status(200).send(result)
@@ -52,7 +51,6 @@ notifRouter.post('/', (req, res) => {
 		req.body.action,
 	]
 	const prepared = mysql.format(sql, values)
-	//console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			return res.status(204).end()
@@ -79,7 +77,6 @@ notifRouter.put('/:id', (req, res) => {
 	}
 	sql = sql.concat(')')
 	const prepared = mysql.format(sql, [user.id])
-	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			return res.status(200).send(result)

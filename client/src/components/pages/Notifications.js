@@ -24,7 +24,7 @@ const MarkAsRead = ({ readAll }) => (
 )
 
 const Notification = ({ notif, readOne }) => {
-	const { likes, matches } = useSelector(state => state.match)
+	const { likes, matches, publicLikes } = useSelector(state => state.match)
 
 	const divideStyle = {
 		marginTop: '-1px',
@@ -38,8 +38,9 @@ const Notification = ({ notif, readOne }) => {
 		}
 	}
 
-	const isLiked = likes.find(i => i.receiver === notif.sender)
 	const isMatch = matches.find(i => i.id === notif.sender)
+	const isLiked = likes.find(i => i.receiver === notif.sender)
+	const hasLiked = publicLikes.find(i => i.sender === notif.sender)
 
 	const notifMessage = () => {
 		switch (notif.action) {
@@ -64,10 +65,12 @@ const Notification = ({ notif, readOne }) => {
 						<img src={notif.avatar} alt='avatar' className='h-full w-full rounded-full object-cover shadow' />
 						<div className='absolute top-1/2 left-full transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full shadow '>
 							{isMatch
-								? <MatchIcon className='h-6 w-6 text-red-500' />
+								? <MatchIcon className='h-6 w-6 text-pink-500' />
 								: isLiked
-									? <HeartIcon className='h-6 w-6 text-red-500' />
-									: null
+									? <HeartIcon className='h-6 w-6 text-pink-500' />
+									: hasLiked
+										? <HeartIcon className='h-6 w-6 text-pink-500 ' />
+										: null
 							}
 						</div>
 					</div>
@@ -82,7 +85,7 @@ const Notification = ({ notif, readOne }) => {
 					</div>
 				}
 			</div>
-			<div className='flex flex-row justify-between w-full overflow-hidden' style={isLiked ? { marginLeft: '0.5rem' } : null}>
+			<div className='flex flex-row justify-between w-full overflow-hidden' style={isLiked ? { marginLeft: '0.5rem' } : hasLiked ? { marginLeft: '0.5rem' } : null }>
 				<div className='flex flex-col h-12 sm:h-14 pl-2 justify-center overflow-hidden relative'>
 					<Link to={`/browse/${notif.sender}`} >
 						<span className='truncate text-lg'>{notif.sendername}</span>

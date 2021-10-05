@@ -17,7 +17,6 @@ const MatchPreview = ({ user }) => {
 
 	useEffect(() => {
 		if (matches) {
-			// console.log('header')
 			let count = 0
 			matches.map(i => {
 				if (i.chat.length) {

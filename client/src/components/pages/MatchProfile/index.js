@@ -10,7 +10,7 @@ import { profileLike, profileReport, profileBlock } from '../../../reducers/matc
 import Confirm from '../../ui/Confirm'
 import MatchModal from '../../ui/MatchModal'
 
-const PublicProfile = ({ profile }) => {
+const MatchProfile = ({ profile }) => {
 	const dispatch = useDispatch()
 	const { id } = useSelector(state => state.user)
 	const [modal, setModal] = useState(null)
@@ -90,4 +90,4 @@ const PublicProfile = ({ profile }) => {
 	}
 }
 
-export default PublicProfile
+export default MatchProfile

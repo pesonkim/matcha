@@ -6,7 +6,6 @@ import parse from '../utils/parse'
 const initialState = {
 	ids: null,
 	users: [],
-	previews: [],
 	profile: null,
 	sortFilter: null,
 	allTags: null,
@@ -52,11 +51,6 @@ const publicReducer = (state = initialState, action) => {
 		return {
 			...state,
 			users: action.data,
-		}
-	case 'SETPREVIEWS':
-		return {
-			...state,
-			previews: action.data,
 		}
 	case 'SETIDS':
 		return {
@@ -177,22 +171,16 @@ export const getUsers = (filter, sliders, sort, tags, latitude, longitude, block
 				})
 			} else if (sort === 'tags in common') {
 				let matches = data.filter(user => tags.some(tag => user.tags.includes(tag)))
-				// console.log(matches)
 				matches = matches.sort((a,b) => {
 					a.matches = a.tags.filter(tag => tags.some(v => tag.includes(v)))
 					b.matches = b.tags.filter(tag => tags.some(v => tag.includes(v)))
-					// console.log(a.matches, b.matches)
 					return (
 						(b.matches.length - a.matches.length)
 					)
 				})
-				// console.log(matches)
-				// console.log('len', data.length)
 				data = data.filter(user => !matches.map(i => i.id).includes(user.id))
 				data = matches.concat(data)
-				// console.log(data)
 			}
-			// console.log(data.length)
 			dispatch({
 				type: 'SETUSERS',
 				data
@@ -219,7 +207,6 @@ export const getUserById = (id) => {
 			data = data.find(user => user.id === id)
 			data.orientation = parse.oFromDb(data.orientation)
 			data.tags = parse.parseTags(data.tags)
-			// console.log(data)
 			dispatch({
 				type: 'SETPROFILE',
 				data
@@ -243,14 +230,11 @@ export const getUserIds = (blocks) => {
 		let data
 		let ids = []
 		try {
-			// console.log(blocks)
 			data = await userService.getUsers()
 			data.map(user => ids.push(user.id))
-			// console.log(ids)
 			if (blocks.length) {
 				ids = ids.filter(i => !blocks.map(b => b.receiver).includes(i))
 			}
-			// console.log(ids)
 			dispatch({
 				type: 'SETIDS',
 				data: ids
@@ -278,7 +262,6 @@ export const getTags = () => {
 		let data
 		try {
 			data = await tagsService.getTags()
-			//console.log(data)
 			dispatch({
 				type: 'SETTAGS',
 				data
@@ -309,7 +292,6 @@ export const updateTags = (newTags) => {
 
 			await tagsService.addTags({ tags: updateStr })
 			data = await tagsService.getTags()
-			//console.log(data)
 			dispatch({
 				type: 'SETTAGS',
 				data

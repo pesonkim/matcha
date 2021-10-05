@@ -16,7 +16,6 @@ blocksRouter.get('/', (req, res) => {
 		user.id
 	]
 	const prepared = mysql.format(sql, values)
-	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			return res.status(200).send(result)
@@ -41,7 +40,6 @@ blocksRouter.post('/', (req, res) => {
 		req.body.to,
 	]
 	const prepared = mysql.format(sql, values)
-	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			pool.query(`UPDATE users SET fame = fame - 5 WHERE id = ${req.body.to}`)

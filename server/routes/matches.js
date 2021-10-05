@@ -15,7 +15,6 @@ matchRouter.get('/', (req, res) => {
 	let prepared = mysql.format(sql, [user.id])
 	pool.query(prepared, (error, result) => {
 		if (result) {
-			// console.log(result)
 			if (result.length) {
 				const created = result
 				sql = 'SELECT id, firstname, lastname, username, avatar, gender, orientation, tags, bio, latitude, longitude,\
@@ -27,14 +26,11 @@ TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age, fame, last_login, online from 
 					}
 				}
 				sql = sql.concat(')')
-				// console.log(sql)
 				pool.query(sql, (error, result) => {
-					// console.log('query ran')
 					if (result) {
 						result.map(i => {
 							i.created_at = created.find(c => c.receiver === i.id).created_at
 						})
-						// console.log('after', result)
 						return res.status(200).send(result)
 					} else if (error) {
 						return res.status(500).send(error)
@@ -45,6 +41,29 @@ TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age, fame, last_login, online from 
 			}
 		} else if (error) {
 			return res.status(500).send(error)
+		}
+	})
+})
+
+matchRouter.get('/likes', (req, res) => {
+	const user = jwt.verify(req.token, tokenSecret)
+
+	if (!user) {
+		return res.status(401).send({ error: 'Invalid token or unauthorized' })
+	}
+
+	const sql = 'SELECT sender FROM likes WHERE receiver=?'
+	const values = [
+		user.id
+	]
+	const prepared = mysql.format(sql, values)
+	pool.query(prepared, (error, result) => {
+		if (result) {
+			return res.status(200).send(result)
+		} else if (error) {
+			return res.status(500).send(error)
+		} else {
+			return res.status(500).send({ error: 'Database error' })
 		}
 	})
 })

@@ -16,7 +16,6 @@ likesRouter.get('/', (req, res) => {
 		user.id
 	]
 	const prepared = mysql.format(sql, values)
-	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			return res.status(200).send(result)
@@ -38,14 +37,12 @@ likesRouter.post('/', (req, res) => {
 
 	let sql = 'INSERT INTO likes (sender, receiver, created_at) VALUES (?,?,CURRENT_TIMESTAMP)'
 	let prepared = mysql.format(sql, [from, to])
-	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			console.log('New profile like:', result.insertId)
 			pool.query(`UPDATE users SET fame = fame + 5 WHERE id = ${to}`)
 			sql = 'SELECT * FROM likes WHERE (sender=? AND receiver=?) OR (sender=? AND receiver=?)'
 			prepared = mysql.format(sql, [from, to, to, from])
-			// console.log(prepared)
 			pool.query(prepared, (error, result) => {
 				if (result) {
 					if (result.length === 2) {
@@ -85,7 +82,6 @@ likesRouter.put('/:id', (req, res) => {
 		req.body.id,
 	]
 	const prepared = mysql.format(sql, values)
-	//console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			return res.status(200).send(result)
@@ -96,7 +92,6 @@ likesRouter.put('/:id', (req, res) => {
 })
 
 likesRouter.delete('/:id', (req, res) => {
-	// console.log(req.body)
 	const user = jwt.verify(req.token, tokenSecret)
 
 	if (!user) {

@@ -83,7 +83,6 @@ export const login = (credentials) => {
 		let data
 		try {
 			data = await loginService.login(credentials)
-			//console.log(data)
 			dispatch({
 				type: 'LOGIN',
 				data

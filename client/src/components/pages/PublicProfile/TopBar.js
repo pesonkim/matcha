@@ -6,14 +6,6 @@ const TopBar = ({ online, firstname, age }) => {
 
 	return (
 		<div className="w-full flex items-center justify-between p-4" >
-			{/* <section className="flex items-center">
-				<UserIcon className=' h-6 w-6' />
-				<p>Username</p>
-			</section>
-			<section className="flex items-center">
-				<FireIcon className=' h-6 w-6' />
-				<p>100</p>
-			</section> */}
 			<section className="flex items-center overflow-hidden w-2/3">
 				{online
 					? <span className='text-green-500'>●&nbsp;</span>

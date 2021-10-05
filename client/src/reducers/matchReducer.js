@@ -5,7 +5,6 @@ import blockService from '../services/blocks'
 import matchService from '../services/matches'
 import messageService from '../services/messages'
 import notifService from '../services/notifications'
-import userService from '../services/users'
 import parse from '../utils/parse'
 
 import io from 'socket.io-client'
@@ -14,6 +13,7 @@ const socket = io(endpoint)
 
 const initialState = {
 	likes: [],
+	publicLikes: [],
 	reports: [],
 	blocks: null,
 	log: [],
@@ -47,6 +47,11 @@ const matchReducer = (state = initialState, action) => {
 		return {
 			...state,
 			notif: action.data
+		}
+	case 'SETPUBLICLIKES':
+		return {
+			...state,
+			publicLikes: action.data
 		}
 	case 'SETMATCHES':
 		return {
@@ -123,18 +128,14 @@ export const getMatches = () => {
 				i.orientation = parse.oFromDb(i.orientation)
 				i.tags = parse.parseTags(i.tags)
 			})
-			// console.log(data)
 			const blocks = await blockService.getBlocks()
-			// console.log('blocks', blocks)
 			if (blocks && blocks.length) {
 				data = data.filter(i => !blocks.map(b => b.receiver).includes(i.id))
 			}
-			// console.log(data)
 			const chat = await messageService.getMessages()
 			data.map(i => {
 				i.chat = chat.filter(m => m.sender === i.id || m.receiver === i.id)
 			})
-			// console.log(data)
 			data = data.sort((a,b) => {
 				a.latest = a.chat.length ? a.chat[a.chat.length - 1].created_at : a.created_at
 				b.latest = b.chat.length ? b.chat[b.chat.length - 1].created_at : b.created_at
@@ -142,10 +143,14 @@ export const getMatches = () => {
 					new Date(b.latest) - new Date(a.latest)
 				)
 			})
-			// console.log(data)
 			dispatch({
 				type: 'SETMATCHES',
 				data
+			})
+			const likes = await matchService.getPublicLikes()
+			dispatch({
+				type: 'SETPUBLICLIKES',
+				data: likes
 			})
 		} catch (error) {
 			if (error.response && error.response.data) {
@@ -173,7 +178,6 @@ export const getNotif = (id) => {
 			data = data.filter(i => i.receiver === id)
 			data = data.filter(i => i.action === 'view' || i.action === 'like' || i.action === 'unlike' )
 			data = data.reverse()
-			// console.log(data)
 			dispatch({
 				type: 'SETNOTIF',
 				data
@@ -197,8 +201,6 @@ export const getLog = (id) => {
 		let data
 		try {
 			data = await notifService.getNotif()
-			// console.log('before',data)
-			// console.log(id)
 			data = data.filter(i => i.sender === id)
 			data.map(i => {
 				switch(i.action) {
@@ -217,7 +219,6 @@ export const getLog = (id) => {
 				}
 			})
 			data = data.reverse()
-			// console.log('here',data)
 			dispatch({
 				type: 'SETLOG',
 				data
@@ -240,18 +241,12 @@ export const profileView = (view) => {
 	return async dispatch => {
 		let data
 		try {
-			// console.log(`${view.from} viewed user ${view.to}`)
 			await viewService.addView(view)
 			await notifService.addNotif({ action: 'view', sender: view.from, receiver: view.to })
 			socket.emit('sendNotification', { action: 'view', sender: view.from, receiver: view.to }, (error) => {
 				if (error) {
 					console.log(error)
 				}
-			})
-			data = await viewService.getViews()
-			dispatch({
-				type: 'SETVIEWS',
-				data
 			})
 		} catch (error) {
 			if (error.response && error.response.data) {
@@ -338,7 +333,6 @@ export const profileBlock = (block) => {
 	return async dispatch => {
 		let data
 		try {
-			// console.log(block)
 			if (block.type === 'new') {
 				await blockService.addBlock(block)
 				await notifService.addNotif({ action: 'block', sender: block.from, receiver: block.to })
@@ -374,7 +368,6 @@ export const chatMessage = (message) => {
 	return async dispatch => {
 		let data
 		try {
-			// console.log(message.type, message)
 			if (message.type === 'new') {
 				await messageService.addMessage(message)
 				socket.emit('sendMessage', { message }, (error) => {
@@ -404,7 +397,6 @@ export const readNotif = (notif, id) => {
 	return async dispatch => {
 		let data
 		try {
-			// console.log(notif, id)
 			await notifService.updateNotif(notif, id)
 			await dispatch(getNotif(id))
 		} catch (error) {

@@ -22,7 +22,7 @@ const formReducer = (state = initialState, action) => {
 	switch (action.type) {
 	case 'POPULATE':
 		return {
-			...initialState,
+			...state,
 			email: action.data.email,
 			username: action.data.username,
 			firstname: action.data.firstname,
@@ -91,7 +91,6 @@ export const populate = (id) => {
 		let data
 		try {
 			data = await userService.getProfile(id)
-			//console.log(data)
 			dispatch({
 				type: 'POPULATE',
 				data
@@ -114,9 +113,7 @@ export const avatar = (blob) => {
 	return async dispatch => {
 		let data
 		try {
-			//console.log(blob)
 			data = await photosService.addPhoto(blob)
-			//console.log(data)
 			const user = JSON.parse(window.localStorage.getItem('user'))
 			window.localStorage.setItem('user', JSON.stringify({ ...user, avatar: data.blob }))
 			dispatch({

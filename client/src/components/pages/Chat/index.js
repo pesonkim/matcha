@@ -5,8 +5,6 @@ import InfoBar from './InfoBar'
 import ChatMessages from './ChatMessages'
 import ChatInput from './ChatInput'
 
-// console.log(socket)
-
 const Chat = ({ profile }) => {
 	const { id } = useSelector(state => state.user)
 	const { likes } = useSelector(state => state.match)
@@ -20,12 +18,10 @@ const Chat = ({ profile }) => {
 		if (profile.chat.length) {
 			setMessages(profile.chat)
 			if (profile.chat.find(i => i.receiver === id && i.status === 0)) {
-				// console.log('read')
 				dispatch(chatMessage({ type: 'read', sender: profile.id, receiver: id }))
 			}
 		}
 		if (isSeen.is_seen === 0) {
-			// console.log('seen')
 			dispatch(profileLike({ from: id, to: profile.id, type: 'read', id: isSeen.id }))
 		}
 	}, [profile])

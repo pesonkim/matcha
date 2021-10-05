@@ -11,7 +11,6 @@ const SliderFilter = () => {
 	const dispatch = useDispatch()
 
 	const handleDistance = () => {
-		// console.log('distance', distance)
 		dispatch({
 			type: 'SETSLIDERS',
 			data: {
@@ -32,7 +31,6 @@ const SliderFilter = () => {
 	}
 
 	const handleFame = () => {
-		// console.log('fame', fame)
 		dispatch({
 			type: 'SETSLIDERS',
 			data: {

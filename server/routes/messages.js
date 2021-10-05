@@ -13,7 +13,6 @@ messagesRouter.get('/', (req, res) => {
 
 	const sql = 'SELECT * FROM messages WHERE sender=? OR receiver=?'
 	const prepared = mysql.format(sql, [user.id, user.id])
-	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			return res.status(200).send(result)
@@ -39,7 +38,6 @@ messagesRouter.post('/', (req, res) => {
 		req.body.message,
 	]
 	const prepared = mysql.format(sql, values)
-	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			return res.status(204).end()
@@ -62,7 +60,6 @@ messagesRouter.put('/:id', (req, res) => {
 		req.body.sender
 	]
 	const prepared = mysql.format(sql, values)
-	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			return res.status(200).send(result)

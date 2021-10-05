@@ -16,7 +16,6 @@ viewsRouter.get('/', (req, res) => {
 		user.id
 	]
 	const prepared = mysql.format(sql, values)
-	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			return res.status(200).send(result)
@@ -37,7 +36,6 @@ viewsRouter.post('/', (req, res) => {
 
 	let sql = 'UPDATE users SET fame=fame+1 WHERE id=? AND NOT EXISTS (SELECT id from views WHERE sender=? AND receiver=?)'
 	let prepared = mysql.format(sql, [req.body.to, req.body.from, req.body.to])
-	// console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
 			sql = 'INSERT INTO views (sender, receiver, created_at) VALUES (?,?,CURRENT_TIMESTAMP)'
@@ -46,7 +44,6 @@ viewsRouter.post('/', (req, res) => {
 				req.body.to,
 			]
 			prepared = mysql.format(sql, values)
-			// console.log(prepared)
 			pool.query(prepared, (error, result) => {
 				if (result) {
 					console.log('New profile view:', result.insertId)

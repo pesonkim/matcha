@@ -1,9 +1,16 @@
 import { FireIcon, LocationMarkerIcon } from '@heroicons/react/outline'
 import { useSelector } from 'react-redux'
 import { getDistance, convertDistance } from 'geolib'
+import { HeartIcon as MatchIcon } from '@heroicons/react/solid'
+import { HeartIcon } from '@heroicons/react/outline'
 
 const Preview = ({ user }) => {
 	const { latitude, longitude } = useSelector(state => state.user)
+	const { publicLikes, matches, likes } = useSelector(state => state.match)
+
+	const hasLiked = publicLikes.find(i => i.sender === user.id)
+	const isLiked = likes.find(i => i.receiver === user.id)
+	const isMatch = matches.find(i => i.id === user.id)
 
 	const imgDivStyle = {
 		height: '200px',
@@ -13,6 +20,7 @@ const Preview = ({ user }) => {
 		justifyContent: 'center',
 		overflow: 'hidden',
 		backgroundColor: 'rgba(248,247,251,255)',
+		position: 'relative'
 	}
 
 	const imgStyle = {
@@ -53,6 +61,25 @@ const Preview = ({ user }) => {
 			</section>
 			<div style={imgDivStyle} >
 				<img src={user.avatar ? user.avatar : 'https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png'} alt='avatar' style={imgStyle} />
+				<div className='absolute bottom-2 right-2 bg-white rounded-full shadow '>
+					{isMatch
+						? (<div className='flex flex-row items-center p-1'>
+							<MatchIcon className='h-6 w-6 text-pink-500' />
+							<span>match</span>
+						</div>)
+						: isLiked
+							? (<div className='flex flex-row items-center p-1'>
+								<HeartIcon className='h-6 w-6 text-pink-500' />
+								<span>liked</span>
+							</div>)
+							: hasLiked
+								? (<div className='flex flex-row items-center p-1'>
+									<HeartIcon className='h-6 w-6 text-pink-500' />
+									<span>likes you</span>
+								</div>)
+								: null
+					}
+				</div>
 			</div>
 			<section className="flex justify-between items-center mt-2 mb-2">
 				<section className="flex">

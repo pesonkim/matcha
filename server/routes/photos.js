@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken')
 const tokenSecret = require('../utils/config').TOKEN_SECRET
 
 photosRouter.post('/', (req, res) => {
-	// console.log(req.body)
 	const user = jwt.verify(req.token, tokenSecret)
 
 	if (!user) {
@@ -18,7 +17,6 @@ photosRouter.post('/', (req, res) => {
 
 	const sql = 'UPDATE users SET avatar = ? WHERE id = ?'
 	const prepared = mysql.format(sql, [req.body.blob, user.id])
-	//console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (error) {
 			return res.status(500).send(error)

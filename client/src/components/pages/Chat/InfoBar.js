@@ -27,7 +27,6 @@ const InfoBar = ({ user }) => {
 				<span className='text-xl sm:text-2xl pl-4 '>{user.firstname}</span>
 			</section>
 			<section className='flex items-center cursor-pointer select-none hover:opacity-50 p-2' onClick={() => history.goBack()}>
-				{/* <span className='sm:block hidden'>Back to matches</span> */}
 				<XIcon className='ml-2 h-8 w-8' />
 			</section>
 		</div>
