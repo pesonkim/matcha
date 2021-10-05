@@ -11,11 +11,7 @@ const InfoBar = ({ user }) => {
 	}
 
 	return (
-<<<<<<< HEAD
-		<div className="w-full flex justify-between items-center p-2 relative" style={style}>
-=======
 		<div className="w-full flex justify-between items-center p-2 relative " style={style}>
->>>>>>> ac8e98f061ec849a21a4076e351f52e2b715537b
 			<section className='flex items-center overflow-hidden'>
 				<Link to={`/matches/${user.id}`}>
 					<div className='w-10 h-10 sm:w-12 sm:h-12 relative'>
