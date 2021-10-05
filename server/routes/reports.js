@@ -46,7 +46,7 @@ reportsRouter.post('/', (req, res) => {
 		if (result) {
 			pool.query(`UPDATE users SET fame = fame - 5 WHERE id = ${req.body.to}`)
 			console.log('New profile report:', result.insertId)
-			res.status(200).end()
+			res.status(204).end()
 		} else if (error) {
 			res.status(500).send(error)
 		} else {

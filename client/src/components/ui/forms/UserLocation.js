@@ -72,6 +72,9 @@ const UserLocation = () => {
 		const latitude = event.latLng.lat()
 		const longitude = event.latLng.lng()
 
+		if (!latitude || !longitude) {
+			return
+		}
 		const data = {
 			latitude,
 			longitude,
@@ -81,7 +84,6 @@ const UserLocation = () => {
 			bio: bio,
 		}
 
-		//console.log(data)
 		dispatch(update(data, id))
 	}
 
@@ -96,6 +98,7 @@ const UserLocation = () => {
 			<Marker
 				position={center}
 				draggable={true}
+				on
 				onDragEnd={(e) => handleDrag(e)}
 			/>
 			{users

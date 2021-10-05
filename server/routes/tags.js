@@ -19,7 +19,7 @@ tagsRouter.get('/', (req, res) => {
 			if (result[0]) {
 				res.status(200).send(result[0].tags)
 			} else {
-				res.status(200).send(null)
+				res.status(204).end()
 			}
 		}
 		else {
@@ -43,7 +43,7 @@ tagsRouter.post('/', (req, res) => {
 	const prepared = mysql.format(sql, req.body.tags)
 	pool.query(prepared, (error, result) => {
 		if (result) {
-			res.status(200).send()
+			res.status(204).end()
 		}
 		else {
 			return res.status(500).send({ error: 'Database error' })

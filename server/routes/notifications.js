@@ -55,7 +55,7 @@ notifRouter.post('/', (req, res) => {
 	//console.log(prepared)
 	pool.query(prepared, (error, result) => {
 		if (result) {
-			return res.status(200).end()
+			return res.status(204).end()
 		} else if (error) {
 			return res.status(500).send(error)
 		}

@@ -52,7 +52,7 @@ likesRouter.post('/', (req, res) => {
 						console.log('New match between ids:', to, from)
 						pool.query(`UPDATE likes SET is_match = 1 WHERE id = ${result[0].id} OR id = ${result[1].id}`, (error, result) => {
 							if (result) {
-								return res.status(200).end()
+								return res.status(204).end()
 							} else if (error) {
 								return res.status(500).send(error)
 							}
@@ -60,7 +60,7 @@ likesRouter.post('/', (req, res) => {
 					} else if (error) {
 						return res.status(500).send(error)
 					}
-					return res.status(200).end()
+					return res.status(204).end()
 				} else if (error) {
 					return res.status(500).send(error)
 				}
@@ -112,7 +112,7 @@ likesRouter.delete('/:id', (req, res) => {
 						pool.query('DELETE FROM likes where id=?', req.params.id, (error, result) => {
 							if (result) {
 								pool.query(`UPDATE users SET fame = fame - 5 WHERE id = ${req.body.to}`)
-								return res.status(200).end()
+								return res.status(204).end()
 							} else if (error) {
 								return res.status(500).send(error)
 							}
@@ -125,7 +125,7 @@ likesRouter.delete('/:id', (req, res) => {
 				pool.query('DELETE FROM likes where id=?', req.params.id, (error, result) => {
 					if (result) {
 						pool.query(`UPDATE users SET fame = fame - 5 WHERE id = ${req.body.to}`)
-						return res.status(200).end()
+						return res.status(204).end()
 					} else if (error) {
 						return res.status(500).send(error)
 					}

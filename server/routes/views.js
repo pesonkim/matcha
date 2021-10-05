@@ -50,7 +50,7 @@ viewsRouter.post('/', (req, res) => {
 			pool.query(prepared, (error, result) => {
 				if (result) {
 					console.log('New profile view:', result.insertId)
-					return res.status(200).end()
+					return res.status(204).end()
 				} else if (error) {
 					return res.status(500).send(error)
 				} else {

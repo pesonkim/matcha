@@ -64,7 +64,7 @@ http://localhost:${port}/api/verify?token=${token}`
 		if (result) {
 			console.log('Created user id', result.insertId)
 			verifyMail(email, token)
-			res.status(200).end()
+			res.status(204).end()
 		} else if (error && error.sqlMessage.includes('users.username')) {
 			res.status(409).send({ error: 'Username already exists' })
 		} else if (error && error.sqlMessage.includes('users.email')) {
