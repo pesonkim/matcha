@@ -136,7 +136,6 @@ const Notifications = () => {
 	const fetchMoreItems = () => {
 		if (items.length >= notif.length) {
 			hasMore.current = false
-			return
 		}
 		setItems(items.concat(notif.slice(items.length, items.length + 50)))
 	}
@@ -147,7 +146,7 @@ const Notifications = () => {
 			if (initial.length >= notif.length) {
 				hasMore.current = false
 			}
-			setItems(initial.slice(0, 10))
+			setItems(initial)
 		}
 	}, [notif])
 
