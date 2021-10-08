@@ -8,6 +8,10 @@ Tinder-like dating app - a web branch project for [Hive Helsinki](https://www.hi
 - [Improvements](#improvements)
 - [Acknowledgements](#acknowledgements)
 
+<p align="center">
+  <img src="https://github.com/pesonkim/matcha/blob/master/pic/Screen%20Shot%202021-10-08%20at%206.53.41%20PM.png">
+</p>
+
 ## Task
 
 The aim of this project was to build a **Tinder-like web app**, where the users can create their profile, browse through a list of recommended profiles or conduct a search by age, distance, fame rating, commong tags. Users can like, report and block other users and chat with users that liked them back.
@@ -44,6 +48,10 @@ Backend:
 - JWT
 - Socket.io
 
+<p align="center">
+  <img src="https://github.com/pesonkim/matcha/blob/master/pic/Screen%20Shot%202021-10-08%20at%206.55.16%20PM.png">
+</p>
+
 ## Functionality
 
 - **User features:**
@@ -65,7 +73,9 @@ Backend:
 - **Notifications features:**
   - Real-time push notifications when the user receives a like/unlike, message from another user or user's profile is checked.
 
-
+<p align="center">
+  <img src="https://github.com/pesonkim/matcha/blob/master/pic/Screen%20Shot%202021-10-08%20at%206.50.38%20PM.png">
+</p>
 
 ## Improvements
 
