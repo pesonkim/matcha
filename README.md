@@ -3,8 +3,9 @@
 Tinder-like dating app - a web branch project for [Hive Helsinki](https://www.hive.fi/en/) coding school.
 
 - [Task](#task)
-- [Tech stack](#tech-stack)
+- [Stack](#stack)
 - [Functionality](#functionality)
+- [Run locally](#run-locally)
 - [Improvements](#improvements)
 - [Acknowledgements](#acknowledgements)
 
@@ -77,12 +78,54 @@ Backend:
   <img src="https://github.com/pesonkim/matcha/blob/master/pic/Screen%20Shot%202021-10-08%20at%206.50.38%20PM.png">
 </p>
 
+## Run locally
+- **Git clone** repo
+- Install [MySQL](https://www.mysql.com/) `brew install mysql` or `apt install mysql-server`
+  - If you are not prompted to create a user automatically, you can run
+  `mysql_secure_installation` utility after the install is done
+- The project utilizes geolocation and requires an API key from [Google Maps](https://cloud.google.com/maps-platform) to be fully functional
+  - Default positioning is done with IP address coordinates
+  - `Maps JavaScript API` is used for an interactive map that allows users to edit their locations
+  - `Maps Static API` is used to display static map images of user locations on profile pages
+- Make sure you have valid email credentials you can you use for the email service later on
+- Install nodejs and npm `brew install nodejs npm` or `apt install nodejs`
+- Make sure MySQL is running `mysql.server start` or `service mysql start`
+- Create a file **.env** inside the `server` folder and update with your credentials
+```
+#db config
+DB_HOST='localhost'
+DB_USER='your_db_username'
+DB_PW='your_db_password'
+DB_NAME='matcha'
+
+#server config
+PORT=3001
+IP='http://localhost'
+
+#jwt secret
+JWT_SECRET='your_jwt_secret'
+
+#email config
+EMAIL='your_email_username'
+EMAIL_PW='your_email_password'
+```
+- Create a file **.env** inside the `client` folder and update with your credentials
+```
+REACT_APP_API_KEY='your_google_api_key'
+REACT_APP_ENDPOINT='http://localhost:3001'
+```
+- Run command `npm run init` in the matcha root folder to install all client and server dependencies
+- Run command `npm run build` to create a production build of the client code for the server
+- Run command `npm run db` to setup the database with fake users
+- Run command `npm start` to start the server
+- Open application in your favorite browser `http://localhost:3001`
+- Client requests are logged in the terminal window that started the server
+
 ## Improvements
 
 The assignment was originally intended as a pair project, whereas I worked on it alone and may have had to cut some corners to finish it in time. This repository represents the project in the state where I submitted it for peer grading as finished, but it could still be improved upon
 
 - Host a live demo on Heroku 
-- Remove any hard-coded variables and rewrite this readme for a guide how to run project locally with .env files
 - Improving UI and UX (main gallery view and filters might not be the most mobile-friendly, adding scroll-to-top or -bottom buttons, adding read receipts on direct messages)
 - Fixing existing bugs (Google Maps component and some CSS styling on Firefox mobile view)
 

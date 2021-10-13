@@ -1,0 +1,13 @@
+{
+	"name": "matcha",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"start": "cd server && npm start",
+		"init": "cd client && npm i && cd ../server && npm i",
+		"build": "cd server && npm run build",
+		"db": "cd server && npm run init"
+	},
+	"author": "",
+	"license": "ISC"
+}
