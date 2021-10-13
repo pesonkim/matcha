@@ -1,19 +1,23 @@
 require('dotenv').config()
 
+const IP = process.env.IP
 const PORT = process.env.PORT
 const DB_HOST = process.env.DB_HOST
 const DB_USER = process.env.DB_USER
 const DB_PW = process.env.DB_PW
 const DB_NAME = process.env.DB_NAME
-const TOKEN_SECRET = process.env.TOKEN_SECRET
-const INFO_EMAIL = process.env.INFO_EMAIL
+const JWT_SECRET = process.env.JWT_SECRET
+const EMAIL = process.env.EMAIL
+const EMAIL_PW = process.env.EMAIL_PW
 
 module.exports = {
+	IP,
 	PORT,
 	DB_HOST,
 	DB_USER,
 	DB_PW,
 	DB_NAME,
-	TOKEN_SECRET,
-	INFO_EMAIL
+	JWT_SECRET,
+	EMAIL,
+	EMAIL_PW,
 }

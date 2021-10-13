@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const pool = require('../utils/db')
 const mysql = require('mysql')
-const tokenSecret = require('../utils/config').TOKEN_SECRET
+const tokenSecret = require('../utils/config').JWT_SECRET
 const moment = require('moment')
 const axios = require('axios')
 

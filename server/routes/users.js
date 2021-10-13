@@ -4,9 +4,11 @@ const jwt = require('jsonwebtoken')
 const pool = require('../utils/db')
 const mysql = require('mysql')
 const nodemailer = require('nodemailer')
-const mailInfo = require('../utils/config').INFO_EMAIL
+const mailSender = require('../utils/config').EMAIL
+const mailPassword = require('../utils/config').EMAIL_PW
+const ip = require('../utils/config').IP
 const port = require('../utils/config').PORT
-const tokenSecret = require('../utils/config').TOKEN_SECRET
+const tokenSecret = require('../utils/config').JWT_SECRET
 const moment = require('moment')
 
 userRouter.post('/', async (req, res) => {
@@ -23,19 +25,19 @@ userRouter.post('/', async (req, res) => {
 		const transporter = nodemailer.createTransport({
 			service: 'gmail',
 			auth: {
-				user: 'hivewebhelper',
-				pass: mailInfo
+				user: mailSender,
+				pass: mailPassword
 			}
 		})
 
 		const mailConfig = {
-			from: 'hivewebhelper@gmail.com',
+			from: mailSender,
 			to: email,
 			subject: 'Verify your Matcha account',
 			text: `Welcome to Matcha!
 
 Before you can log in, we ask that you visit the following link to verify your account email:
-http://localhost:${port}/api/verify?token=${token}`
+${ip}:${port}/api/verify?token=${token}`
 		}
 
 		transporter.sendMail(mailConfig, (error, info) => {

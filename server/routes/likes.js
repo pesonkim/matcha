@@ -1,6 +1,6 @@
 const likesRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
-const tokenSecret = require('../utils/config').TOKEN_SECRET
+const tokenSecret = require('../utils/config').JWT_SECRET
 const pool = require('../utils/db')
 const mysql = require('mysql')
 

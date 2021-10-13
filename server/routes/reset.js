@@ -3,7 +3,9 @@ const bcrypt = require('bcrypt')
 const pool = require('../utils/db')
 const mysql = require('mysql')
 const nodemailer = require('nodemailer')
-const mailInfo = require('../utils/config').INFO_EMAIL
+const mailSender = require('../utils/config').EMAIL
+const mailPassword = require('../utils/config').EMAIL_PW
+const ip = require('../utils/config').IP
 const port = require('../utils/config').PORT
 const getToken = require('../utils/token')
 
@@ -14,19 +16,19 @@ resetRouter.post('/', (req, res) => {
 		const transporter = nodemailer.createTransport({
 			service: 'gmail',
 			auth: {
-				user: 'hivewebhelper',
-				pass: mailInfo
+				user: mailSender,
+				pass: mailPassword
 			}
 		})
 
 		const mailConfig = {
-			from: 'hivewebhelper@gmail.com',
+			from: mailSender,
 			to: email,
 			subject: 'Matcha account password reset',
 			text: `Your Matcha account recently requested a password change.
 
 Please visit the following link to register a new password for your account:
-http://localhost:${port}/reset/${token}`
+${ip}:${port}/reset/${token}`
 		}
 
 		transporter.sendMail(mailConfig, (error, info) => {

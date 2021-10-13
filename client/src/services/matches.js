@@ -1,8 +1,8 @@
 import axios from 'axios'
 import auth from '../utils/auth'
 
-const baseUrl = 'http://localhost:3001/api/matches'
-const likesUrl = 'http://localhost:3001/api/matches/likes'
+const baseUrl = '/api/matches'
+const likesUrl = '/api/matches/likes'
 
 const getMatches = async () => {
 	const response = await axios.get(baseUrl, auth.config())

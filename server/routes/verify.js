@@ -2,6 +2,7 @@ const verifyRouter = require('express').Router()
 const pool = require('../utils/db')
 const mysql = require('mysql')
 const getToken = require('../utils/token')
+const ip = require('../utils/config').IP
 const port = require('../utils/config').PORT
 
 verifyRouter.get('/', (req, res) => {
@@ -14,9 +15,9 @@ verifyRouter.get('/', (req, res) => {
 		if (result) {
 			console.log('Verify request, affected rows:', result.affectedRows)
 			if (result.affectedRows === 1) {
-				res.redirect(`http://localhost:${port}/verify`)
+				res.redirect(`${ip}:${port}/verify`)
 			} else {
-				res.redirect(`http://localhost:${port}/login`)
+				res.redirect(`${ip}:${port}/login`)
 			}
 		}
 		else {
