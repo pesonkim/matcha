@@ -4,7 +4,7 @@ import { getDistance, convertDistance } from 'geolib'
 import parse from '../utils/parse'
 
 const initialState = {
-	ids: null,
+	ids: [],
 	users: [],
 	profile: null,
 	sortFilter: null,
