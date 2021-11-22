@@ -2,7 +2,7 @@ import TimeAgo from 'react-timeago'
 import { FireIcon, LocationMarkerIcon } from '@heroicons/react/outline'
 import { useSelector } from 'react-redux'
 import { getDistance, convertDistance } from 'geolib'
-import ReactTooltip from 'react-tooltip'
+// import ReactTooltip from 'react-tooltip'
 
 const Info = ({ name, fame, age, lat, lng, gender, orientation, bio, tags, online, login }) => {
 	const { latitude, longitude } = useSelector(state => state.user)
@@ -34,10 +34,16 @@ const Info = ({ name, fame, age, lat, lng, gender, orientation, bio, tags, onlin
 					<strong className='text-xl'>{age}</strong>
 				</section>
 				<section className="flex justify-between items-center mt-2 mb-4">
-					<section className="flex" data-tip data-for='hoverImage'>
+					<section
+						className="flex"
+						// data-tip
+						// data-for='hoverImage'
+					>
 						<LocationMarkerIcon className='h-6 w-6 mr-1' />
 						{distance()}
-						<ReactTooltip id='hoverImage'>
+						{/* element below requires a Google Cloud billing account and Maps Static API key,
+						update client dir .env file with 'process.env.REACT_APP_API_KEY' and uncomment for the tooltip to work */}
+						{/* <ReactTooltip id='hoverImage'>
 							<div
 								style={{
 									height: '100%',
@@ -61,7 +67,7 @@ const Info = ({ name, fame, age, lat, lng, gender, orientation, bio, tags, onlin
 									alt='location'
 								/>
 							</div>
-						</ReactTooltip>
+						</ReactTooltip> */}
 					</section>
 					<section className="flex ">
 						<FireIcon className='h-6 w-6 mr-1' />

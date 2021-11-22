@@ -86,7 +86,6 @@ Backend:
 - The project utilizes geolocation and requires an API key from [Google Maps](https://cloud.google.com/maps-platform) to be fully functional
   - Default positioning is done with IP address coordinates
   - `Maps JavaScript API` is used for an interactive map that allows users to edit their locations
-  - `Maps Static API` is used to display static map images of user locations on profile pages
 - Make sure you have valid email credentials you can you use for the email service later on
 - Install nodejs and npm `brew install nodejs npm` or `apt install nodejs`
 - Make sure MySQL is running `mysql.server start` or `service mysql start`
