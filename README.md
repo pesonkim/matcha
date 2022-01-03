@@ -9,6 +9,9 @@ Tinder-like dating app - a web branch project for [Hive Helsinki](https://www.hi
 - [Improvements](#improvements)
 - [Acknowledgements](#acknowledgements)
 
+**[Live demo on Heroku](https://matcha-mysql.herokuapp.com/)**
+- Disclaimer: I recently had to refactor chunks of the project to host it online and to find workarounds for some discontinued npm packages I originally built it with. This build may still have a few bugs.
+
 <p align="center">
   <img src="https://github.com/pesonkim/matcha/blob/master/pic/Screen%20Shot%202021-10-08%20at%206.53.41%20PM.png">
 </p>
