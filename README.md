@@ -9,8 +9,10 @@ Tinder-like dating app - a web branch project for [Hive Helsinki](https://www.hi
 - [Improvements](#improvements)
 - [Acknowledgements](#acknowledgements)
 
-**[Live demo on Heroku](https://matcha-mysql.herokuapp.com/)**
-- Disclaimer: I recently had to refactor chunks of the project to host it online and to find workarounds for some discontinued npm packages I originally built it with. This build may still have a few bugs.
+## [Live demo on Heroku](https://matcha-mysql.herokuapp.com/)
+**A few disclaimers:**
+- I had to recently refactor parts of the project after my free Google Cloud credits expired. The database for the Heroku build is hosted on a US server, so there is some noticeable delay after user actions. There may still be some bugs in this hosted demo.
+- The demo is populated with dummy users generated randomly with [faker.js](https://www.npmjs.com/package/faker), which may result in weird and/or amusing user profiles and repeated use of same profile pictures. It is also worth noting that this npm package is no longer being maintained, and profile pictures might not always load.
 
 <p align="center">
   <img src="https://github.com/pesonkim/matcha/blob/master/pic/Screen%20Shot%202021-10-08%20at%206.53.41%20PM.png">
