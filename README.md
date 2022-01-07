@@ -2,6 +2,7 @@
 
 Tinder-like dating app - a web branch project for [Hive Helsinki](https://www.hive.fi/en/) coding school.
 
+- [Demo](#[Live demo on Heroku)
 - [Task](#task)
 - [Stack](#stack)
 - [Functionality](#functionality)
@@ -129,7 +130,6 @@ REACT_APP_ENDPOINT='http://localhost:3001'
 
 The assignment was originally intended as a pair project, whereas I worked on it alone and may have had to cut some corners to finish it in time. This repository represents the project in the state where I submitted it for peer grading as finished, but it could still be improved upon
 
-- Host a live demo on Heroku 
 - Improving UI and UX (main gallery view and filters might not be the most mobile-friendly, adding scroll-to-top or -bottom buttons, adding read receipts on direct messages)
 - Fixing existing bugs (Google Maps component and some CSS styling on Firefox mobile view)
 
