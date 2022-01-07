@@ -2,7 +2,7 @@
 
 Tinder-like dating app - a web branch project for [Hive Helsinki](https://www.hive.fi/en/) coding school.
 
-- [Demo](#[Live demo on Heroku)
+- [Demo](#Live demo on Heroku)
 - [Task](#task)
 - [Stack](#stack)
 - [Functionality](#functionality)
